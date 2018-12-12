@@ -1,7 +1,7 @@
 simple:
   workspapce: E:\\SpringBoot\\workplace
-  serverPath: ${workspapce}\\xc_project\\simple
-  uiPath: ${workspapce}\\xc_pc_ui
+  serverPath: ${workspapce}\\D4\\simple
+  uiPath: ${workspapce}\\D4_pc_ui
   codeTablesFile: ${serverPath}\\src\\main\\resources\\codetables.json
   moduleFile: ${serverPath}\\src\\main\\resources\\modules.json
   velocityTemplate: ${serverPath}\\src\\main\\resources

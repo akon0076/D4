@@ -1,11 +1,11 @@
 simple:
 
-  workspapce: D:\\SpringBoot
-  serverPath: ${workspapce}\\workspace\\xc_project\\simple
-  uiPath: ${workspapce}\\workspace\\xc_pc_ui
-  codeTablesFile: D:\\SpringBoot\\workspace\\xc_project\\simple\\src\\main\\resources\\codetables.json
-  moduleFile: D:\\SpringBoot\\workspace\\xc_project\\simple\\src\\main\\resources\\modules.json
-  velocityTemplate: D:\\SpringBoot\\workspace\\xc_project\\generator\\src\\main\\resources
+  workspapce: E:\\SpringBoot\\workplace
+  serverPath: ${workspapce}\\D4\\simple
+  uiPath: ${workspapce}\\workplace\\D4_pc_ui
+  codeTablesFile: E:\\SpringBoot\\workplace\\D4\\simple\\src\\main\\resources\\codetables.json
+  moduleFile: E:\\SpringBoot\\workplace\\D4\\simple\\src\\main\\resources\\modules.json
+  velocityTemplate: E:\\SpringBoot\\workplace\\D4\\generator\\src\\main\\resources
   exceptionLogPath: D:\\DDDException
   uploadFileAddress: D:\\spring_files
 

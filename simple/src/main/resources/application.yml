@@ -21,10 +21,10 @@ spring:
         properties:
                 hibernate:
                     dialect: org.hibernate.dialect.MySQL5InnoDBDialect #指定数据库引擎
-  redis:
-    host: 59.110.221.188
-    port: 6379
-    password: ddd306ddd
+    properties:
+         hibernate:
+                dialect: com.cisdi.info.simple.MySQL5DialectUTF8
+
   mvc:
     static-path-pattern: /file/**
   resources:
