@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.attachment.AttachmentDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findAttachments" resultType="com.cisdi.info.simple.entity.attachment.Attachment" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.attachment_real_name  ,
+        t0.attachment_logical_name  ,
+        t0.upload_time  ,
+        t0.upload_employee_id  ,
+        t0.attachment_addr  ,
+        t0.associate_form_id  ,
+        t0.associate_form_name  ,
+        t0.associate_size  ,
+        t0.is_effective  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
+        ,t6.name as upload_employee_name
+
+        from simple_attachment t0
+            LEFT JOIN simple_employee t6 on t0.upload_employee_id =t6.EId
+                where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllAttachments" resultType="com.cisdi.info.simple.entity.attachment.Attachment" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.attachment_real_name  ,
+            t0.attachment_logical_name  ,
+            t0.upload_time  ,
+            t0.upload_employee_id  ,
+            t0.attachment_addr  ,
+            t0.associate_form_id  ,
+            t0.associate_form_name  ,
+            t0.associate_size  ,
+            t0.is_effective  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+            ,t6.name as upload_employee_name
+
+        from simple_attachment t0
+            LEFT JOIN simple_employee t6 on t0.upload_employee_id =t6.EId
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findAttachmentsWithIdNameByName" resultType="com.cisdi.info.simple.entity.attachment.Attachment" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_attachment t0
+        where t0.name like  '%${attachmentName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllAttachmentsWithIdName" resultType="com.cisdi.info.simple.entity.attachment.Attachment" >
+        select
+        t0.EId,t0.Name
+        from simple_attachment t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findAttachmentsWithIdNameById" resultType="com.cisdi.info.simple.entity.attachment.Attachment" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_attachment t0
+        where eid = #{attachmentId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findAttachmentTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_attachment as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findAttachment" resultType="com.cisdi.info.simple.entity.attachment.Attachment" parameterType="java.lang.Long">
+        select * from simple_attachment where eid = #{attachmentId}
+    </select>
+
+    <!-- -->
+    <select id="findAttachmentWithForeignName" resultType="com.cisdi.info.simple.entity.attachment.Attachment" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.attachment_real_name  ,
+            t0.attachment_logical_name  ,
+            t0.upload_time  ,
+            t0.upload_employee_id  ,
+            t0.attachment_addr  ,
+            t0.associate_form_id  ,
+            t0.associate_form_name  ,
+            t0.associate_size  ,
+            t0.is_effective  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+            ,t6.name as upload_employee_name
+
+        from simple_attachment t0
+            LEFT JOIN simple_employee t6 on t0.upload_employee_id =t6.EId
+        where t0.eid = #{attachmentId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveAttachment" parameterType="com.cisdi.info.simple.entity.attachment.Attachment">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_attachment
+        (
+                name ,
+                attachment_real_name ,
+                attachment_logical_name ,
+                upload_time ,
+                upload_employee_id ,
+                attachment_addr ,
+                associate_form_id ,
+                associate_form_name ,
+                associate_size ,
+                is_effective ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime
+        )
+        values
+        (
+                #{name} ,
+                #{attachmentRealName} ,
+                #{attachmentLogicalName} ,
+                #{uploadTime} ,
+                #{uploadEmployeeId} ,
+                #{attachmentAddr} ,
+                #{associateFormId} ,
+                #{associateFormName} ,
+                #{associateSize} ,
+                #{isEffective} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime}
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateAttachment" parameterType="com.cisdi.info.simple.entity.attachment.Attachment" >
+        update simple_attachment set
+                name = #{name} ,
+                attachment_real_name = #{attachmentRealName} ,
+                attachment_logical_name = #{attachmentLogicalName} ,
+                upload_time = #{uploadTime} ,
+                upload_employee_id = #{uploadEmployeeId} ,
+                attachment_addr = #{attachmentAddr} ,
+                associate_form_id = #{associateFormId} ,
+                associate_form_name = #{associateFormName} ,
+                associate_size = #{associateSize} ,
+                is_effective = #{isEffective} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteAttachment"  parameterType="java.lang.Long">
+        delete from simple_attachment where eid = #{attachmentId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+    <select id="getFileRealName" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT attachment_real_name  from simple_attachment where attachment_addr=#{fileAddress}
+    </select>
+
+    <select id="findAllUploadedFilesByIdAndName" resultType="com.cisdi.info.simple.entity.attachment.Attachment" parameterType="com.cisdi.info.simple.entity.attachment.Attachment">
+        select
+            t0.eid ,
+            t0.name  ,
+            t0.attachment_real_name  ,
+            t0.attachment_logical_name  ,
+            t0.upload_time  ,
+            t0.upload_employee_id  ,
+            t0.attachment_addr  ,
+            t0.associate_form_id  ,
+            t0.associate_form_name  ,
+            t0.associate_size  ,
+            t0.is_effective  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id ,
+            t0.update_datetime
+        from simple_attachment t0
+         where  associate_form_id=#{associateFormId} and associate_form_name=#{associateFormName} ORDER  BY  update_datetime DESC
+    </select>
+
+    <select id="findLicenseByIdAndName" resultType="java.lang.Long"  parameterType="com.cisdi.info.simple.entity.attachment.Attachment">
+        select eid from simple_attachment where associate_form_id=#{associateFormId} and associate_form_name=#{associateFormName} and remark=#{remark}
+    </select>
+
+    <delete id="deleteUploadedFile" >
+    delete from simple_attachment where associate_form_id=#{formId} and associate_form_name=#{formName}
+    </delete>
+</mapper>

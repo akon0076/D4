@@ -1,0 +1,23 @@
+simple:
+
+  workspapce: D:\\SpringBoot
+  serverPath: ${workspapce}\\workspace\\xc_project\\simple
+  uiPath: ${workspapce}\\workspace\\xc_pc_ui
+  codeTablesFile: D:\\SpringBoot\\workspace\\xc_project\\simple\\src\\main\\resources\\codetables.json
+  moduleFile: D:\\SpringBoot\\workspace\\xc_project\\simple\\src\\main\\resources\\modules.json
+  velocityTemplate: D:\\SpringBoot\\workspace\\xc_project\\generator\\src\\main\\resources
+  exceptionLogPath: D:\\DDDException
+  uploadFileAddress: D:\\spring_files
+
+  applicationName: 框架
+  applicationCode: DDD4
+  shortCode: DD
+  basePackage: com.cisdi.info
+  src: src\\
+  charset_UTF8: UTF-8
+  charset_ISO: ISO-8859-1
+  dataBase: mysql
+  serverId: app1
+  logPath: d:\\DDDException\\
+  isDeveloping: true
+  whiteURLs: /Login/constructNewTree,/Login/loginSubmit,/Login/wisdomCateringLoginSubmit,/Login/wisdomCateringLogout,/generator/generateModel,/generator/createSuperOperator,/generator/generateMethod,/generator/generateBaseCode,/error,/generator/testException,/Login/phoneLoginSubmit,/Login/test,/simple/fileUpload/addFile

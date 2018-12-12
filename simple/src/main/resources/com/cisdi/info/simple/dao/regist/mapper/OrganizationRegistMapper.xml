@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.regist.OrganizationRegistDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findOrganizationRegists" resultType="com.cisdi.info.simple.entity.regist.OrganizationRegist" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.business_license_code  ,
+        t0.amount  ,
+        t0.address  ,
+        t0.legal_person  ,
+        t0.industry_attributes  ,
+        t0.landline  ,
+        t0.main_business  ,
+        t0.audit_state  ,
+        t0.audit_emloyee_id  ,
+        t0.audit_date  ,
+        t0.admin_name  ,
+        t0.admin_link_tel  ,
+        t0.admin_email  ,
+        t0.admin_password  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime  
+        ,t11.name as audit_emloyee_name
+
+        from simple_organization_regist t0
+            LEFT JOIN simple_employee t11 on t0.audit_emloyee_id =t11.EId
+                where  ${sql}
+        ORDER BY t0.create_datetime DESC
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllOrganizationRegists" resultType="com.cisdi.info.simple.entity.regist.OrganizationRegist" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.business_license_code  ,
+            t0.amount  ,
+            t0.address  ,
+            t0.legal_person  ,
+            t0.industry_attributes  ,
+            t0.landline  ,
+            t0.main_business  ,
+            t0.audit_state  ,
+            t0.audit_emloyee_id  ,
+            t0.audit_date  ,
+            t0.admin_name  ,
+            t0.admin_link_tel  ,
+            t0.admin_email  ,
+            t0.admin_password  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t11.name as audit_emloyee_name
+
+        from simple_organization_regist t0
+            LEFT JOIN simple_employee t11 on t0.audit_emloyee_id =t11.EId
+        ORDER BY t0.create_datetime DESC
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findOrganizationRegistsWithIdNameByName" resultType="com.cisdi.info.simple.entity.regist.OrganizationRegist" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_organization_regist t0
+        where t0.name = #{organizationRegistName}
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllOrganizationRegistsWithIdName" resultType="com.cisdi.info.simple.entity.regist.OrganizationRegist" >
+        select
+        t0.EId,t0.Name
+        from simple_organization_regist t0
+        ORDER BY t0.Name
+    </select>
+    
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findOrganizationRegistsWithIdNameById" resultType="com.cisdi.info.simple.entity.regist.OrganizationRegist" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_organization_regist t0
+        where eid = #{organizationRegistId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findOrganizationRegistTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_organization_regist as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findOrganizationRegist" resultType="com.cisdi.info.simple.entity.regist.OrganizationRegist" parameterType="java.lang.Long">
+        select * from simple_organization_regist where eid = #{organizationRegistId}
+    </select>
+
+    <!-- -->
+    <select id="findOrganizationRegistWithForeignName" resultType="com.cisdi.info.simple.entity.regist.OrganizationRegist" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.business_license_code  ,
+            t0.amount  ,
+            t0.address  ,
+            t0.legal_person  ,
+            t0.industry_attributes  ,
+            t0.landline  ,
+            t0.main_business  ,
+            t0.audit_state  ,
+            t0.audit_emloyee_id  ,
+            t0.audit_date  ,
+            t0.admin_name  ,
+            t0.admin_link_tel  ,
+            t0.admin_email  ,
+            t0.admin_password  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t11.name as audit_emloyee_name,
+            t0.audit_remark
+
+        from simple_organization_regist t0
+            LEFT JOIN simple_employee t11 on t0.audit_emloyee_id =t11.EId
+        where t0.eid = #{organizationRegistId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveOrganizationRegist" parameterType="com.cisdi.info.simple.entity.regist.OrganizationRegist">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_organization_regist
+        (
+                name ,
+                business_license_code ,
+                amount ,
+                address ,
+                legal_person ,
+                industry_attributes ,
+                landline ,
+                main_business ,
+                audit_state ,
+                audit_emloyee_id ,
+                audit_date ,
+                admin_name ,
+                admin_link_tel ,
+                admin_email ,
+                admin_password ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime 
+        )
+        values
+        (
+                #{name} ,
+                #{businessLicenseCode} ,
+                #{amount} ,
+                #{address} ,
+                #{legalPerson} ,
+                #{industryAttributes} ,
+                #{landline} ,
+                #{mainBusiness} ,
+                #{auditState} ,
+                #{auditEmloyeeId} ,
+                #{auditDate} ,
+                #{adminName} ,
+                #{adminLinkTel} ,
+                #{adminEmail} ,
+                #{adminPassword} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime} 
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateOrganizationRegist" parameterType="com.cisdi.info.simple.entity.regist.OrganizationRegist" >
+        update simple_organization_regist set
+                name = #{name} ,
+                business_license_code = #{businessLicenseCode} ,
+                amount = #{amount} ,
+                address = #{address} ,
+                legal_person = #{legalPerson} ,
+                industry_attributes = #{industryAttributes} ,
+                landline = #{landline} ,
+                main_business = #{mainBusiness} ,
+                audit_state = #{auditState} ,
+                audit_emloyee_id = #{auditEmloyeeId} ,
+                audit_date = #{auditDate} ,
+                admin_name = #{adminName} ,
+                admin_link_tel = #{adminLinkTel} ,
+                admin_email = #{adminEmail} ,
+                admin_password = #{adminPassword} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime} ,
+                audit_remark = #{auditRemark}
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteOrganizationRegist"  parameterType="java.lang.Long">
+        delete from simple_organization_regist where eid = #{organizationRegistId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+</mapper>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.permission.ModuleDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findModules" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.code  ,
+        t0.name  ,
+        t0.url  ,
+        t0.route  ,
+        t0.icon_class  ,
+        t0.display_index  ,
+        t0.parent_id  ,
+        t0.module_type  ,
+        t0.parent_code  ,
+        t0.is_in_use  ,
+        t0.route_params_obj  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
+        ,t9.name as parent_name
+
+        from simple_module t0
+            LEFT JOIN simple_module t9 on t0.parent_id =t9.EId
+                where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllModules" resultType="com.cisdi.info.simple.entity.permission.Module" >
+        select
+            t0.eid  ,
+            t0.code  ,
+            t0.name  ,
+            t0.url  ,
+            t0.route  ,
+            t0.icon_class  ,
+            t0.display_index  ,
+            t0.parent_id  ,
+            t0.module_type  ,
+            t0.parent_code  ,
+            t0.is_in_use  ,
+            t0.route_params_obj  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+            ,t9.name as parent_name
+        from simple_module t0
+            LEFT JOIN simple_module t9 on t0.parent_id =t9.EId
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllModulesWithIdName" resultType="com.cisdi.info.simple.entity.permission.Module" >
+        select
+            t0.EId,t0.Name
+        from simple_module t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findModuleTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_module as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findModule" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="java.lang.Long">
+        select * from simple_module where eid = #{moduleId}
+    </select>
+
+    <!-- -->
+    <select id="findModuleWithForeignName" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.code  ,
+            t0.name  ,
+            t0.url  ,
+            t0.route  ,
+            t0.icon_class  ,
+            t0.display_index  ,
+            t0.parent_id  ,
+            t0.module_type  ,
+            t0.parent_code  ,
+            t0.is_in_use  ,
+            t0.route_params_obj  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+            ,t9.name as parent_name
+
+        from simple_module t0
+            LEFT JOIN simple_module t9 on t0.parent_id =t9.EId
+        where t0.eid = #{moduleId}
+    </select>
+
+
+    <!--  保存 -->
+    <select id="saveModule" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="com.cisdi.info.simple.entity.permission.Module">
+        insert into simple_module
+        (
+                code ,
+                name ,
+                url ,
+                route ,
+                icon_class ,
+                display_index ,
+                parent_id ,
+                module_type ,
+                parent_code ,
+                is_in_use ,
+                route_params_obj ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime
+        )
+        values
+        (
+                #{code} ,
+                #{name} ,
+                #{url} ,
+                #{route} ,
+                #{iconClass} ,
+                #{displayIndex} ,
+                #{parentId} ,
+                #{moduleType} ,
+                #{parentCode} ,
+                #{isInUse} ,
+                #{routeParamsObj} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime}
+        )
+    </select>
+
+    <!--  编辑 -->
+    <select id="updateModule" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="com.cisdi.info.simple.entity.permission.Module" >
+        update simple_module set
+                code = #{code} ,
+                name = #{name} ,
+                url = #{url} ,
+                route = #{route} ,
+                icon_class = #{iconClass} ,
+                display_index = #{displayIndex} ,
+                parent_id = #{parentId} ,
+                module_type = #{moduleType} ,
+                parent_code = #{parentCode} ,
+                is_in_use = #{isInUse} ,
+                route_params_obj = #{routeParamsObj} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{EId}
+    </select>
+
+
+    <!--  根据Id删除 -->
+    <select id="deleteModule" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        delete from simple_module where eid = #{moduleId}
+    </select>
+    <!--获取总数-->
+    <select id="moduleAccount" resultType="java.lang.Integer">
+        select count(*) FROM simple_module
+    </select>
+
+    <select id="findModulesByKey" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="map">
+        select
+        t0.eid  ,
+        t0.code  ,
+        t0.name  ,
+        t0.url  ,
+        t0.route  ,
+        t0.icon_class  ,
+        t0.display_index  ,
+        t0.parent_id  ,
+        t0.module_type  ,
+        t0.parent_code  ,
+        t0.is_in_use  ,
+        t0.route_params_obj  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
+        ,t9.name as parent_name
+
+        from simple_module t0
+/*        LEFT JOIN simple_module t9 on t0.parent_id =t9.EId*/
+        LEFT JOIN simple_module t9 on t0.parent_code =t9.code
+        <if test="code != null">
+            WHERE t0.code LIKE  #{code}
+        </if>
+        <if test="modelName != null">
+            WHERE t0.name LIKE  #{modelName}
+        </if>
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="moduleAccountByKey" resultType="java.lang.Long" parameterType="map">
+        select
+          count(*)
+        from simple_module t0
+        <if test="code != null">
+            WHERE t0.code LIKE  #{code}
+        </if>
+        <if test="modelName != null">
+            WHERE t0.name LIKE  #{modelName}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,23 @@
+simple:
+  workspapce: E:\\SpringBoot\\workplace
+  serverPath: ${workspapce}\\xc_project\\simple
+  uiPath: ${workspapce}\\xc_pc_ui
+  codeTablesFile: ${serverPath}\\src\\main\\resources\\codetables.json
+  moduleFile: ${serverPath}\\src\\main\\resources\\modules.json
+  velocityTemplate: ${serverPath}\\src\\main\\resources
+  exceptionLogPath: D:\\DDDException
+  uploadFileAddress: D:\\spring_files
+  staticFilePath: D:\\DDDFile\\
+
+  applicationName: 框架
+  applicationCode: DDD4
+  shortCode: DD
+  basePackage: com.cisdi.info
+  src: src\\
+  charset_UTF8: UTF-8
+  charset_ISO: ISO-8859-1
+  dataBase: mysql
+  serverId: app1
+  logPath: d:\\DDDException\\
+  isDeveloping: true
+  whiteURLs:/Login/sendEmailCode,/Login/saveAttachment,/Login/findOrganizationsWithIdNameByName,/Login/saveEmployeRegist,/Login/saveOrganizationRegist,/Login/qingtuiInit,/Login/bindingQingtui,/Login/constructNewTree,/Login/loginSubmit,/Login/wisdomCateringLoginSubmit,/Login/wisdomCateringConstructNewTree,/Login/wisdomCateringLogout,/generator/generateModel,/generator/createSuperOperator,/generator/generateMethod,/generator/generateBaseCode,/error,/generator/testException,/Login/phoneLoginSubmit,/Login/test,/simple/fileUpload/addFile,/simple/excel/excelExport,/simple/excel/excelExportAll,/simple/word/wordExport,/simple/excel/excelImport,/simple/word/wordTemplate,/Captcha/getCaptcha,/simple/attachment/Attachment/download

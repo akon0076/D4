@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.qingTui.EmpOpenIdDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findEmpOpenIds" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.employee_id  ,
+        t0.open_id  ,
+        t0.u_id  ,
+        t0.operator_id  ,
+        t0.type  ,
+        t0.user_type  ,
+        t0.member_id  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime  
+        ,t3.name as employee_name
+
+        ,t6.name as operator_name
+
+        ,t9.name as member_name
+
+        from simple_emp_open_id t0
+            LEFT JOIN simple_employee t3 on t0.employee_id =t3.EId
+            LEFT JOIN simple_operator t6 on t0.operator_id =t6.EId
+            LEFT JOIN ps_member t9 on t0.member_id =t9.EId
+                where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllEmpOpenIds" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.employee_id  ,
+            t0.open_id  ,
+            t0.u_id  ,
+            t0.operator_id  ,
+            t0.type  ,
+            t0.user_type  ,
+            t0.member_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t3.name as employee_name
+
+            ,t6.name as operator_name
+
+            ,t9.name as member_name
+
+        from simple_emp_open_id t0
+            LEFT JOIN simple_employee t3 on t0.employee_id =t3.EId
+            LEFT JOIN simple_operator t6 on t0.operator_id =t6.EId
+            LEFT JOIN ps_member t9 on t0.member_id =t9.EId
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findEmpOpenIdsWithIdNameByName" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_emp_open_id t0
+        where t0.name like  '%${empOpenIdName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllEmpOpenIdsWithIdName" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" >
+        select
+        t0.EId,t0.Name
+        from simple_emp_open_id t0
+        ORDER BY t0.Name
+    </select>
+    
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findEmpOpenIdsWithIdNameById" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_emp_open_id t0
+        where eid = #{empOpenIdId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findEmpOpenIdTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_emp_open_id as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findEmpOpenId" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="java.lang.Long">
+        select * from simple_emp_open_id where eid = #{empOpenIdId}
+    </select>
+
+    <!-- -->
+    <select id="findEmpOpenIdWithForeignName" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.employee_id  ,
+            t0.open_id  ,
+            t0.u_id  ,
+            t0.operator_id  ,
+            t0.type  ,
+            t0.user_type  ,
+            t0.member_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t3.name as employee_name
+
+            ,t6.name as operator_name
+
+            ,t9.name as member_name
+
+        from simple_emp_open_id t0
+            LEFT JOIN simple_employee t3 on t0.employee_id =t3.EId
+            LEFT JOIN simple_operator t6 on t0.operator_id =t6.EId
+            LEFT JOIN ps_member t9 on t0.member_id =t9.EId
+        where t0.eid = #{empOpenIdId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveEmpOpenId" parameterType="com.cisdi.info.simple.entity.qingTui.EmpOpenId">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_emp_open_id
+        (
+                name ,
+                employee_id ,
+                open_id ,
+                u_id ,
+                operator_id ,
+                type ,
+                user_type ,
+                member_id ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime 
+        )
+        values
+        (
+                #{name} ,
+                #{employeeId} ,
+                #{openId} ,
+                #{uId} ,
+                #{operatorId} ,
+                #{type} ,
+                #{userType} ,
+                #{memberId} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime} 
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateEmpOpenId" parameterType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" >
+        update simple_emp_open_id set
+                name = #{name} ,
+                employee_id = #{employeeId} ,
+                open_id = #{openId} ,
+                u_id = #{uId} ,
+                operator_id = #{operatorId} ,
+                type = #{type} ,
+                user_type = #{userType} ,
+                member_id = #{memberId} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime} 
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteEmpOpenId"  parameterType="java.lang.Long">
+        delete from simple_emp_open_id where eid = #{empOpenIdId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+    <!--  根据openId查询 -->
+    <select id="findEmpOpenByOpenId" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="java.lang.String">
+        select * from simple_emp_open_id where open_id = #{openId}
+    </select>
+
+    <!--  根据employeeId 和 openId查询 -->
+    <select id="findEmpOpenIdByEmpIdAndOpenId" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="com.cisdi.info.simple.entity.qingTui.EmpOpenId">
+        select * from simple_emp_open_id where open_id = #{openId} and employee_id = #{employeeId}
+    </select>
+
+    <!--  根据employeeId 和 openId查询 -->
+    <select id="findEmpOpenIdByOperatorId" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="com.cisdi.info.simple.entity.qingTui.EmpOpenId">
+        select * from simple_emp_open_id where operator_id = #{operatorId}
+    </select>
+
+    <!--  根据employeeId 和 openId查询 -->
+    <select id="findEmpOpenIdByEmpIdAndType" resultType="com.cisdi.info.simple.entity.qingTui.EmpOpenId" parameterType="com.cisdi.info.simple.entity.qingTui.EmpOpenId">
+        select * from simple_emp_open_id where employee_id = #{employeeId} AND type = #{type}
+    </select>
+</mapper>

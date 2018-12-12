@@ -1,0 +1,61 @@
+#set($vmType="Display")
+#set($extension=".vue")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($path="${config.uiPath}/src/view/${entityClass.subSystemName}/${entityClass.moduleName}")
+#set($outputFile="${path}/${EntityNameUp}${vmType}${extension}")
+
+<template>
+    <div class="spanControl-list" style="width: 100%;margin-left: 0!important;">
+        <el-card class="box-card card-head" style="margin: 0px; width: 100%; min-height: 99%">
+            <div slot="header" class="clearfix">
+                <span>查看${entityClass.label}</span>
+            </div>
+
+            <div class="text item">
+                <el-form label-position="left" inline class="display-form">
+                    #foreach($columnInfo in $entityClass.columnInfos)
+                        <el-form-item label="${columnInfo.label}">
+                            <span>{{ ${EntityNameLow}.${columnInfo.fieldName} }}</span>
+                        </el-form-item>
+                    #end
+                </el-form>
+            </div>
+        </el-card>
+    </div>
+</template>
+
+<script>
+import {${EntityNameUp}Service} from './${EntityNameUp}Service';
+
+export default {
+    components: {
+    },
+    data() {
+        return {
+            ${EntityNameLow}:{},
+        }
+    },
+    methods: {
+        find${EntityNameUp}ForView(${EntityNameLow}Id)//查找${entityClass.label}
+        {
+            ${EntityNameUp}Service.find${EntityNameUp}ForView(${EntityNameLow}Id).then((resp) => {
+                this.${EntityNameLow} = resp.data;
+        }).catch((error) => {
+            this.$message({
+            type: 'error',
+            message: '查询${entityClass.label}出错'
+        })
+        })
+        },
+    },
+    created() {
+        const ${EntityNameLow}Id = this.$route.params.${EntityNameLow}Id;
+        this.find${EntityNameUp}ForView(${EntityNameLow}Id);
+    },
+}
+
+</script>
+<style scoped lang="scss">
+
+</style>

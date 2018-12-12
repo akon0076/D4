@@ -1,0 +1,230 @@
+#set($vmType="controller")
+#set($extension=".java")
+#set($packageName="${entityClass.packages.replace('entity', $vmType)}")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($className="${entityClass.className}${stringUtils.capitalize(${vmType})}")
+#set($path="${config.serverPath}/src/main/java/${packageName.replace('.', '/')}")
+#set($outputFile="${path}/$className${extension}")
+
+#set($editDtoClassName="${EntityNameUp}EditDto")
+#set($editDtoPackageName="${entityClass.packages.replace('entity', 'dto')}")
+
+package ${packageName};
+
+import com.cisdi.info.simple.dto.base.PageDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import com.cisdi.info.simple.dto.base.PageResultDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ${editDtoPackageName}.${editDtoClassName};
+import ${entityClass.clazz.name};
+import ${config.basePackage}.${entityClass.subSystemName}.service.${entityClass.moduleName}.${EntityNameUp}Service;
+#foreach($columnInfo in $entityClass.columnInfos)
+	#if($columnInfo.definitionType == "ForeignId")
+import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).clazz.name.replace("entity","service")}Service;
+	#end
+#end
+
+##import com.cisdi.info.${entityClass.subSystemName}.dto.${entityClass.moduleName}.OrganizationDTO;
+##import com.cisdi.info.${entityClass.subSystemName}.entity.${entityClass.moduleName}.Organization;
+##import com.cisdi.info.${entityClass.subSystemName}.service.${entityClass.moduleName}.OrganizationService;
+
+
+/**module
+{
+"${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}": {
+"code": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
+"name1": "${entityClass.label}",
+"url": "/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
+"route": "/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
+"iconClass": "",
+"displayIndex": 1,
+"parentCode": "${entityClass.subSystemName}/${entityClass.moduleName}",
+"parentName": "${entityClass.moduleLabel}",
+"moduleType": "电脑模块",
+"isInUse": "是",
+"routeParamsObj": "",
+"permissions":
+	[
+	{
+	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Add",
+	"name1": "新增",
+	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.新增",
+	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
+	urls:[
+		"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/create${EntityNameUp}",
+		"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/save${EntityNameUp}"
+	#set($foreignUrls=$d4Util.createMap())
+	#foreach($columnInfo in $entityClass.columnInfos)
+		#if($columnInfo.definitionType == "ForeignName")
+			#set($foreignEntity = ${entityManager.getEntityClassByClassName(${columnInfo.foreignEntity})})
+			#set($foreignUrl="/${foreignEntity.subSystemName}/${foreignEntity.moduleName}/${foreignEntity.className}/find${foreignEntity.className}sWithIdNameByName")
+			${d4Util.addMapItem($foreignUrls,$foreignUrl,$foreignUrl)}
+		#end
+	#end
+	#foreach($foreignUrl1 in $foreignUrls.values())
+		,"${foreignUrl1}"
+	#end
+	]
+	},
+	{
+	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Edit",
+	"name1": "编辑",
+	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.编辑",
+	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
+	urls:[
+		"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}ForEdit",
+		"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/update${EntityNameUp}"
+#set($foreignUrls=$d4Util.createMap())
+#foreach($columnInfo in $entityClass.columnInfos)
+	#if($columnInfo.definitionType == "ForeignName")
+		#set($foreignEntity = ${entityManager.getEntityClassByClassName(${columnInfo.foreignEntity})})
+		#set($foreignUrl="/${foreignEntity.subSystemName}/${foreignEntity.moduleName}/${foreignEntity.className}/find${foreignEntity.className}sWithIdNameByName")
+		${d4Util.addMapItem($foreignUrls,$foreignUrl,$foreignUrl)}
+	#end
+#end
+#foreach($foreignUrl1 in $foreignUrls.values())
+		,"${foreignUrl1}"
+#end
+	]
+	},
+	{
+	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Delete",
+	"name1": "删除",
+	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.删除",
+	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
+	urls:[
+	"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/delete${EntityNameUp}"
+	]
+	},
+	{
+	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_View",
+	"name1": "查看",
+	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.查看",
+	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
+	urls:[
+	"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}s",
+	"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}ForView"
+	]
+	}
+	]
+}
+}
+*/
+
+@RestController
+@RequestMapping("/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}")
+@CrossOrigin(allowCredentials = "true")
+public class ${className} {
+	private static Logger logger = LogManager.getLogger();
+
+#set($imports=$d4Util.createMap())
+
+#set($import="@Autowired private ${EntityNameUp}Service ${EntityNameLow}Service;")
+${d4Util.addMapItem($imports,$import,$import)}
+	#foreach($columnInfo in $entityClass.columnInfos)
+		#if($columnInfo.definitionType == "CodeTable")
+			#set($import="@Autowired private CodeTableService codeTableService;")
+			${d4Util.addMapItem($imports,$import,$import)}
+			#break
+		#end
+	#end
+	#foreach($columnInfo in $entityClass.columnInfos)
+		#if($columnInfo.definitionType == "ForeignId")
+			#set($import="@Autowired private ${columnInfo.foreignEntity}Service ${stringUtils.uncapitalize(${columnInfo.foreignEntity})}Service;")
+			${d4Util.addMapItem($imports,$import,$import)}
+		#end
+	#end
+	#foreach($import1 in $imports.values())
+	${import1}
+	#end
+
+	@PostMapping("/find${EntityNameUp}s")
+	public PageResultDTO find${EntityNameUp}s(@RequestBody PageDTO pageDTO){
+		return this.${EntityNameLow}Service.find${EntityNameUp}s(pageDTO);
+	}
+
+	@GetMapping("/find${EntityNameUp}")
+	public ${EntityNameUp} find${EntityNameUp}(@RequestParam Long ${EntityNameLow}Id)
+	{
+		return this.${EntityNameLow}Service.find${EntityNameUp}(${EntityNameLow}Id);
+	}
+
+	@GetMapping("/find${EntityNameUp}ForView")
+	public ${EntityNameUp} find${EntityNameUp}ForView(@RequestParam Long ${EntityNameLow}Id)
+	{
+		return this.${EntityNameLow}Service.find${EntityNameUp}WithForeignName(${EntityNameLow}Id);
+	}
+
+	@GetMapping("/find${EntityNameUp}ForEdit")
+	public ${EntityNameUp}EditDto find${EntityNameUp}ForEdit(@RequestParam Long ${EntityNameLow}Id)
+	{
+		#set($editDto="${stringUtils.uncapitalize(${editDtoClassName})}")
+		${editDtoClassName} ${editDto} = new ${editDtoClassName}();
+		${editDto}.set${EntityNameUp}(this.${EntityNameLow}Service.find${EntityNameUp}WithForeignName(${EntityNameLow}Id));
+
+		this.prepare${EntityNameUp}EditDto(${editDto});
+
+		return ${editDto};
+	}
+
+	//创建新的${entityClass.label}
+	@GetMapping("/create${EntityNameUp}")
+	public ${EntityNameUp}EditDto create${EntityNameUp}()
+	{
+		#set($editDto="${stringUtils.uncapitalize(${editDtoClassName})}")
+		${editDtoClassName} ${editDto} = new ${editDtoClassName}();
+		${editDto}.set${EntityNameUp}(new ${EntityNameUp}());
+
+		this.prepare${EntityNameUp}EditDto(${editDto});
+		return ${editDto};
+	}
+
+	private void prepare${EntityNameUp}EditDto(${editDtoClassName} ${editDto})
+	{
+	#foreach($columnInfo in $entityClass.columnInfos)
+		#if($columnInfo.definitionType == "CodeTable")
+		${editDto}.set${stringUtils.capitalize(${columnInfo.fieldName})}CodeTables(this.codeTableService.findCodeTablesByCodeType("${columnInfo.codeTable}"));
+		#end
+	#end
+	#foreach($columnInfo in $entityClass.columnInfos)
+		#if($columnInfo.definitionType == "ForeignId")
+        //TODO: 以下代码可以注释掉，此行代码即时加载所有外键对象，以便选择。如果不在此加载，可以在界面上实现延迟加载。如果外键对象超过 500 行，建议采用延迟加载
+		${editDto}.set${stringUtils.capitalize(${stringUtils.removeEnd(${columnInfo.fieldName},"Id")})}${columnInfo.foreignEntity}s(this.${stringUtils.uncapitalize(${columnInfo.foreignEntity})}Service.findAll${columnInfo.foreignEntity}sWithIdName());
+		#end
+	#end
+	}
+
+	@PostMapping("/save${EntityNameUp}")
+	public ${EntityNameUp} save${EntityNameUp}(@RequestBody ${EntityNameUp} ${EntityNameLow})
+	{
+		return this.${EntityNameLow}Service.save${EntityNameUp}(${EntityNameLow});
+	}
+
+	@PostMapping("/update${EntityNameUp}")
+	public ${EntityNameUp} update${EntityNameUp}(@RequestBody ${EntityNameUp} ${EntityNameLow})
+	{
+		return this.${EntityNameLow}Service.update${EntityNameUp}(${EntityNameLow});
+	}
+
+	@GetMapping("/delete${EntityNameUp}")
+	public void delete${EntityNameUp}(@RequestParam Long ${EntityNameLow}Id)
+	{
+		this.${EntityNameLow}Service.delete${EntityNameUp}(${EntityNameLow}Id);
+	}
+	@GetMapping("/find${EntityNameUp}sWithIdNameById")
+	public ${EntityNameUp} find${EntityNameUp}sWithIdNameById(@RequestParam Long ${EntityNameLow}Id)
+	{
+		return this.${EntityNameLow}Service.find${EntityNameUp}sWithIdNameById(${EntityNameLow}Id);
+	}
+
+	@GetMapping("/find${EntityNameUp}sWithIdNameByName")
+	public List<${EntityNameUp}> find${EntityNameUp}sWithIdNameByName(String ${EntityNameLow}Name)
+	{
+		return this.${EntityNameLow}Service.find${EntityNameUp}sWithIdNameByName(${EntityNameLow}Name);
+	}
+}
+

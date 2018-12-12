@@ -1,0 +1,6 @@
+1.关于Controller的说明
+  Controller的方法可以注解@PostMapping或者 @GetMapping,如果传递的参数中含有对象，请注解为@PostMapping，并且这个对象为最后一个参数,并在这个参数注解为@RequestBody，其他参数注解为@RequestParam，也就是说，如果方法含有对象，必须注解为@PostMapping，并且这个对象为最后一个参数。例如：
+      @PostMapping("/generateMethod")
+      public  String generateMethod(@RequestParam Long tableId,@RequestParam String type,@RequestBody CodeTable codeTable)
+
+

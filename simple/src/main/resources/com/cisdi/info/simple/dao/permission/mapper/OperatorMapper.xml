@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.permission.OperatorDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findOperators" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.code  ,
+        t0.pass_word  ,
+        t0.status  ,
+        t0.type  ,
+        t0.person_id  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
+        from simple_operator t0
+            where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllOperators" resultType="com.cisdi.info.simple.entity.permission.Operator" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.code  ,
+            t0.pass_word  ,
+            t0.status  ,
+            t0.type  ,
+            t0.person_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_operator t0
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllOperatorsWithIdName" resultType="com.cisdi.info.simple.entity.permission.Operator" >
+        select
+            t0.EId,t0.Name
+        from simple_operator t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findOperatorTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_operator as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findOperator" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="java.lang.Long">
+        select * from simple_operator where eid = #{operatorId}
+    </select>
+
+    <!-- -->
+    <select id="findOperatorWithForeignName" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.code  ,
+            t0.pass_word  ,
+            t0.status  ,
+            t0.type  ,
+            t0.person_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_operator t0
+        where t0.eid = #{operatorId}
+    </select>
+
+
+    <!--  保存 -->
+    <select id="saveOperator" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.entity.permission.Operator">
+        insert into simple_operator
+        (
+                name ,
+                code ,
+                pass_word ,
+                status ,
+                type ,
+                person_id ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime,
+                email
+        )
+        values
+        (
+                #{name} ,
+                #{code} ,
+                #{passWord} ,
+                #{status} ,
+                #{type} ,
+                #{personId} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime},
+                #{email}
+        )
+    </select>
+
+    <!--  编辑 -->
+    <select id="updateOperator" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.entity.permission.Operator" >
+        update simple_operator set
+                name = #{name} ,
+                code = #{code} ,
+                pass_word = #{passWord} ,
+                status = #{status} ,
+                type = #{type} ,
+                person_id = #{personId} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{EId}
+    </select>
+
+
+    <!--  根据Id删除 -->
+    <select id="deleteOperator" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        delete from simple_operator where eid = #{operatorId}
+    </select>
+
+    <select id="findOperatorByUserNameAndPassWord" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
+        SELECT *  FROM simple_operator where code=#{userName} and pass_word=#{password} and type!='商家'
+    </select>
+    <select id="findOperatorByEmailAndPassWord" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
+        SELECT *  FROM simple_operator where email=#{userName} and pass_word=#{password} and type!='商家'
+    </select>
+    <select id="findPermissionsByOperatorId" resultType="java.lang.String" parameterType="java.lang.Long">
+        SELECT code  from simple_permission where eid in
+        (
+        SELECT DISTINCT permission_id from simple_role_permission where role_id in
+        (
+        SELECT role_id from simple_operator_role  where operator_id=#{operatorId}
+        )
+        )
+    </select>
+
+    <!--  根据code查询 -->
+    <select id="findOperatorByCode" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="java.lang.String">
+        select * from simple_operator where code = #{code}
+    </select>
+
+    <!--  根据操作员对应的权限 -->
+    <select id="findPermissions" resultType="java.lang.String" parameterType="java.lang.Long">
+      select  t0.permission_code
+            from  simple_role_and_permission t0
+            where t0.role_id in (
+            select t3.eid
+            from simple_operator_and_role t1
+            left join simple_role t3 on t1.role_id = t3.eid
+            left join simple_operator t2 on t1.operator_id = t2.eid where t2.eid =#{operatorId})
+
+    </select>
+    <!--  根据操作员对应的权限 -->
+    <select id="findPermissionsByIdAndType" resultType="java.lang.String" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select  t0.permission_code
+        from  simple_role_and_permission t0
+LEFT JOIN simple_permission t3 ON t3.code = t0.permission_code
+LEFT JOIN simple_module t4 ON t4.`code` = t3.module_code
+        where t0.role_id in (
+        select t3.eid
+        from simple_operator_and_role t1
+        left join simple_role t3 on t1.role_id = t3.eid
+        left join simple_operator t2 on t1.operator_id = t2.eid
+        where t2.eid =#{columnName}) AND t4.module_type =#{content}
+
+    </select>
+           <select id="findOperatorByUserNameAndPassWordAndMember" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
+       SELECT *  FROM simple_operator where code=#{userName} and pass_word=#{password} and type='商家'
+    </select>
+</mapper>

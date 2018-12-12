@@ -1,0 +1,73 @@
+#set($vmType="editDto")
+#set($extension=".java")
+#set($packageName="${entityClass.packages.replace('entity', 'dto')}")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($className="${entityClass.className}${stringUtils.capitalize(${vmType})}")
+#set($path="${config.serverPath}/src/main/java/${packageName.replace('.', '/')}")
+#set($outputFile="${path}/$className${extension}")
+package ${packageName};
+
+
+import ${entityClass.clazz.name};
+import com.cisdi.info.simple.entity.system.CodeTable;
+import java.util.List;
+#foreach($columnInfo in $entityClass.columnInfos)
+    #if($columnInfo.definitionType == "ForeignId")
+import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).clazz.name};
+    #end
+#end
+public class ${EntityNameUp}EditDto{
+
+    private ${EntityNameUp} ${EntityNameLow};
+
+    #foreach($columnInfo in $entityClass.columnInfos)
+    #if($columnInfo.definitionType == "CodeTable")
+    //码表是：${columnInfo.codeTable}
+    private List<CodeTable> ${columnInfo.fieldName}CodeTables;
+    #end
+    #end
+
+    #foreach($columnInfo in $entityClass.columnInfos)
+        #if($columnInfo.definitionType == "ForeignId")
+    //外键实体是：${columnInfo.foreignEntity}
+    private List<${columnInfo.foreignEntity}> ${stringUtils.removeEnd(${columnInfo.fieldName},"Id")}${columnInfo.foreignEntity}s;
+        #end
+    #end
+
+
+    public  ${EntityNameUp} get${EntityNameUp}()
+    {
+        return this.${EntityNameLow};
+    }
+    public  void set${EntityNameUp}(${EntityNameUp} ${EntityNameLow})
+    {
+        this.${EntityNameLow} = ${EntityNameLow};
+    }
+
+    #foreach($columnInfo in $entityClass.columnInfos)
+        #if($columnInfo.definitionType == "CodeTable")
+    public List<CodeTable> get${stringUtils.capitalize(${columnInfo.fieldName})}CodeTables()
+    {
+            return this.${columnInfo.fieldName}CodeTables;
+    }
+    public void set${stringUtils.capitalize(${columnInfo.fieldName})}CodeTables(List<CodeTable> ${columnInfo.fieldName}CodeTables)
+    {
+        this.${columnInfo.fieldName}CodeTables = ${columnInfo.fieldName}CodeTables;
+    }
+
+        #end
+    #end
+    #foreach($columnInfo in $entityClass.columnInfos)
+        #if($columnInfo.definitionType == "ForeignId")
+    public List<${columnInfo.foreignEntity}> get${stringUtils.capitalize(${stringUtils.removeEnd(${columnInfo.fieldName},"Id")})}${columnInfo.foreignEntity}s()
+    {
+        return this.${stringUtils.removeEnd(${columnInfo.fieldName},"Id")}${columnInfo.foreignEntity}s;
+    }
+    public void set${stringUtils.capitalize(${stringUtils.removeEnd(${columnInfo.fieldName},"Id")})}${columnInfo.foreignEntity}s(List<${columnInfo.foreignEntity}> ${stringUtils.removeEnd(${columnInfo.fieldName},"Id")}${columnInfo.foreignEntity}s)
+    {
+        this.${stringUtils.removeEnd(${columnInfo.fieldName},"Id")}${columnInfo.foreignEntity}s = ${stringUtils.removeEnd(${columnInfo.fieldName},"Id")}${columnInfo.foreignEntity}s;
+    }
+        #end
+    #end
+}

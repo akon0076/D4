@@ -1,0 +1,52 @@
+#set($vmType="Route")
+#set($extension=".js")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($path="${config.uiPath}/src/view/${entityClass.subSystemName}/${entityClass.moduleName}")
+#set($outputFile="${path}/${EntityNameUp}${vmType}${extension}")
+
+
+//${entityClass.label}管理
+
+export default [
+{
+    path: '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}',
+    name: '${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}',
+    meta: {
+        label: '${entityClass.label}管理',
+        icon: 'icon iconfont icon-fl-origin',
+        requireAuth: true,
+    },
+    component: () => import('./${EntityNameUp}List')
+},
+{
+    path: '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/add',
+    name: '${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_ddd',
+    meta: {
+        label: '新增${entityClass.label}',
+        icon: 'icon iconfont icon-fl-origin',
+        requireAuth: true,
+    },
+    component: () => import('./${EntityNameUp}Form')
+},
+{
+    path: '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/edit/:${EntityNameLow}Id',
+    name: '${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_edit',
+    meta: {
+        label: '编辑${entityClass.label}',
+        icon: 'icon iconfont icon-fl-origin',
+        requireAuth: true,
+    },
+    component: () => import('./${EntityNameUp}Form')
+},
+{
+    path: '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/display/:${EntityNameLow}Id',
+    name: '${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_display',
+    meta: {
+        label: '查看${entityClass.label}',
+        icon: 'icon iconfont icon-fl-origin',
+        requireAuth: true,
+    },
+    component: () => import('./${EntityNameUp}Display')
+}
+]

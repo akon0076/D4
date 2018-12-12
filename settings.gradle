@@ -1,0 +1,7 @@
+rootProject.name = 'xc'
+
+include 'simple'
+findProject(':simple')?.name = 'Simple'
+
+include 'generator'
+findProject(':generator')?.name = 'Generator'

@@ -1,0 +1,44 @@
+#set($vmType="dao")
+#set($extension=".java")
+#set($packageName="${entityClass.packages.replace('entity', $vmType)}")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($className="${entityClass.className}${stringUtils.capitalize(${vmType})}")
+#set($path="${config.serverPath}/src/main/java/${packageName.replace('.', '/')}")
+#set($outputFile="${path}/$className${extension}")
+package ${packageName};
+
+import com.cisdi.info.simple.dto.base.PageDTO;
+import ${entityClass.clazz.name};
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Param;
+import java.util.List;
+
+@Mapper
+@Component(value = "${EntityNameLow}Dao")
+public interface ${EntityNameUp}Dao {
+
+    public List<${EntityNameUp}> find${EntityNameUp}s(PageDTO pageDTO);
+
+    public List<${EntityNameUp}> findAll${EntityNameUp}s();
+
+    public List<${EntityNameUp}> findAll${EntityNameUp}sWithIdName();
+
+    public List<${EntityNameUp}> find${EntityNameUp}sWithIdNameByName(@Param("${EntityNameLow}Name") String ${EntityNameLow}Name);
+
+    public ${EntityNameUp} find${EntityNameUp}sWithIdNameById(@Param(" ${EntityNameLow}Id") Long ${EntityNameLow}Id);
+
+    public Long find${EntityNameUp}TotalCount(PageDTO pageDTO);
+
+    public ${EntityNameUp} find${EntityNameUp}(@Param("${EntityNameLow}Id") Long ${EntityNameLow}Id);
+
+    //所有外键的Name都以加载
+    public ${EntityNameUp} find${EntityNameUp}WithForeignName(@Param("${EntityNameLow}Id") Long ${EntityNameLow}Id);
+
+    public Integer save${EntityNameUp}(${EntityNameUp} ${EntityNameLow});
+
+    public Integer update${EntityNameUp}(${EntityNameUp} ${EntityNameLow});
+
+    public Integer delete${EntityNameUp}(@Param("${EntityNameLow}Id") Long ${EntityNameLow}Id);
+}

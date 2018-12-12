@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.permission.ModuleDao">
+    <!-- 例子 -->
+    <select id="findOperableSystemModules" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="java.lang.Long">
+            SELECT * from simple_module where module_type != '手机模块' and CODE IN
+				(
+							SELECT DISTINCT SUBSTR( CODE , 1, 4 ) AS  CODE FROM simple_module WHERE EID IN (
+								SELECT DISTINCT
+									P.module_id AS MODULEID
+								 FROM
+									simple_permission P
+								 LEFT JOIN simple_role_permission R ON R.permission_id = P .EID
+								 LEFT JOIN simple_operator_role O ON O.role_id = R.role_id
+								 AND O.organization_id = 1
+								 WHERE
+									O.operator_id = #{operatorId}
+								)
+				)	ORDER BY display_index;
+    </select>
+
+    <select id="findOperableSystemChildenModule" resultType="com.cisdi.info.simple.entity.permission.Module">
+            SELECT * from simple_module where
+             is_in_use='是' and EID IN (
+                SELECT DISTINCT
+                    P.module_id AS MODULEID
+                FROM
+                    simple_permission P
+                LEFT JOIN simple_role_permission R ON R.permission_id = P .EID
+                LEFT JOIN simple_operator_role O ON O.role_id = R.role_id
+                AND O.organization_id = 1
+                WHERE
+                    O.operator_id = #{operatorId}
+            ) AND CODE LIKE CONCAT((SELECT CODE FROM simple_module WHERE EID = #{systemId}), '%')  and module_type =#{moduleType}
+             ORDER BY display_index DESC;
+    </select>
+
+    <select id="findChildenModules" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="java.lang.Long">
+        SELECT * from simple_module where eid in (
+        SELECT eid from simple_module where parent_id = #{parentId}
+        )
+    </select>
+
+    <select id="findParentModule" resultType="com.cisdi.info.simple.entity.permission.Module" parameterType="java.lang.Long">
+        SELECT * from simple_module where eid = #{parentId}
+    </select>
+</mapper>

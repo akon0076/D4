@@ -1,0 +1,86 @@
+#set($vmType="Service")
+#set($extension=".js")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($path="${config.uiPath}/src/view/${entityClass.subSystemName}/${entityClass.moduleName}")
+#set($outputFile="${path}/${EntityNameUp}${vmType}${extension}")
+
+import {${entityClass.subSystemName}Server} from '@/tools/servers'
+
+/**
+ * ${entityClass.label}
+ */
+export class ${EntityNameUp}Service {
+    // 分页查询列表
+    static find${EntityNameUp}s (pageDTO) {
+        var httpMethod = 'POST';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.find${EntityNameUp}s,arguments,'POST');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}s', body);
+    }
+
+
+    //根据${entityClass.label}Id查询${entityClass.label}
+    static find${EntityNameUp} (${EntityNameLow}Id) {
+        var httpMethod = 'GET';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.find${EntityNameUp} ,arguments,'GET');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}',body);
+    }
+
+    //为了编辑,根据${entityClass.label}Id查询${entityClass.label}
+    static find${EntityNameUp}ForEdit(${EntityNameLow}Id) {
+        var httpMethod = 'GET';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.find${EntityNameUp}ForEdit ,arguments,'GET');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}ForEdit',body);
+    }
+
+    //为了查看,根据${entityClass.label}Id查询${entityClass.label}，所有外键字段的名称都已加载
+    static find${EntityNameUp}ForView(${EntityNameLow}Id) {
+        var httpMethod = 'GET';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.find${EntityNameUp}ForView ,arguments,'GET');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}ForView',body);
+    }
+
+    //创建新的${entityClass.label}
+    static create${EntityNameUp}() {
+        var httpMethod = 'GET';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.create${EntityNameUp},arguments,'GET');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/create${EntityNameUp}',body);
+    }
+
+    //保存${entityClass.label}
+    static save${EntityNameUp}(${EntityNameLow}) {
+        var httpMethod = 'POST';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.save${EntityNameUp},arguments,'POST');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/save${EntityNameUp}', body);
+    }
+
+    //编辑${entityClass.label}
+    static update${EntityNameUp} (${EntityNameLow}) {
+        var httpMethod = 'POST';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.update${EntityNameUp},arguments,'POST');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/update${EntityNameUp}', body);
+    }
+
+    //根据${entityClass.label}Id删除${entityClass.label}
+    static delete${EntityNameUp} (${EntityNameLow}Id) {
+        var httpMethod = 'GET';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.delete${EntityNameUp},arguments,'GET');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/delete${EntityNameUp}',body);
+    }
+
+    //为了查看,根据${entityClass.label}Id查询${entityClass.label}，只加载ID 和 名称
+    static find${EntityNameUp}sWithIdNameById(${EntityNameLow}Id) {
+        var httpMethod = 'GET';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.find${EntityNameUp}sWithIdNameById ,arguments,'GET');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}sWithIdNameById',body);
+    }
+
+    //为了查看,根据${entityClass.label} 名称 查询${entityClass.label}，只加载ID 和 名称
+    static find${EntityNameUp}sWithIdNameByName(${EntityNameLow}Name) {
+        var httpMethod = 'GET';
+        var body = ${entityClass.subSystemName}Server.getArgs(this.find${EntityNameUp}sWithIdNameByName ,arguments,'GET');
+        return ${entityClass.subSystemName}Server.connection(httpMethod, '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}sWithIdNameByName',body);
+    }
+
+
+}

@@ -1,0 +1,158 @@
+#set($vmType="dao.mapper")
+#set($extension=".xml")
+#set($packageName="${entityClass.packages.replace('entity', 'dao')}.mapper")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($className="${entityClass.className}")
+#set($path="${config.serverPath}/src/main/resources/${packageName.replace('.', '/')}")
+#set($outputFile="${path}/${className}Mapper${extension}")
+#set($daoClassName="${entityClass.packages.replace('entity', 'dao')}.${entityClass.className}Dao")
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${daoClassName}">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="find${EntityNameUp}s" resultType="${entityClass.clazz.name}" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+    #foreach($columnInfo in ${entityClass.dbColumnInfos})
+        t0.${columnInfo.columnName}  #if( $foreach.hasNext ),#end
+
+    #end
+    #foreach($columnInfo in $entityClass.notDbColumnInfos)
+        ,t${columnInfo.index}.name as ${d4Util.convertCamelCaseName2UnderScore(${columnInfo.fieldName})}
+
+    #end
+        from ${entityClass.tableName} t0
+        #foreach($columnInfo in $entityClass.notDbColumnInfos)
+            LEFT JOIN ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).tableName} t${columnInfo.index} on t0.${d4Util.convertCamelCaseName2UnderScore(${stringUtils.removeEnd(${columnInfo.fieldName},'Name')})}_id =t${columnInfo.index}.EId
+        #end
+        where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAll${EntityNameUp}s" resultType="${entityClass.clazz.name}" >
+        select
+        #foreach($columnInfo in ${entityClass.dbColumnInfos})
+            t0.${columnInfo.columnName}  #if( $foreach.hasNext ),#end
+
+        #end
+        #foreach($columnInfo in $entityClass.notDbColumnInfos)
+            ,t${columnInfo.index}.name as ${d4Util.convertCamelCaseName2UnderScore(${columnInfo.fieldName})}
+
+        #end
+        from ${entityClass.tableName} t0
+        #foreach($columnInfo in $entityClass.notDbColumnInfos)
+            LEFT JOIN ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).tableName} t${columnInfo.index} on t0.${d4Util.convertCamelCaseName2UnderScore(${stringUtils.removeEnd(${columnInfo.fieldName},'Name')})}_id =t${columnInfo.index}.EId
+        #end
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="find${EntityNameUp}sWithIdNameByName" resultType="${entityClass.clazz.name}" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from ${entityClass.tableName} t0
+        where t0.name like  '%${${EntityNameLow}Name}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAll${EntityNameUp}sWithIdName" resultType="${entityClass.clazz.name}" >
+        select
+        t0.EId,t0.Name
+        from ${entityClass.tableName} t0
+        ORDER BY t0.Name
+    </select>
+    
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="find${EntityNameUp}sWithIdNameById" resultType="${entityClass.clazz.name}" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from ${entityClass.tableName} t0
+        where eid = #{${EntityNameLow}Id}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="find${EntityNameUp}TotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from ${entityClass.tableName} as t0  where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="find${EntityNameUp}" resultType="${entityClass.clazz.name}" parameterType="java.lang.Long">
+        select * from ${entityClass.tableName} where eid = #{${EntityNameLow}Id}
+    </select>
+
+    <!-- -->
+    <select id="find${EntityNameUp}WithForeignName" resultType="${entityClass.clazz.name}" parameterType="java.lang.Long">
+        select
+        #foreach($columnInfo in ${entityClass.dbColumnInfos})
+            t0.${columnInfo.columnName}  #if( $foreach.hasNext ),#end
+
+        #end
+        #foreach($columnInfo in $entityClass.notDbColumnInfos)
+            ,t${columnInfo.index}.name as ${d4Util.convertCamelCaseName2UnderScore(${columnInfo.fieldName})}
+
+        #end
+        from ${entityClass.tableName} t0
+        #foreach($columnInfo in $entityClass.notDbColumnInfos)
+            LEFT JOIN ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).tableName} t${columnInfo.index} on t0.${d4Util.convertCamelCaseName2UnderScore(${stringUtils.removeEnd(${columnInfo.fieldName},'Name')})}_id =t${columnInfo.index}.EId
+        #end
+        where t0.eid = #{${EntityNameLow}Id}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="save${EntityNameUp}" parameterType="${entityClass.clazz.name}">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into ${entityClass.tableName}
+        (
+        #foreach($columnInfo in $entityClass.dbColumnInfos)
+            #if($columnInfo.fieldName != "EId")
+                ${columnInfo.columnName} #if( $foreach.hasNext ),#end
+
+            #end
+        #end
+        )
+        values
+        (
+        #foreach($columnInfo in $entityClass.dbColumnInfos)
+            #if($columnInfo.fieldName != "EId")
+                #{${columnInfo.fieldName}} #if( $foreach.hasNext ),#end
+
+            #end
+        #end
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="update${EntityNameUp}" parameterType="${entityClass.clazz.name}" >
+        update ${entityClass.tableName} set
+        #foreach($columnInfo in $entityClass.dbColumnInfos)
+            #if($columnInfo.fieldName != "EId")
+                ${columnInfo.columnName} = #{${columnInfo.fieldName}} #if( $foreach.hasNext ),#end
+
+            #end
+        #end
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="delete${EntityNameUp}"  parameterType="java.lang.Long">
+        delete from ${entityClass.tableName} where eid = #{${EntityNameLow}Id}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+</mapper>

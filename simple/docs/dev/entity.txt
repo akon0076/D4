@@ -1,0 +1,10 @@
+com.cisdi.info.simple.entity.system.CodeTable
+com.cisdi.info.simple.entity.organization.Employee
+com.cisdi.info.simple.entity.organization.Organization
+com.cisdi.info.simple.entity.permission.Operator
+com.cisdi.info.simple.entity.permission.Module
+com.cisdi.info.simple.entity.permission.Permission
+com.cisdi.info.simple.entity.permission.Role
+com.cisdi.info.simple.entity.permission.RoleAndPermission
+com.cisdi.info.simple.entity.permission.OperatorAndRole
+com.cisdi.info.simple.entity.organization.TestEmployee

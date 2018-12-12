@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.member.MemberDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findMembers" resultType="com.cisdi.info.simple.entity.member.Member" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        SELECT
+	t0.eid,
+	t0. NAME,
+	t0.only_code,
+	t0. PASSWORD,
+	t0.member_code,
+	t0.member_name,
+	t0.person,
+	t0.phone,
+	t0.address,
+	t0.introduce,
+	t0.dispatch_price,
+	t0.packet_price,
+	t0.the_main,
+	t0.hot_sell,
+	t0.opening_time,
+	t0.score,
+	t0.per_cost,
+	t0.facilities,
+	t0.area,
+	t0.longitude,
+	t0.latitude,
+	t0.alipay_appid,
+	t0.alipay_public_key,
+	t0.rsa_private_key,
+	t0.organization_id,
+	t0.dispatch_time,
+	t0.dispatch_service,
+	t0.remark,
+	t0.create_id,
+	t0.create_datetime,
+	t0.update_id,
+	t0.update_datetime,
+	t19.attachment_addr AS logo
+FROM
+	ps_member t0
+LEFT JOIN (
+	SELECT
+		associate_form_id,
+		attachment_addr,
+		eid
+	FROM
+		simple_attachment
+	WHERE
+		associate_form_name = 'ps_member'
+) t19 ON t19.associate_form_id = t0.eid
+    where  ${sql}
+ORDER BY
+	t0.create_datetime DESC
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllMembers" resultType="com.cisdi.info.simple.entity.member.Member" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.only_code  ,
+            t0.password  ,
+            t0.member_code  ,
+            t0.member_name  ,
+            t0.person  ,
+            t0.phone  ,
+            t0.address  ,
+            t0.introduce  ,
+
+            t0.dispatch_price  ,
+            t0.packet_price  ,
+            t0.the_main  ,
+            t0.hot_sell  ,
+            t0.opening_time  ,
+            t0.score  ,
+            t0.per_cost  ,
+            t0.facilities  ,
+            t0.area  ,
+            t0.longitude  ,
+            t0.latitude  ,
+            t0.alipay_appid  ,
+            t0.alipay_public_key  ,
+            t0.rsa_private_key  ,
+            t0.organization_id  ,
+            t0.dispatch_time ,
+            t0.dispatch_service ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from ps_member t0
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findMembersWithIdNameByName" resultType="com.cisdi.info.simple.entity.member.Member" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from ps_member t0
+        where t0.name like  '%${memberName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllMembersWithIdName" resultType="com.cisdi.info.simple.entity.member.Member" >
+        select
+        t0.EId,t0.Name
+        from ps_member t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findMembersWithIdNameById" resultType="com.cisdi.info.simple.entity.member.Member" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from ps_member t0
+        where eid = #{memberId}
+    </select>
+
+    <select id="findArea" resultType="java.lang.String">
+        select distinct area from ps_member
+    </select>
+
+    <select id="findMemberType" resultType="java.lang.String">
+        select distinct member_type from ps_member
+    </select>
+
+
+    <select id="findMemberByTypeAndArea" resultType="com.cisdi.info.simple.entity.member.Member" parameterType="java.lang.String">
+        SELECT
+        t0.eid,
+        t0. NAME,
+        t0.only_code,
+        t0. PASSWORD,
+        t0.member_code,
+        t0.member_name,
+        t0.person,
+        t0.phone,
+        t0.address,
+        t0.introduce,
+        t0.dispatch_price,
+        t0.packet_price,
+        t0.the_main,
+        t0.hot_sell,
+        t0.opening_time,
+        t0.score,
+        t0.per_cost,
+        t0.facilities,
+        t0.area,
+        t0.longitude,
+        t0.latitude,
+        t0.alipay_appid,
+        t0.alipay_public_key,
+        t0.rsa_private_key,
+        t0.organization_id,
+        t0.dispatch_time,
+        t0.dispatch_service,
+        t0.remark,
+        t0.create_id,
+        t0.member_type,
+        t0.create_datetime,
+        t0.update_id,
+        t0.update_datetime,
+        t19.attachment_addr AS logo
+        FROM
+        ps_member t0
+        LEFT JOIN (
+        SELECT
+        associate_form_id,
+        attachment_addr,
+        eid
+        FROM
+        simple_attachment
+        WHERE
+        associate_form_name = 'ps_member'
+        ) t19 ON t19.associate_form_id = t0.eid
+        where 1=1
+        <if test="memberType != '全部'">
+            and t0.member_type=#{memberType}
+        </if>
+        <if test="area != '全部'">
+            and t0.area = #{area}
+        </if>
+        order by t0.score
+        <if test="sort != 'asc'">
+            desc
+        </if>
+    </select>
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findMemberTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from ps_member as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findMember" resultType="com.cisdi.info.simple.entity.member.Member" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.only_code  ,
+            t0.password  ,
+            t0.member_code  ,
+            t0.member_name  ,
+            t0.person  ,
+            t0.phone  ,
+            t0.address  ,
+            t0.introduce  ,
+            t19.attachment_addr as logo ,
+            t0.dispatch_price  ,
+            t0.packet_price  ,
+            t0.the_main  ,
+            t0.hot_sell  ,
+            t0.opening_time  ,
+            t0.score  ,
+            t0.per_cost  ,
+            t0.facilities  ,
+            t0.area  ,
+            t0.longitude  ,
+            t0.latitude  ,
+            t0.alipay_appid  ,
+            t0.alipay_public_key  ,
+            t0.rsa_private_key  ,
+            t0.organization_id  ,
+            t0.dispatch_time ,
+            t0.dispatch_service ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime,
+            t19.eid as logoId
+        from ps_member t0
+        LEFT JOIN (
+	SELECT
+		associate_form_id,
+		attachment_addr,
+		eid
+	FROM
+		simple_attachment
+	WHERE
+		associate_form_name = 'ps_member'
+) t19 ON t19.associate_form_id = t0.eid
+        where t0.eid = #{memberId}
+    </select>
+
+    <!-- -->
+    <select id="findMemberWithForeignName" resultType="com.cisdi.info.simple.entity.member.Member" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.only_code  ,
+            t0.password  ,
+            t0.member_code  ,
+            t0.member_name  ,
+            t0.person  ,
+            t0.phone  ,
+            t0.address  ,
+            t0.introduce  ,
+            t0.dispatch_price  ,
+            t0.packet_price  ,
+            t0.the_main  ,
+            t0.hot_sell  ,
+            t0.opening_time  ,
+            t0.score  ,
+            t0.per_cost  ,
+            t0.facilities  ,
+            t0.area  ,
+            t0.longitude  ,
+            t0.latitude  ,
+            t0.alipay_appid  ,
+            t0.alipay_public_key  ,
+            t0.rsa_private_key  ,
+            t0.organization_id  ,
+            t0.dispatch_time ,
+            t0.dispatch_service ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from ps_member t0
+        where t0.eid = #{memberId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveMember" parameterType="com.cisdi.info.simple.entity.member.Member">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into ps_member
+        (
+                name ,
+                only_code ,
+                password ,
+                member_code ,
+                member_name ,
+                person ,
+                phone ,
+                address ,
+                introduce ,
+                dispatch_price ,
+                packet_price ,
+                the_main ,
+                hot_sell ,
+                opening_time ,
+                score ,
+                per_cost ,
+                facilities ,
+                area ,
+                longitude ,
+                latitude ,
+                alipay_appid ,
+                alipay_public_key ,
+                rsa_private_key ,
+                organization_id ,
+                dispatch_time ,
+                dispatch_service ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime
+        )
+        values
+        (
+                #{name} ,
+                #{onlyCode} ,
+                #{password} ,
+                #{memberCode} ,
+                #{memberName} ,
+                #{person} ,
+                #{phone} ,
+                #{address} ,
+                #{introduce} ,
+                #{dispatchPrice} ,
+                #{packetPrice} ,
+                #{theMain} ,
+                #{hotSell} ,
+                #{openingTime} ,
+                #{score} ,
+                #{perCost} ,
+                #{facilities} ,
+                #{area} ,
+                #{longitude} ,
+                #{latitude} ,
+                #{alipayAPPID} ,
+                #{alipayPublicKey} ,
+                #{rsaPrivateKey} ,
+                #{organizationId} ,
+                #{dispatch_time} ,
+                #{dispatch_service} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime}
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateMember" parameterType="com.cisdi.info.simple.entity.member.Member" >
+        update ps_member set
+                name = #{name} ,
+                only_code = #{onlyCode} ,
+                password = #{password} ,
+                member_code = #{memberCode} ,
+                member_name = #{memberName} ,
+                person = #{person} ,
+                phone = #{phone} ,
+                address = #{address} ,
+                introduce = #{introduce} ,
+                dispatch_price = #{dispatchPrice} ,
+                packet_price = #{packetPrice} ,
+                the_main = #{theMain} ,
+                hot_sell = #{hotSell} ,
+                opening_time = #{openingTime} ,
+                score = #{score} ,
+                per_cost = #{perCost} ,
+                facilities = #{facilities} ,
+                area = #{area} ,
+                longitude = #{longitude} ,
+                latitude = #{latitude} ,
+                alipay_appid = #{alipayAPPID} ,
+                alipay_public_key = #{alipayPublicKey} ,
+                rsa_private_key = #{rsaPrivateKey} ,
+                organization_id = #{organizationId} ,
+                dispatch_time = #{dispatchTime} ,
+                dispatch_service = #{dispatchService},
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteMember"  parameterType="java.lang.Long">
+        delete from ps_member where eid = #{memberId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+        <select id="findMemberByUserNameAndPassWord" resultType="com.cisdi.info.simple.entity.member.Member" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
+        SELECT *  FROM ps_member where member_name=#{userName} and member_code=#{password}
+    </select>
+</mapper>

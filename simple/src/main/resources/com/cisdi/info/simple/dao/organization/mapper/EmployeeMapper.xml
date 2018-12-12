@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.organization.EmployeeDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findEmployees" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.code  ,
+        t0.email  ,
+        t0.link_tel  ,
+        t0.department_id  ,
+        t0.organization_id  ,
+        t0.sex  ,
+        t0.birth_date  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
+        ,t5.name as department_name
+        ,t6.name as organization_name
+
+        from simple_employee t0
+            LEFT JOIN simple_department t5 on t0.department_id =t5.EId
+            LEFT JOIN simple_organization t6 on t0.organization_id =t6.EId
+                where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllEmployees" resultType="com.cisdi.info.simple.entity.organization.Employee" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.code  ,
+            t0.email,
+            t0.link_tel  ,
+            t0.department_id  ,
+            t0.organization_id  ,
+            t0.sex  ,
+            t0.birth_date  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+            ,t5.name as department_name
+            ,t6.name as organization_name
+
+        from simple_employee t0
+            LEFT JOIN simple_department t5 on t0.department_id =t5.EId
+            LEFT JOIN simple_organization t6 on t0.organization_id =t6.EId
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findEmployeesWithIdNameByName" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_employee t0
+        where t0.name like  '%${employeeName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllEmployeesWithIdName" resultType="com.cisdi.info.simple.entity.organization.Employee" >
+        select
+        t0.EId,t0.Name
+        from simple_employee t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findEmployeesWithIdNameById" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_employee t0
+        where eid = #{employeeId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findEmployeeTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_employee as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findEmployee" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.Long">
+        select * from simple_employee where eid = #{employeeId}
+    </select>
+
+ <!--      &lt;!&ndash;  根据Id查询 &ndash;&gt;
+    <select id="findMember" resultType="com.cisdi.info.simple.entity.member.Member" parameterType="java.lang.Long">
+        select * from ps_member where eid = #{memberId}
+    </select>
+-->
+    <!-- -->
+    <select id="findEmployeeWithForeignName" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.code  ,
+            t0.email,
+            t0.link_tel  ,
+            t0.department_id  ,
+            t0.organization_id  ,
+            t0.sex  ,
+            t0.birth_date  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+            ,t5.name as department_name
+            ,t6.name as organization_name
+
+        from simple_employee t0
+            LEFT JOIN simple_department t5 on t0.department_id =t5.EId
+            LEFT JOIN simple_organization t6 on t0.organization_id =t6.EId
+        where t0.eid = #{employeeId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveEmployee" parameterType="com.cisdi.info.simple.entity.organization.Employee">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_employee
+        (
+                name ,
+                code ,
+                link_tel ,
+                department_id ,
+                organization_id ,
+                sex ,
+                birth_date ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime,
+                email
+        )
+        values
+        (
+                #{name} ,
+                #{code} ,
+                #{linkTel} ,
+                #{departmentId} ,
+                #{organizationId} ,
+                #{sex} ,
+                #{birthDate} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime},
+                #{email}
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateEmployee" parameterType="com.cisdi.info.simple.entity.organization.Employee" >
+        update simple_employee set
+                name = #{name} ,
+                code = #{code} ,
+                link_tel = #{linkTel} ,
+                department_id = #{departmentId} ,
+                organization_id = #{organizationId} ,
+                sex = #{sex} ,
+                birth_date = #{birthDate} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime},
+                email = #{email}
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteEmployee"  parameterType="java.lang.Long">
+        delete from simple_employee where eid = #{employeeId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+</mapper>

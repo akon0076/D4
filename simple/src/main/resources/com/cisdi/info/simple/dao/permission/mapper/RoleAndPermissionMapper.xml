@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.permission.RoleAndPermissionDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findRoleAndPermissions" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t1.`name`  ,
+        t0.permission_code  ,
+        t0.role_id  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
+        from simple_role_and_permission t0
+		LEFT JOIN simple_permission as t1 ON t0.permission_code = t1.`code`
+		    where  ${sql}
+        ORDER BY t0.create_datetime DESC
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllRoleAndPermissions" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.permission_code  ,
+            t0.role_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_role_and_permission t0
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllRoleAndPermissionsWithIdName" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" >
+        select
+            t0.EId,t0.Name
+        from simple_role_and_permission t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findRoleAndPermissionTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_role_and_permission as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="java.lang.Long">
+        select * from simple_role_and_permission where eid = #{roleAndPermissionId}
+    </select>
+
+    <!-- -->
+    <select id="findRoleAndPermissionWithForeignName" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.permission_code  ,
+            t0.role_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_role_and_permission t0
+        where t0.eid = #{roleAndPermissionId}
+    </select>
+
+
+    <!--  保存 -->
+    <select id="saveRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
+        insert into simple_role_and_permission
+        (
+                name ,
+                permission_code ,
+                role_id ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime
+        )
+        values
+        (
+                #{name} ,
+                #{permissionCode} ,
+                #{roleId} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime}
+        )
+    </select>
+
+    <!--  编辑 -->
+    <select id="updateRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="com.cisdi.info.simple.entity.permission.RoleAndPermission" >
+        update simple_role_and_permission set
+                name = #{name} ,
+                permission_code = #{permissionCode} ,
+                role_id = #{roleId} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{EId}
+    </select>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteRoleAndPermission" parameterType="java.lang.Long">
+        delete from simple_role_and_permission where eid = #{roleAndPermissionId}
+    </delete>
+
+    <!--  根据Id删除 -->
+    <delete id="deleteRoleAndPermissionsByRoleId" parameterType="java.lang.Long">
+        delete from simple_role_and_permission where role_id = #{roleId}
+    </delete>
+
+    <!--  根据角色Id查询对应的权限点 -->
+    <select id="findRoleAndPermissionByRoleId" parameterType="java.lang.Long" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
+        select * from simple_role_and_permission where role_id = #{roleId}
+    </select>
+
+
+</mapper>

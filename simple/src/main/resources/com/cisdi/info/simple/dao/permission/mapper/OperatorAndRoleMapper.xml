@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.permission.OperatorAndRoleDao">
+    
+    <resultMap id="OperatorAndRoleList" type="com.cisdi.info.simple.entity.permission.OperatorAndRole">
+        <id column="eid" property="EId"></id>
+        <result column="operator_id" property="operatorId"></result>
+        <result column="organization_id" property="organizationId"></result>
+        <result column="role_id" property="roleId"></result>
+    </resultMap>
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findOperatorAndRoles" resultType="com.cisdi.info.simple.entity.permission.OperatorAndRole" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.operator_id  ,
+        t0.role_id  ,
+        t0.organization_id  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime  
+        ,t3.name as operator_name
+        ,t4.name as role_name
+        ,t5.name as organization_name
+
+        from simple_operator_and_role t0
+            LEFT JOIN simple_operator t3 on t0.operator_id =t3.EId
+            LEFT JOIN simple_role t4 on t0.role_id =t4.EId
+            LEFT JOIN simple_organization t5 on t0.organization_id =t5.EId
+                where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllOperatorAndRoles" resultType="com.cisdi.info.simple.entity.permission.OperatorAndRole" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.operator_id  ,
+            t0.role_id  ,
+            t0.organization_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t3.name as operator_name
+
+            ,t4.name as role_name
+
+            ,t5.name as organization_name
+
+        from simple_operator_and_role t0
+            LEFT JOIN simple_operator t3 on t0.operator_id =t3.EId
+            LEFT JOIN simple_role t4 on t0.role_id =t4.EId
+            LEFT JOIN simple_organization t5 on t0.organization_id =t5.EId
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllOperatorAndRolesWithIdName" resultType="com.cisdi.info.simple.entity.permission.OperatorAndRole" >
+        select
+            t0.EId,t0.Name
+        from simple_operator_and_role t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findOperatorAndRoleTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_operator_and_role as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findOperatorAndRole" resultType="com.cisdi.info.simple.entity.permission.OperatorAndRole" parameterType="java.lang.Long">
+        select * from simple_operator_and_role where eid = #{operatorAndRoleId}
+    </select>
+
+    <!-- -->
+    <select id="findOperatorAndRoleWithForeignName" resultType="com.cisdi.info.simple.entity.permission.OperatorAndRole" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.operator_id  ,
+            t0.role_id  ,
+            t0.organization_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t3.name as operator_name
+
+            ,t4.name as role_name
+
+            ,t5.name as organization_name
+
+        from simple_operator_and_role t0
+            LEFT JOIN simple_operator t3 on t0.operator_id =t3.EId
+            LEFT JOIN simple_role t4 on t0.role_id =t4.EId
+            LEFT JOIN simple_organization t5 on t0.organization_id =t5.EId
+        where t0.eid = #{operatorAndRoleId}
+    </select>
+
+
+    <!--  保存 -->
+    <select id="saveOperatorAndRole" resultType="com.cisdi.info.simple.entity.permission.OperatorAndRole" parameterType="com.cisdi.info.simple.entity.permission.OperatorAndRole">
+        insert into simple_operator_and_role
+        (
+                name ,
+                operator_id ,
+                role_id ,
+                organization_id ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime 
+        )
+        values
+        (
+                #{name} ,
+                #{operatorId} ,
+                #{roleId} ,
+                #{organizationId} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime} 
+        )
+    </select>
+
+    <!--  编辑 -->
+    <select id="updateOperatorAndRole" resultType="com.cisdi.info.simple.entity.permission.OperatorAndRole" parameterType="com.cisdi.info.simple.entity.permission.OperatorAndRole" >
+        update simple_operator_and_role set
+                name = #{name} ,
+                operator_id = #{operatorId} ,
+                role_id = #{roleId} ,
+                organization_id = #{organizationId} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime} 
+        where eid=#{EId}
+    </select>
+
+
+    <!--  根据Id删除 -->
+    <select id="deleteOperatorAndRole" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        delete from simple_operator_and_role where eid = #{operatorAndRoleId}
+    </select>
+
+    <select id="findOperatorAndRoleByOperatorAndRole" resultType="com.cisdi.info.simple.entity.permission.OperatorAndRole" parameterType="java.lang.String">
+        select t0.*
+        from simple_Operator_And_Role  t0
+        LEFT JOIN simple_operator t1 on t0.operator_id = t1.eid
+        left join simple_role t2 on t0.role_id = t2.eid
+        where t1.`code` = #{operatorCode} and t2.`code`=#{roleCode}
+    </select>
+    <select id="findRoleIdsByOperator" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT t0.role_id
+        from simple_Operator_And_Role t0
+        where t0.operator_id =  #{operatorId}
+    </select>
+
+    <!--  根据OperatorId删除 -->
+    <delete id="deleteOperatorAndRoleByOperatorId" parameterType="java.lang.Long">
+        delete from simple_operator_and_role where operator_id = #{operatorId}
+    </delete>
+
+    <!-- 根据operator_id查询所有对应的角色信息 -->
+    <select id="findOperatorAndRoleByOperatorId" resultMap="OperatorAndRoleList" >
+        select
+            simple_operator_and_role.eId,
+            simple_operator_and_role.operator_id,
+            simple_operator_and_role.organization_id,
+            simple_operator_and_role.role_id
+        from
+            simple_operator_and_role
+        where simple_operator_and_role.operator_id = #{operatorId}
+    </select>
+</mapper>

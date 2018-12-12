@@ -1,0 +1,53 @@
+/*plugins {
+    id 'java'
+    id 'idea'
+    id 'org.springframework.boot' version '2.0.1.RELEASE'
+    id "io.spring.dependency-management" version "1.0.3.RELEASE"
+}
+group 'com.cisdi.info.ms'
+version '1.0-SNAPSHOT'
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    //公司maven仓库
+   *//* maven {
+        url 'http://192.168.20.83:8081/nexus/content/groups/gogogo/'
+    }*//*
+    //阿里云镜像
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    maven {
+        url 'http://192.168.20.83:8081/nexus/content/groups/gogogo/'
+    }
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+    maven {
+        url 'https://repository.apache.org/content/repositories/snapshots/org/apache/velocity/'
+    }
+
+
+}
+
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.javassist/javassist
+    compile("org.javassist:javassist:3.22.0-GA")
+    compile("org.apache.velocity:velocity-engine-core:2.0")
+    compile("org.springframework.boot:spring-boot-devtools")
+    compile("commons-io:commons-io:2.6")
+    compile("com.cisdi.info.ms:cisdi-info-ms-core:0.0.9-SNAPSHOT")
+    compile("com.cisdi.info.ms:cisdi-info-ms-db-mybatis:0.0.8-SNAPSHOT")
+    compile("com.cisdi.info.ms:cisdi-info-ms-cms:1.0.0.releases")
+}*/
+group 'xc'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+

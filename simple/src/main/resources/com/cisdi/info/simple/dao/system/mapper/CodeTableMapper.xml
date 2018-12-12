@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.system.CodeTableDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findCodeTables" resultType="com.cisdi.info.simple.entity.system.CodeTable" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.fullname  ,
+        t0.code_type  ,
+        t0.parent_fullname  ,
+        t0.parent_id  ,
+        t0.display_order  ,
+        t0.has_children  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime  
+        ,t7.name as parent_name
+
+        from simple_code_table t0
+            LEFT JOIN simple_code_table t7 on t0.parent_id =t7.EId
+                where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllCodeTables" resultType="com.cisdi.info.simple.entity.system.CodeTable" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.fullname  ,
+            t0.code_type  ,
+            t0.parent_fullname  ,
+            t0.parent_id  ,
+            t0.display_order  ,
+            t0.has_children  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t7.name as parent_name
+
+        from simple_code_table t0
+            LEFT JOIN simple_code_table t7 on t0.parent_id =t7.EId
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllCodeTablesWithIdName" resultType="com.cisdi.info.simple.entity.system.CodeTable" >
+        select
+            t0.EId,t0.Name
+        from simple_code_table t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findCodeTableTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_code_table as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findCodeTable" resultType="com.cisdi.info.simple.entity.system.CodeTable" parameterType="java.lang.Long">
+        select * from simple_code_table where eid = #{codeTableId}
+    </select>
+
+    <!-- -->
+    <select id="findCodeTableWithForeignName" resultType="com.cisdi.info.simple.entity.system.CodeTable" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.fullname  ,
+            t0.code_type  ,
+            t0.parent_fullname  ,
+            t0.parent_id  ,
+            t0.display_order  ,
+            t0.has_children  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t7.name as parent_name
+
+        from simple_code_table t0
+            LEFT JOIN simple_code_table t7 on t0.parent_id =t7.EId
+        where t0.eid = #{codeTableId}
+    </select>
+
+
+    <!--  保存 -->
+    <select id="saveCodeTable" resultType="com.cisdi.info.simple.entity.system.CodeTable" parameterType="com.cisdi.info.simple.entity.system.CodeTable">
+        insert into simple_code_table
+        (
+                name ,
+                fullname ,
+                code_type ,
+                parent_fullname ,
+                parent_id ,
+                display_order ,
+                has_children ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime 
+        )
+        values
+        (
+                #{name} ,
+                #{fullname} ,
+                #{codeType} ,
+                #{parentFullname} ,
+                #{parentId} ,
+                #{displayOrder} ,
+                #{hasChildren} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime} 
+        )
+    </select>
+
+    <!--  编辑 -->
+    <select id="updateCodeTable" resultType="com.cisdi.info.simple.entity.system.CodeTable" parameterType="com.cisdi.info.simple.entity.system.CodeTable" >
+        update simple_code_table set
+                name = #{name} ,
+                fullname = #{fullname} ,
+                code_type = #{codeType} ,
+                parent_fullname = #{parentFullname} ,
+                parent_id = #{parentId} ,
+                display_order = #{displayOrder} ,
+                has_children = #{hasChildren} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime} 
+        where eid=#{EId}
+    </select>
+
+
+    <!--  根据Id删除 -->
+    <select id="deleteCodeTable" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        delete from simple_code_table where eid = #{codeTableId}
+    </select>
+
+</mapper>

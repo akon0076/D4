@@ -1,0 +1,56 @@
+plugins {
+    id 'org.springframework.boot' version '2.0.1.RELEASE'
+    id "io.spring.dependency-management" version "1.0.3.RELEASE"
+}
+apply plugin: 'java'
+
+group 'com.ddd.dev.generator'
+version '1.0-SNAPSHOT'
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    //公司maven仓库
+
+    //阿里云镜像
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    maven {
+         url 'http://192.168.20.83:8081/nexus/content/groups/gogogo/'
+     }
+    /* maven {
+        url 'http://10.73.1.87:8088/nexus/content/groups/public/'
+    }*/
+
+
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+    maven {
+        url 'https://repository.apache.org/content/repositories/snapshots/org/apache/velocity/'
+    }
+
+
+}
+
+// 添加这个后带包会成功！
+jar {
+    enabled = true
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.javassist/javassist
+    compile("org.apache.velocity:velocity-engine-core:2.0")
+    compile("org.springframework.boot:spring-boot-devtools")
+    compile("commons-io:commons-io:2.6")
+    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    compile("mysql:mysql-connector-java:5.1.30")
+    compile("org.springframework.boot:spring-boot-starter-data-redis:2.0.4.RELEASE")
+    compile ("org.springframework.session:spring-session-data-redis:2.0.5.RELEASE")
+
+    compile project(":Simple") 
+}

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.regist.EmployeRegistDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findEmployeRegists" resultType="com.cisdi.info.simple.entity.regist.EmployeRegist" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.link_tel  ,
+        t0.sex  ,
+        t0.birth_date  ,
+        t0.organization_name  ,
+        t0.password  ,
+        t0.audit_state  ,
+        t0.email  ,
+        t0.audit_emloyee_id  ,
+        t0.audit_date  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime  
+        ,t10.name as audit_emloyee_name
+
+        from simple_employe_regist t0
+            LEFT JOIN simple_employee t10 on t0.audit_emloyee_id =t10.EId
+        WHERE t0.organization_name = #{organizationName} and ${sql}
+        ORDER BY t0.create_datetime DESC
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllEmployeRegists" resultType="com.cisdi.info.simple.entity.regist.EmployeRegist" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.link_tel  ,
+            t0.sex  ,
+            t0.birth_date  ,
+            t0.organization_name  ,
+            t0.password  ,
+            t0.audit_state  ,
+            t0.email  ,
+            t0.audit_emloyee_id  ,
+            t0.audit_date  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t10.name as audit_emloyee_name
+
+        from simple_employe_regist t0
+            LEFT JOIN simple_employee t10 on t0.audit_emloyee_id =t10.EId
+        ORDER BY t0.create_datetime DESC
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findEmployeRegistsWithIdNameByName" resultType="com.cisdi.info.simple.entity.regist.EmployeRegist" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_employe_regist t0
+        where t0.name like  '%${employeRegistName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllEmployeRegistsWithIdName" resultType="com.cisdi.info.simple.entity.regist.EmployeRegist" >
+        select
+        t0.EId,t0.Name
+        from simple_employe_regist t0
+        ORDER BY t0.Name
+    </select>
+    
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findEmployeRegistsWithIdNameById" resultType="com.cisdi.info.simple.entity.regist.EmployeRegist" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_employe_regist t0
+        where eid = #{employeRegistId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findEmployeRegistTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_employe_regist as t0 WHERE t0.organization_name = #{organizationName} AND ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findEmployeRegist" resultType="com.cisdi.info.simple.entity.regist.EmployeRegist" parameterType="java.lang.Long">
+        select * from simple_employe_regist where eid = #{employeRegistId}
+    </select>
+
+    <!-- -->
+    <select id="findEmployeRegistWithForeignName" resultType="com.cisdi.info.simple.entity.regist.EmployeRegist" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.link_tel  ,
+            t0.sex  ,
+            t0.birth_date  ,
+            t0.organization_name  ,
+            t0.password  ,
+            t0.audit_state  ,
+            t0.email  ,
+            t0.audit_emloyee_id  ,
+            t0.audit_date  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t10.name as audit_emloyee_name,
+            t0.audit_remark
+
+        from simple_employe_regist t0
+            LEFT JOIN simple_employee t10 on t0.audit_emloyee_id =t10.EId
+        where t0.eid = #{employeRegistId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveEmployeRegist" parameterType="com.cisdi.info.simple.entity.regist.EmployeRegist">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_employe_regist
+        (
+                name ,
+                link_tel ,
+                sex ,
+                birth_date ,
+                organization_name ,
+                password ,
+                audit_state ,
+                email ,
+                audit_emloyee_id ,
+                audit_date ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime 
+        )
+        values
+        (
+                #{name} ,
+                #{linkTel} ,
+                #{sex} ,
+                #{birthDate} ,
+                #{organizationName} ,
+                #{password} ,
+                #{auditState} ,
+                #{email} ,
+                #{auditEmloyeeId} ,
+                #{auditDate} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime} 
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateEmployeRegist" parameterType="com.cisdi.info.simple.entity.regist.EmployeRegist" >
+        update simple_employe_regist set
+                name = #{name} ,
+                link_tel = #{linkTel} ,
+                sex = #{sex} ,
+                birth_date = #{birthDate} ,
+                organization_name = #{organizationName} ,
+                password = #{password} ,
+                audit_state = #{auditState} ,
+                email = #{email} ,
+                audit_emloyee_id = #{auditEmloyeeId} ,
+                audit_date = #{auditDate} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime} ,
+                audit_remark = #{auditRemark}
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteEmployeRegist"  parameterType="java.lang.Long">
+        delete from simple_employe_regist where eid = #{employeRegistId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+</mapper>

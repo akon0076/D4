@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.permission.PermissionDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findPermissions" resultType="com.cisdi.info.simple.entity.permission.Permission" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.code  ,
+        t0.name  ,
+        t0.full_name  ,
+        t0.module_code  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
+        from simple_permission t0
+            where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllPermissions" resultType="com.cisdi.info.simple.entity.permission.Permission" >
+        select
+            t0.eid  ,
+            t0.code  ,
+            t0.name  ,
+            t0.full_name  ,
+            t0.module_code  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_permission t0
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllPermissionsWithIdName" resultType="com.cisdi.info.simple.entity.permission.Permission" >
+        select
+            t0.EId,t0.Name
+        from simple_permission t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findPermissionTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_permission as t0 where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findPermission" resultType="com.cisdi.info.simple.entity.permission.Permission" parameterType="java.lang.Long">
+        select * from simple_permission where eid = #{permissionId}
+    </select>
+
+    <!-- -->
+    <select id="findPermissionWithForeignName" resultType="com.cisdi.info.simple.entity.permission.Permission" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.code  ,
+            t0.name  ,
+            t0.full_name  ,
+            t0.module_code  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_permission t0
+        where t0.eid = #{permissionId}
+    </select>
+
+
+    <!--  保存 -->
+    <select id="savePermission" resultType="com.cisdi.info.simple.entity.permission.Permission" parameterType="com.cisdi.info.simple.entity.permission.Permission">
+        insert into simple_permission
+        (
+                code ,
+                name ,
+                full_name ,
+                module_code ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime
+        )
+        values
+        (
+                #{code} ,
+                #{name} ,
+                #{fullName} ,
+                #{moduleCode} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime}
+        )
+    </select>
+
+    <!--  编辑 -->
+    <select id="updatePermission" resultType="com.cisdi.info.simple.entity.permission.Permission" parameterType="com.cisdi.info.simple.entity.permission.Permission" >
+        update simple_permission set
+                code = #{code} ,
+                name = #{name} ,
+                full_name = #{fullName} ,
+                module_code = #{moduleCode} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{EId}
+    </select>
+
+
+    <!--  根据Id删除 -->
+    <select id="deletePermission" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        delete from simple_permission where eid = #{permissionId}
+    </select>
+    <!--获取总数-->
+    <select id="permissionCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM simple_permission
+    </select>
+
+    <select id="findPermissionsByKey" resultType="com.cisdi.info.simple.entity.permission.Permission"  parameterType="map">
+            select
+            t0.eid  ,
+            t0.code  ,
+            t0.name  ,
+            t0.full_name  ,
+            t0.module_code  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+            from simple_permission t0
+            <if test="searchValue != null">
+                WHERE t0.name LIKE #{searchValue}
+            </if>
+            ORDER BY t0.create_datetime
+            limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="permissionCountByKey" resultType="java.lang.Long" parameterType="map">
+        SELECT
+        count(*)
+        FROM
+        simple_permission as t0
+        <if test="searchValue != null">
+          WHERE t0.name LIKE #{searchValue}
+        </if>
+    </select>
+</mapper>

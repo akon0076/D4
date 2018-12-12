@@ -1,0 +1,473 @@
+#set($vmType="Form")
+#set($extension=".vue")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($path="${config.uiPath}/src/view/${entityClass.subSystemName}/${entityClass.moduleName}")
+#set($outputFile="${path}/${EntityNameUp}${vmType}${extension}")
+#set($permission="${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}")
+
+<template>
+    <div class="spanControl-list" style="width: 100%;margin-left: 0!important;">
+        <el-card class="box-card card-head" style="margin: 0px; width: 100%; min-height: 99%">
+            <div slot="header" class="clearfix">
+                <span>${entityClass.label}管理</span>
+            </div>
+            <div class="alert-container clearfix">
+                <el-alert  v-for="alert in alerts.successes"  :key="alert.title"
+                           v-bind:title="alert.title"
+                           type="success"
+                           show-icon>
+                </el-alert>
+                <el-alert  v-for="alert in alerts.infos"  :key="alert.title"
+                           v-bind:title="alert.title"
+                           type="info"
+                           show-icon >
+                </el-alert>
+                <el-alert  v-for="alert in alerts.warnings"  :key="alert.title"
+                           v-bind:title="alert.title"
+                           type="warning"
+                           show-icon >
+                </el-alert>
+                <el-alert  v-for="alert in alerts.errors"  :key="alert.title"
+                           v-bind:title="alert.title"
+                           type="error"
+                           show-icon >
+                </el-alert>
+            </div>
+            <div class="text item">
+                <el-form ref="${EntityNameLow}Form" :model="${EntityNameLow}" label-width="150px" :rules="rules">
+					#foreach($columnInfo in $entityClass.columnInfos)
+						#if($columnInfo.fieldName != "EId" && $columnInfo.fieldName != "createId"
+								&& $columnInfo.fieldName != "createDatetime" && $columnInfo.fieldName != "updateId"
+								&& $columnInfo.fieldName != "updateDatetime")
+							#if($columnInfo.definitionType == "CodeTable")
+                                <el-col :span="11">
+                                    <el-form-item label="${columnInfo.label}" prop="${columnInfo.fieldName}">
+                                        <el-autocomplete
+                                                class="inline-input"
+                                                value-key="name"
+                                                v-model="${EntityNameLow}.${columnInfo.fieldName}"
+                                                :fetch-suggestions="search${stringUtils.capitalize(${columnInfo.fieldName})} "
+                                                placeholder="${columnInfo.comment}"
+                                                clearable autosize
+                                                resize ="both" tabindex="${columnInfo.index}"
+                                        ></el-autocomplete>
+                                    </el-form-item>
+                                </el-col>
+							#elseif($columnInfo.definitionType == "ForeignId")
+
+							#elseif($columnInfo.definitionType == "ForeignName")
+                                <el-col :span="11">
+                                    <el-form-item label="${columnInfo.label}" prop="${columnInfo.fieldName}">
+                                        <el-autocomplete
+                                                class="inline-input"
+                                                value-key="name"
+                                                v-model="${EntityNameLow}.${columnInfo.fieldName}"
+                                                :fetch-suggestions="search${stringUtils.capitalize(${columnInfo.fieldName})} "
+                                                placeholder="${columnInfo.comment}"
+                                                @select="handleSelect${stringUtils.capitalize(${columnInfo.fieldName})}"
+                                                clearable autosize
+                                                resize ="both" tabindex="${columnInfo.index}"
+                                        ></el-autocomplete>
+                                    </el-form-item>
+                                </el-col>
+							#elseif($columnInfo.definitionType == "String"
+								|| $columnInfo.definitionType == "Character")
+                                #if($columnInfo.fieldName == "remark")
+                                <el-col :span="22">
+                                    <el-form-item label="${columnInfo.label}" prop="${columnInfo.fieldName}">
+                                        <file-tip content="${columnInfo.comment}"></file-tip>
+                                            <el-input type="textarea" v-model="${EntityNameLow}.${columnInfo.fieldName}"
+                                                      placeholder="${columnInfo.comment}" clearable autosize
+                                                      resize ="both" tabindex=${columnInfo.index}
+                                                              maxlength=${columnInfo.length}
+                                            ></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                #else
+                                    <el-col :span="11">
+                                        <el-form-item label="${columnInfo.label}" prop="${columnInfo.fieldName}">
+                                            <file-tip content="${columnInfo.comment}"></file-tip>
+                                            <el-input type="input" v-model="${EntityNameLow}.${columnInfo.fieldName}"
+                                                      placeholder="${columnInfo.comment}" clearable autosize
+                                                      resize ="both" tabindex=${columnInfo.index}
+                                                              maxlength=${columnInfo.length}
+                                            ></el-input>
+                                    </el-form-item>
+                                    </el-col>
+                                #end
+							#elseif($columnInfo.definitionType == "Boolean")
+                                <el-col :span="11">
+                                    <el-form-item label="${columnInfo.label}" prop="${columnInfo.fieldName}">
+                                        <el-radio-group v-model="${EntityNameLow}.${columnInfo.fieldName}">
+                                            <el-radio-button :label="true">是</el-radio-button>
+                                            <el-radio-button :label="false">否</el-radio-button>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                </el-col>
+							#elseif($columnInfo.definitionType == "Byte"
+								|| $columnInfo.definitionType == "Short"
+								|| $columnInfo.definitionType == "Integer"
+								|| $columnInfo.definitionType == "Long")
+                                <el-col :span="11">
+                                    <el-form-item label="${columnInfo.label}" prop="${columnInfo.fieldName}">
+                                        <el-input type="number" step="1" v-model="${EntityNameLow}.${columnInfo.fieldName}"
+                                                  placeholder="${columnInfo.comment}" clearable autosize
+                                                  resize ="both" tabindex=${columnInfo.index}
+                                                          maxlength=${columnInfo.length}
+                                        ></el-input>
+                                    </el-form-item>
+                                </el-col>
+							#elseif($columnInfo.definitionType == "Float"
+							|| $columnInfo.definitionType == "Double")
+
+                                <el-col :span="11">
+                                    <el-form-item label="${columnInfo.label}" prop="${columnInfo.fieldName}">
+                                        <el-input type="number" step="0.01" v-model="${EntityNameLow}.${columnInfo.fieldName}"
+                                                  placeholder="${columnInfo.comment}" clearable autosize
+                                                  resize ="both" tabindex=${columnInfo.index}
+                                                          maxlength=${columnInfo.length}
+                                        ></el-input>
+                                    </el-form-item>
+                                </el-col>
+							#elseif($columnInfo.definitionType == "Date")
+                                <el-col :span="11">
+                                    <el-form-item label="${columnInfo.label}" prop="${columnInfo.fieldName}">
+                                        <el-date-picker clearable
+                                                v-model="${EntityNameLow}.${columnInfo.fieldName}"
+                                                align="right"
+                                                type="date"
+                                                placeholder="${columnInfo.comment}"
+                                                :picker-options="pickerOptions${stringUtils.capitalize(${columnInfo.fieldName})}">
+                                        </el-date-picker>
+                                    </el-form-item>
+                                </el-col>
+							#end
+						#end
+					#end
+                    <el-col :span="11">
+                        <el-form-item>
+                            <el-button type="primary" @click="submit${EntityNameUp}()"    :loading="isSubmiting" v-permission:${permission}_Edit >提交</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-form>
+            </div>
+            <div class="text item clearfix">
+                <el-alert v-for="remark in alerts.remarks"  :key="remark.title"
+                          v-bind:title="remark.title"
+                          type="info"
+                          v-bind:description="remark.content">
+                </el-alert>
+            </div>
+        </el-card>
+    </div>
+</template>
+
+<script>
+
+
+#set($imports=$d4Util.createMap())
+#foreach($columnInfo in $entityClass.columnInfos)
+#if($columnInfo.definitionType == "ForeignName")
+#set($foreignEntity = ${entityManager.getEntityClassByClassName(${columnInfo.foreignEntity})})
+#set($importKey="import {${foreignEntity.className}Service}")
+#set($import="import {${foreignEntity.className}Service} from '../../${foreignEntity.subSystemName}/${foreignEntity.moduleName}/${foreignEntity.className}Service'")
+${d4Util.addMapItem($imports,$importKey,$import)}
+#end
+#end
+
+#set($importKey="import {${EntityNameUp}Service}")
+#set($import="import {${EntityNameUp}Service} from './${EntityNameUp}Service'")
+${d4Util.addMapItem($imports,$importKey,$import)}
+#foreach($import1 in $imports.values())
+${import1}
+#end
+import {d4utils} from '../../../tools/d4utils'
+    import fileTip from '@/components/tip/fileTip'
+export default {
+    components: {
+        fileTip
+    },
+    data() {
+        var validateIntRange = d4utils.validateFloatRange;
+        var validateFloatRange = d4utils.validateFloatRange;
+        var validateString = d4utils.validateString;
+
+        return {
+            rules: {
+        #foreach($columnInfo in $entityClass.columnInfos)
+            #if($columnInfo.fieldName != "EId" && $columnInfo.fieldName != "createId"
+            && $columnInfo.fieldName != "createDatetime"&& $columnInfo.fieldName != "updateId"
+            && $columnInfo.fieldName != "updateDatetime")
+                ${columnInfo.fieldName}: [
+                #if($columnInfo.definitionType == "CodeTable")
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                #elseif($columnInfo.definitionType == "ForeignId")
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                #elseif($columnInfo.definitionType == "ForeignName")
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                #elseif($columnInfo.definitionType == "String"
+                || $columnInfo.definitionType == "Character")
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                    { validator:validateString(0,1000,/^.*$/,"输入的数据不正确，请检查"), trigger: 'blur' },
+                #elseif($columnInfo.definitionType == "Boolean")
+
+                #elseif($columnInfo.definitionType == "Byte")
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                    { validator: validateIntRange(0,255), trigger: 'blur' },
+                #elseif($columnInfo.definitionType == "Short")
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                    { validator: validateIntRange(-32768,32767), trigger: 'blur' },
+                #elseif($columnInfo.definitionType == "Integer")
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                    { validator: validateIntRange(-2147483648,2147483647), trigger: 'blur' },
+                #elseif($columnInfo.definitionType == "Long")
+
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                    { validator: validateIntRange(-9223372036854775808,9223372036854775807), trigger: 'blur' },
+                #elseif($columnInfo.definitionType == "Float"
+                || $columnInfo.definitionType == "Double")
+                    {required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'blur'},
+                    { validator: validateFloatRange(-9223372036854775808,9223372036854775807), trigger: 'blur' },
+                #elseif($columnInfo.definitionType == "Date")
+                    { type: 'date',required: #if($columnInfo.nullable) false #else true #end, message: '请输入${columnInfo.label}', trigger: 'change'},
+                #end
+                    ],
+            #end
+        #end
+           },
+            isSubmiting: false,
+            ${EntityNameLow}:{},
+            ${EntityNameLow}Id:null,
+            #foreach($columnInfo in $entityClass.columnInfos)
+            #if($columnInfo.definitionType == "Date")
+            pickerOptions${stringUtils.capitalize(${columnInfo.fieldName})}: {
+                disabledDate(time) {
+                    //TODO: 请在此判断可以输入的日期范围,
+                    //return time.getTime() > Date.now();
+                    return false;
+                },
+                shortcuts: [{
+                    text: '今天',
+                    onClick(picker) {
+                        picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: '昨天',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setTime(date.getTime() - 3600 * 1000 * 24);
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '一周前',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', date);
+                    }
+                }]
+            },
+            #end
+            #end
+        alerts:{ remarks:[{title:"功能说明",content:"TODO: 请在这里加上功能说明"},],
+                successes:[], //TODO:[{title:'消息内容'},]
+                infos:[],
+                warnings:[],
+                errors:[]},
+        }
+    },
+
+    methods: {
+        addAlert(message,title,type){
+            //type 可选的值为:remarks,successes,infos,warnings,errors
+            type = type? type:"errors";
+            type = this.alerts[type]?type:"errors";
+            title = title?title:message;
+            this.alerts[type].unshift({title:title,content:message});
+        },
+        removeAlert(title,type){
+            //type 可选的值为:remarks,successes,infos,warnings,errors
+            type = type? type:"errors";
+            type = this.alerts[type]?type:"errors";
+            for (var i = this.alerts[type].length-1; i>=0 ; i--) {
+                delete this.alerts[type][i]
+            }
+        },
+        submit${EntityNameUp}() {
+            var refs = this.$refs;
+            refs['${EntityNameLow}Form'].validate(valid => {
+            if (valid) {
+            if(this.${EntityNameLow}.eid)//编辑${entityClass.label}
+            {
+            this.update${EntityNameUp}();
+            }
+            else//保存${entityClass.label}
+            {
+            this.save${EntityNameUp}();
+            }
+            } else {
+            return false
+            }
+            })
+        },
+        save${EntityNameUp}()//保存${entityClass.label}
+        {
+            this.isSubmiting = true;
+            ${EntityNameUp}Service.save${EntityNameUp}(this.${EntityNameLow}).then((resp) => {
+                this.isSubmiting = false;
+                var router = this.$router;
+                router.push({path: '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameLow}'})
+        }).catch((error) => {
+            //error的data属性是后台传入的数据,data的extendedData存有后台传入的数据
+            this.isSubmiting = false;
+
+            this.addAlert({title:error.data.message})
+            this.$message({
+                type: 'error',
+                message: '保存出错,原因是：'+error.data.message
+            })
+        })
+        },
+        update${EntityNameUp}()//编辑${entityClass.label}
+        {
+            this.isSubmiting = true;
+            ${EntityNameUp}Service.update${EntityNameUp}(this.${EntityNameLow}).then((resp) => {
+                this.isSubmiting = false;
+                var router = this.$router;
+                router.push({path: '/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameLow}'})
+        }).catch((error) => {
+            //error的data属性是后台传入的数据,data的extendedData存有后台传入的数据
+            this.isSubmiting = false;
+            this.addAlert({title:error.data.message})
+            this.$message({
+                type: 'error',
+                message: '保存出错,原因是：'+error.data.message
+            })
+
+        })
+        },
+        find${EntityNameUp}ForEdit(${EntityNameLow}Id)//查找${entityClass.label}
+        {
+            ${EntityNameUp}Service.find${EntityNameUp}ForEdit(${EntityNameLow}Id).then((resp) => {
+                this.prepareForEdit(resp.data);
+        }).catch((error) => {
+            this.$message({
+            type: 'error',
+            message: '查询${entityClass.label}出错'
+        })
+        })
+        },
+        create${EntityNameUp}()//创建新的${entityClass.label}
+        {
+            ${EntityNameUp}Service.create${EntityNameUp}().then((resp) => {
+                this.prepareForEdit(resp.data);
+        }).catch((error) => {
+            this.$message({
+            type: 'error',
+            message: '创建新的${entityClass.label}出错'
+        })
+        })
+        },
+        prepareForEdit(${EntityNameLow}EditDto)
+        {
+            this.${EntityNameLow} = ${EntityNameLow}EditDto.${EntityNameLow};
+
+            #foreach($columnInfo in $entityClass.columnInfos)
+                #if($columnInfo.definitionType == "CodeTable")
+            this.${columnInfo.fieldName}CodeTables = ${EntityNameLow}EditDto.${columnInfo.fieldName}CodeTables;
+                #end
+            #end
+            #foreach($columnInfo in $entityClass.columnInfos)
+                #if($columnInfo.definitionType == "ForeignId")
+            this.${stringUtils.removeEnd(${columnInfo.fieldName},"Id")}${columnInfo.foreignEntity}s = ${EntityNameLow}EditDto.${stringUtils.removeEnd(${columnInfo.fieldName},"Id")}${columnInfo.foreignEntity}s
+                #end
+            #end
+        },
+        #foreach($columnInfo in $entityClass.columnInfos)
+        #if($columnInfo.definitionType == "CodeTable")
+        search${stringUtils.capitalize(${columnInfo.fieldName})}(queryString, cb) {
+            var ${columnInfo.fieldName}CodeTables = this.${columnInfo.fieldName}CodeTables;
+            var results = queryString ? ${columnInfo.fieldName}CodeTables.filter(this.createFilter${stringUtils.capitalize(${columnInfo.fieldName})}(queryString)) : ${columnInfo.fieldName}CodeTables;
+            cb(results);
+        },
+        createFilter${stringUtils.capitalize(${columnInfo.fieldName})}(queryString) {
+            return (${columnInfo.codeTable}) => {
+                return (${columnInfo.codeTable}.name.toLowerCase().indexOf(queryString.toLowerCase()) >= 0);
+            };
+        },
+        #end
+        #end
+
+        #foreach($columnInfo in $entityClass.columnInfos)
+            #if($columnInfo.definitionType == "ForeignName")
+
+        search${stringUtils.capitalize(${columnInfo.fieldName})}(queryString, cb) {
+            var ${stringUtils.removeEnd(${columnInfo.fieldName},"Name")}${columnInfo.foreignEntity}s = this.${stringUtils.removeEnd(${columnInfo.fieldName},"Name")}${columnInfo.foreignEntity}s;
+
+            //如果不为空，说明在加载页面的时候已经加载了所有的外键数据，否则表示没加载，则根据输入的信息从后台加载
+            if(${stringUtils.removeEnd(${columnInfo.fieldName},"Name")}${columnInfo.foreignEntity}s)
+            {
+                var results = queryString ? ${stringUtils.removeEnd(${columnInfo.fieldName},"Name")}${columnInfo.foreignEntity}s.filter(this.createFilter${stringUtils.capitalize(${columnInfo.fieldName})}(queryString)) : ${stringUtils.removeEnd(${columnInfo.fieldName},"Name")}${columnInfo.foreignEntity}s;
+                cb(results);
+            }
+            else
+            {
+                var results = d4utils.getObjectCached("find${columnInfo.foreignEntity}sWithIdNameByName_"+queryString);
+                if(results)
+                {
+                    cb(results);
+                }
+                else
+                {
+                    var cb1 = cb;
+                    ${columnInfo.foreignEntity}Service.find${columnInfo.foreignEntity}sWithIdNameByName(queryString).then((resp) => {
+                    if (resp.data)
+                    {
+                        var results = resp.data;
+                        d4utils.cacheObject("find${columnInfo.foreignEntity}sWithIdNameByName_"+queryString);
+                        cb1(results)
+                    }
+                else
+                    {
+                        this.$message({
+                            type: 'error',
+                            message: '没有查询到引用数据'
+                        });
+                    }
+                }).catch((error) => {
+                    this.$message({
+                    type: 'error',
+                    message: '查询引用数据出错'
+                })
+                });
+                }
+            }
+        },
+            createFilter${stringUtils.capitalize(${columnInfo.fieldName})}(queryString) {
+                return (${stringUtils.uncapitalize(${columnInfo.foreignEntity})}) => {
+                    return (${stringUtils.uncapitalize(${columnInfo.foreignEntity})}.name.toLowerCase().indexOf(queryString.toLowerCase()) >= 0);
+                };
+            },
+            handleSelect${stringUtils.capitalize(${columnInfo.fieldName})}(item){
+                this.${EntityNameLow}.${stringUtils.removeEnd(${columnInfo.fieldName},"Name")}Id = item.eid;
+            },
+            #end
+        #end
+    },
+    created() {
+        this.${EntityNameLow}Id = this.$route.params.${EntityNameLow}Id;
+        if(this.${EntityNameLow}Id)//编辑
+        {
+            this.find${EntityNameUp}ForEdit(this.${EntityNameLow}Id);
+        }
+        else//新增
+        {
+            this.create${EntityNameUp}();
+        }
+    },
+}
+</script>
+<style scoped lang="scss">
+
+</style>

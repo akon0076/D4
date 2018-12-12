@@ -1,0 +1,134 @@
+#set($vmType="serviceBean")
+#set($extension=".java")
+#set($packageName="${entityClass.packages.replace('entity', 'service')}.impl")
+#set($EntityNameUp="${entityClass.className}")
+#set($EntityNameLow="${entityClass.className.substring(0,1).toLowerCase()}${entityClass.className.substring(1)}")
+#set($className="${entityClass.className}${stringUtils.capitalize(${vmType})}")
+#set($path="${config.serverPath}/src/main/java/${packageName.replace('.', '/')}")
+#set($outputFile="${path}/$className${extension}")
+package ${packageName};
+
+import ${config.basePackage}.${entityClass.subSystemName}.dao.${entityClass.moduleName}.${EntityNameUp}Dao;
+
+import com.cisdi.info.simple.entity.base.BaseEntity;
+import com.cisdi.info.simple.dto.base.PageDTO;
+import com.cisdi.info.simple.dto.base.PageResultDTO;
+import com.cisdi.info.simple.util.D4Util;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ${entityClass.clazz.name};
+import com.cisdi.info.simple.service.base.BaseService;
+import ${config.basePackage}.${entityClass.subSystemName}.service.${entityClass.moduleName}.${EntityNameUp}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.Map;
+import com.cisdi.info.simple.DDDException;
+
+@Service
+@Transactional
+public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityNameUp}Service {
+
+	private static Logger logger = LogManager.getLogger();
+
+	@Autowired
+	private ${EntityNameUp}Dao ${EntityNameLow}Dao;
+
+	public PageResultDTO find${EntityNameUp}s(PageDTO pageDTO)
+	{
+        pageDTO.setStartIndex((pageDTO.getCurrentPage()-1)*pageDTO.getPageSize());
+		List<${EntityNameUp}> ${EntityNameLow}DTOS = this.${EntityNameLow}Dao.find${EntityNameUp}s(pageDTO);
+		Long totalCount = this.${EntityNameLow}Dao.find${EntityNameUp}TotalCount(pageDTO);
+
+		PageResultDTO pageResultDTO = new PageResultDTO();
+		pageResultDTO.setTotalCount(totalCount);
+		pageResultDTO.setDatas(${EntityNameLow}DTOS);
+
+		return pageResultDTO;
+	}
+
+	public List<${EntityNameUp}> findAll${EntityNameUp}s()
+	{
+		return this.${EntityNameLow}Dao.findAll${EntityNameUp}s();
+	}
+
+	public List<${EntityNameUp}> findAll${EntityNameUp}sWithIdName()
+	{
+		return this.${EntityNameLow}Dao.findAll${EntityNameUp}sWithIdName();
+	}
+
+	public List<${EntityNameUp}> find${EntityNameUp}sWithIdNameByName(String ${EntityNameLow}Name)
+	{
+		return this.${EntityNameLow}Dao.find${EntityNameUp}sWithIdNameByName(${EntityNameLow}Name);
+	}
+
+	public ${EntityNameUp} find${EntityNameUp}sWithIdNameById(Long ${EntityNameLow}Id)
+	{
+		return this.${EntityNameLow}Dao.find${EntityNameUp}sWithIdNameById(${EntityNameLow}Id);
+	}
+
+	public ${EntityNameUp} find${EntityNameUp}(Long ${EntityNameLow}Id)
+	{
+		return this.${EntityNameLow}Dao.find${EntityNameUp}(${EntityNameLow}Id);
+	}
+
+	//所有外键的Name都以加载
+	public ${EntityNameUp} find${EntityNameUp}WithForeignName(Long ${EntityNameLow}Id)
+	{
+		return this.${EntityNameLow}Dao.find${EntityNameUp}WithForeignName(${EntityNameLow}Id);
+	}
+
+	public ${EntityNameUp} save${EntityNameUp}(${EntityNameUp} ${EntityNameLow})
+	{
+		//TODO:请在此校验参数的合法性
+		this.setSavePulicColumns(${EntityNameLow});
+		Integer rows = this.${EntityNameLow}Dao.save${EntityNameUp}(${EntityNameLow});
+		if(rows != 1)
+		{
+			String error = "新增保存${entityClass.label}出错，数据库应该返回1,但返回了 "+rows;
+			throw new DDDException(error);
+		}
+		return ${EntityNameLow};
+	}
+
+	public ${EntityNameUp} update${EntityNameUp}(${EntityNameUp} ${EntityNameLow})
+	{
+		//TODO:请在此校验参数的合法性
+		this.setUpdatePulicColumns(${EntityNameLow});
+		Integer rows = this.${EntityNameLow}Dao.update${EntityNameUp}(${EntityNameLow});
+		if(rows != 1)
+		{
+			String error = "修改保存${entityClass.label}出错，数据库应该返回1,但返回了 "+rows+",数据可能被删除";
+			throw new DDDException(error);
+		}
+		return ${EntityNameLow};
+	}
+
+	public void delete${EntityNameUp}(Long ${EntityNameLow}Id)
+	{
+		Map<Class<? extends BaseEntity>,EntityUsage> entityUsageMap = this.checkForeignEntity(${EntityNameUp}.class, ${EntityNameLow}Id);
+		if(entityUsageMap != null && entityUsageMap.size() >0)
+		{
+			StringBuilder errors = new StringBuilder();
+			errors.append("计划删除的数据正在被以下数引用\n");
+			for(EntityUsage entityUsage : entityUsageMap.values())
+			{
+				errors.append("\t").append(entityUsage.getEntityLabel()).append("\n");
+				for(Map.Entry<Long,String> entry : entityUsage.getUsageIdNames().entrySet() )
+				{
+errors.append("\t\t").append(entry.getKey()).append("\t").append(entry.getValue()).append("\n");
+}
+			}
+			errors.append("，不能删除，请检查处理后再删除");
+			throw  new DDDException(errors.toString());
+		}
+
+		Integer rows = this.${EntityNameLow}Dao.delete${EntityNameUp}(${EntityNameLow}Id);
+		if(rows != 1)
+		{
+			String error = "删除${entityClass.label}出错，数据库应该返回1,但返回了 "+rows+",数据可能已经被删除";
+			throw new DDDException(error);
+		}
+	}
+}
