@@ -95,7 +95,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         return this.operatorDao.findOperatorWithForeignName(operatorId);
     }
 
-    public Operator saveOperator(Operator operator) {
+    public Long saveOperator(Operator operator) {
         this.setSavePulicColumns(operator);
 //        String password = operator.getCode() + operator.getPassWord();
 //        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());

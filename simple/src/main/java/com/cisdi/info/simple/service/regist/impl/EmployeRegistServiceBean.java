@@ -201,7 +201,7 @@ errors.append("\t\t").append(entry.getKey()).append("\t").append(entry.getValue(
 		operator.setPersonId(employeeId);
 		operator.setStatus("在用");
 		operator.setType("职员");
-		Operator oper = this.operatorService.saveOperator(operator);
+		Long oper = this.operatorService.saveOperator(operator);
 		Operator newOperator = this.operatorDao.findOperatorByCode(operator.getCode());
 		this.saveOperatorAndRole(newOperator);
 	}

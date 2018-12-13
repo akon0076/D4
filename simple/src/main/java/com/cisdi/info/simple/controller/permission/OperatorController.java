@@ -137,7 +137,7 @@ public class OperatorController {
 	}
 
 	@PostMapping("/saveOperator")
-	public Operator saveOperator(@RequestBody Operator operator)
+	public Long saveOperator(@RequestBody Operator operator)
 	{
 		return this.operatorService.saveOperator(operator);
 	}

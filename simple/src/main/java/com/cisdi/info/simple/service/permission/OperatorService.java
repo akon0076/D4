@@ -25,7 +25,7 @@ public interface OperatorService {
     //所有外键的Name都以加载
     public Operator findOperatorWithForeignName(Long operatorId);
 
-    public Operator saveOperator(Operator operator);
+    public Long saveOperator(Operator operator);
 
     public Operator updateOperator(Operator operator);
 

@@ -97,20 +97,6 @@
       }
     ]
   },
-  "simple/organization": {
-    "code": "simple/organization",
-    "name1": "组织机构",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-zuzhi",
-    "displayIndex": 2,
-    "parentCode": "simple",
-    "parentName": "simple",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/organization/Employee": {
     "code": "simple/organization/Employee",
     "name1": "职员",
@@ -486,7 +472,6 @@
       }
     ]
   },
-
   "simple/attachment": {
     "code": "simple/attachment",
     "name1": "附件",
@@ -684,8 +669,6 @@
       }
     ]
   },
-
-
   "simple/qingTui": {
     "code": "simple/qingTui",
     "name1": "人员与应用",
@@ -760,20 +743,6 @@
         ]
       }
     ]
-  },
-  "simple/regist": {
-    "code": "simple/regist",
-    "name1": "注册审核",
-    "url": "",
-    "route": "",
-    "iconClass": "",
-    "displayIndex": 1,
-    "parentCode": "基础管理",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
   },
   "simple/regist/EmployeRegist": {
     "code": "simple/regist/EmployeRegist",
@@ -887,7 +856,6 @@
       }
     ]
   },
-
   "simple/regist/MemberRegist": {
     "code": "simple/regist/MemberRegist",
     "name1": "商家注册审核",
@@ -941,5 +909,33 @@
         ]
       }
     ]
+  },
+  "simple/organization": {
+    "code": "simple/organization",
+    "name1": "组织机构",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-zuzhi",
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "simple",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/regist": {
+    "code": "simple/regist",
+    "name1": "注册审核",
+    "url": "",
+    "route": "",
+    "iconClass": "",
+    "displayIndex": 10,
+    "parentCode": "基础管理",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
   }
 }
