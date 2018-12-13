@@ -70,7 +70,10 @@
 
 
     <!--  保存 -->
-    <select id="saveRole" resultType="com.cisdi.info.simple.entity.permission.Role" parameterType="com.cisdi.info.simple.entity.permission.Role">
+    <insert id="saveRole" parameterType="com.cisdi.info.simple.entity.permission.Role">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
         insert into simple_role
         (
                 code ,
@@ -91,7 +94,7 @@
                 #{updateId} ,
                 #{updateDatetime} 
         )
-    </select>
+    </insert>
 
     <!--  编辑 -->
     <select id="updateRole" resultType="com.cisdi.info.simple.entity.permission.Role" parameterType="com.cisdi.info.simple.entity.permission.Role" >

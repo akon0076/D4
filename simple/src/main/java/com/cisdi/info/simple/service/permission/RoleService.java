@@ -19,7 +19,7 @@ public Role findRole(Long roleId);
 //所有外键的Name都以加载
 public Role findRoleWithForeignName(Long roleId);
 
-public Role saveRole(Role role);
+public Long saveRole(Role role);
 
 public Role updateRole(Role role);
 

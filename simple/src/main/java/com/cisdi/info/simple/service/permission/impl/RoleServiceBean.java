@@ -66,7 +66,7 @@ public Role findRoleWithForeignName(Long roleId)
 	return this.roleDao.findRoleWithForeignName(roleId);
 }
 
-public Role saveRole(Role role)
+public Long saveRole(Role role)
 {
 	this.setSavePulicColumns(role);
 	return this.roleDao.saveRole(role);

@@ -135,7 +135,7 @@ public class RoleController {
 	}
 
 	@PostMapping("/saveRole")
-	public Role saveRole(@RequestBody Role role)
+	public Long saveRole(@RequestBody Role role)
 	{
 		return this.roleService.saveRole(role);
 	}
