@@ -7,6 +7,7 @@ import com.cisdi.info.simple.dto.permission.RoleAndPermissionDto;
 import com.cisdi.info.simple.entity.permission.RoleAndPermission;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.permission.RoleAndPermissionService;
+import com.cisdi.info.simple.util.ModuleManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,7 @@ public class RoleAndPermissionServiceBean extends BaseService implements RoleAnd
             //加入新的角色权限点对应关系
             this.roleAndPermissionDao.saveRoleAndPermission(roleAndPermission);
         }
+        ModuleManager.initialize();
     }
 
     @Override
