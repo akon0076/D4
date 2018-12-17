@@ -24,6 +24,7 @@ public class RoleAndPermissionServiceBean extends BaseService implements RoleAnd
     @Autowired
     private RoleAndPermissionDao roleAndPermissionDao;
 
+    @Override
     public PageResultDTO findRoleAndPermissions(PageDTO pageDTO) {
         pageDTO.setStartIndex((pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize());
         List<RoleAndPermission> roleAndPermissionDTOS = this.roleAndPermissionDao.findRoleAndPermissions(pageDTO);
@@ -36,23 +37,28 @@ public class RoleAndPermissionServiceBean extends BaseService implements RoleAnd
         return pageResultDTO;
     }
 
+    @Override
     public List<RoleAndPermission> findAllRoleAndPermissions() {
         return this.roleAndPermissionDao.findAllRoleAndPermissions();
     }
 
+    @Override
     public List<RoleAndPermission> findAllRoleAndPermissionsWithIdName() {
         return this.roleAndPermissionDao.findAllRoleAndPermissionsWithIdName();
     }
 
+    @Override
     public RoleAndPermission findRoleAndPermission(Long roleAndPermissionId) {
         return this.roleAndPermissionDao.findRoleAndPermission(roleAndPermissionId);
     }
 
     //所有外键的Name都以加载
+    @Override
     public RoleAndPermission findRoleAndPermissionWithForeignName(Long roleAndPermissionId) {
         return this.roleAndPermissionDao.findRoleAndPermissionWithForeignName(roleAndPermissionId);
     }
 
+    @Override
     public RoleAndPermission saveRoleAndPermission(RoleAndPermission roleAndPermission) {
         this.setSavePulicColumns(roleAndPermission);
         return this.roleAndPermissionDao.saveRoleAndPermission(roleAndPermission);
@@ -60,23 +66,29 @@ public class RoleAndPermissionServiceBean extends BaseService implements RoleAnd
 
     /**
      * 更新角色对应的权限点
+     *
      * @param roleAndPermissionDto
      * @return
      */
+    @Override
     public void updateRoleAndPermission(RoleAndPermissionDto roleAndPermissionDto) {
-        //删除原有的角色权限点对应关系
-        this.roleAndPermissionDao.deleteRoleAndPermissionsByRoleId(roleAndPermissionDto.getRoleId());
+        String[] removePermissions = roleAndPermissionDto.getRemovePermissions();
+        for (String permissionCode : removePermissions) {
+            //删除原有的角色权限点对应关系
+            this.roleAndPermissionDao.deleteRoleAndPermissionByRoleIdAndPermissionCode(roleAndPermissionDto.getRoleId(), permissionCode);
+        }
         RoleAndPermission roleAndPermission = new RoleAndPermission();
-        String[] permissionsCode = roleAndPermissionDto.getPermissionsCode();
+        String[] addPermissions = roleAndPermissionDto.getAddPermissions();
         this.setSavePulicColumns(roleAndPermission);
         roleAndPermission.setRoleId(roleAndPermissionDto.getRoleId());
-        for (String  permissionCode : permissionsCode) {
+        for (String permissionCode : addPermissions) {
             roleAndPermission.setPermissionCode(permissionCode);
             //加入新的角色权限点对应关系
             this.roleAndPermissionDao.saveRoleAndPermission(roleAndPermission);
         }
     }
 
+    @Override
     public void deleteRoleAndPermission(Long roleAndPermissionId) {
         this.roleAndPermissionDao.deleteRoleAndPermission(roleAndPermissionId);
     }

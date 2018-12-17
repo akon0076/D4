@@ -6,7 +6,8 @@ package com.cisdi.info.simple.dto.permission;
  */
 public class RoleAndPermissionDto {
     private Long roleId;
-    private String[] permissionsCode;
+    private String[] addPermissions;
+    private String[] removePermissions;
 
     public Long getRoleId() {
         return roleId;
@@ -16,11 +17,19 @@ public class RoleAndPermissionDto {
         this.roleId = roleId;
     }
 
-    public String[] getPermissionsCode() {
-        return permissionsCode;
+    public String[] getAddPermissions() {
+        return addPermissions;
     }
 
-    public void setPermissionsCode(String[] permissionsCode) {
-        this.permissionsCode = permissionsCode;
+    public void setAddPermissions(String[] addPermissions) {
+        this.addPermissions = addPermissions;
+    }
+
+    public String[] getRemovePermissions() {
+        return removePermissions;
+    }
+
+    public void setRemovePermissions(String[] removePermissions) {
+        this.removePermissions = removePermissions;
     }
 }

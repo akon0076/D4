@@ -124,6 +124,11 @@
         delete from simple_role_and_permission where role_id = #{roleId}
     </delete>
 
+    <!--  根据Id和权限点删除 -->
+    <delete id="deleteRoleAndPermissionByRoleIdAndPermissionCode">
+        delete from simple_role_and_permission where role_id = #{roleId} and permission_code = #{permissionCode}
+    </delete>
+
     <!--  根据角色Id查询对应的权限点 -->
     <select id="findRoleAndPermissionByRoleId" parameterType="java.lang.Long" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
         select * from simple_role_and_permission where role_id = #{roleId}
