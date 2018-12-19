@@ -285,9 +285,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             superOperator.setCode(SuperUserCode);
             superOperator.setName("超级用户");
             //对密码进行加密
-            String password = SuperUserCode + SuperUserCode;
-            String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
-            password = SuperUserCode + md5Password;
+            String password = DigestUtils.md5DigestAsHex(SuperUserCode.getBytes());
 
             superOperator.setPassWord(password);
             superOperator.setType("虚拟用户");

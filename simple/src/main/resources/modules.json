@@ -206,6 +206,7 @@
         "moduleCode": "simple/organization/Organization",
         "urls": [
           "/simple/organization/Organization/findOrganizations",
+          "/simple/organization/Organization/findAllOrganizations",
           "/simple/organization/Organization/findOrganizationForView"
         ]
       }
@@ -467,6 +468,7 @@
           "/simple/permission/Role/findRoles",
           "/simple/permission/Role/findAllRoles",
           "/simple/permission/OperatorAndRole/findOperatorAndRoleByOperatorId",
+          "/simple/permission/OperatorAndRole/findOperatorAndRoleByOperatorIdAndOrganizationId",
           "/simple/permission/Role/findRoleForView"
         ]
       }

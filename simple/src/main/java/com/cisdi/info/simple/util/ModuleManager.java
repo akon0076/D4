@@ -33,6 +33,7 @@ public class ModuleManager {
     }
 
     public static void initialize() {
+        urlRoles = new HashMap<String, Set<Long>>();
         RoleAndPermissionDao roleAndPermissionDao = (RoleAndPermissionDao) SpringContextUtils.getBean("roleAndPermissionDao");
 
         List<RoleAndPermission> roleAndPermissions = roleAndPermissionDao.findAllRoleAndPermissions();

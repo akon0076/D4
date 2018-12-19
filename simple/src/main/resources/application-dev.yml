@@ -1,3 +1,7 @@
+server:
+  port: 8080
+
+
 spring:
   application:
     name: cisdi-info-ms-cms_ample
@@ -8,7 +12,6 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/d4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
-   # url: jdbc:mysql://192.168.20.55:3306/d4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
     username: root
     password: root
   jpa:
@@ -49,5 +52,3 @@ cisdi:
     loginProcessingUrl: /Login/loginSubmit #登陆处理url，需要post形式提交，使用cms后不要更改
     logoutUrl: /cms/logout #退出处理url，需要以post方式提交。使用cms后不要更改
     rejectPublicInvocations: true #默认不配置为false，true为未设定权限资源不否允许访问
-  profiles:
-    active: dev

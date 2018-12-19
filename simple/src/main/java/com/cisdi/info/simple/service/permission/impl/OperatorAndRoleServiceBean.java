@@ -24,6 +24,7 @@ public class OperatorAndRoleServiceBean extends BaseService implements OperatorA
     @Autowired
     private OperatorAndRoleDao operatorAndRoleDao;
 
+    @Override
     public PageResultDTO findOperatorAndRoles(PageDTO pageDTO) {
         pageDTO.setStartIndex((pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize());
         List<OperatorAndRole> operatorAndRoleDTOS = this.operatorAndRoleDao.findOperatorAndRoles(pageDTO);
@@ -36,27 +37,33 @@ public class OperatorAndRoleServiceBean extends BaseService implements OperatorA
         return pageResultDTO;
     }
 
-    public List<OperatorAndRole> findOperatorAndRoleByOperatorId(Long operatorId) {
-        return this.operatorAndRoleDao.findOperatorAndRoleByOperatorId(operatorId);
+    @Override
+    public List<OperatorAndRole> findOperatorAndRoleByOperatorIdAndOrganizationId(Long operatorId, Long organizationId) {
+        return this.operatorAndRoleDao.findOperatorAndRoleByOperatorIdAndOrganizationId(operatorId, organizationId);
     }
 
+    @Override
     public List<OperatorAndRole> findAllOperatorAndRoles() {
         return this.operatorAndRoleDao.findAllOperatorAndRoles();
     }
 
+    @Override
     public List<OperatorAndRole> findAllOperatorAndRolesWithIdName() {
         return this.operatorAndRoleDao.findAllOperatorAndRolesWithIdName();
     }
 
+    @Override
     public OperatorAndRole findOperatorAndRole(Long operatorAndRoleId) {
         return this.operatorAndRoleDao.findOperatorAndRole(operatorAndRoleId);
     }
 
     //所有外键的Name都以加载
+    @Override
     public OperatorAndRole findOperatorAndRoleWithForeignName(Long operatorAndRoleId) {
         return this.operatorAndRoleDao.findOperatorAndRoleWithForeignName(operatorAndRoleId);
     }
 
+    @Override
     public OperatorAndRole saveOperatorAndRole(OperatorAndRole operatorAndRole) {
         this.setSavePulicColumns(operatorAndRole);
         return this.operatorAndRoleDao.saveOperatorAndRole(operatorAndRole);
@@ -64,22 +71,31 @@ public class OperatorAndRoleServiceBean extends BaseService implements OperatorA
 
     /**
      * 根据操作员ID更新对应的角色信息
+     *
      * @param operatorAndRoleDto
      */
+    @Override
     public void updateOperatorAndRole(OperatorAndRoleDto operatorAndRoleDto) {
-        //删除原有的操作员角色对应关系
-        this.operatorAndRoleDao.deleteOperatorAndRoleByOperatorId(operatorAndRoleDto.getOperatorId());
+        Long operatorId = operatorAndRoleDto.getOperatorId();
+        Long[] removeRoles = operatorAndRoleDto.getRemoveRoles();
+        for (Long roleId : removeRoles) {
+            //删除原有的操作员角色对应关系
+            this.operatorAndRoleDao.deleteOperatorAndRoleByOperatorIdAndRoleId(operatorId, roleId);
+        }
         OperatorAndRole operatorAndRole = new OperatorAndRole();
-        Long[] rolesId = operatorAndRoleDto.getRoleId();
         this.setSavePulicColumns(operatorAndRole);
-        operatorAndRole.setOperatorId(operatorAndRoleDto.getOperatorId());
-        for (Long roleId : rolesId) {
+        operatorAndRole.setOperatorId(operatorId);
+        Long organizationId = operatorAndRoleDto.getOrganizationId();
+        Long[] addRoles = operatorAndRoleDto.getAddRoles();
+        for (Long roleId : addRoles) {
             operatorAndRole.setRoleId(roleId);
+            operatorAndRole.setOrganizationId(organizationId);
             //加入新的操作员角色对应关系
             this.operatorAndRoleDao.saveOperatorAndRole(operatorAndRole);
         }
     }
 
+    @Override
     public void deleteOperatorAndRole(Long operatorAndRoleId) {
         this.operatorAndRoleDao.deleteOperatorAndRole(operatorAndRoleId);
     }

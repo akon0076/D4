@@ -3,6 +3,7 @@ package com.cisdi.info.simple.dao.permission;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.entity.permission.RoleAndPermission;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public interface RoleAndPermissionDao {
     public void deleteRoleAndPermission(Long roleAndPermissionId);
 
     public int deleteRoleAndPermissionsByRoleId(Long roleId);
+
+    public int deleteRoleAndPermissionByRoleIdAndPermissionCode(@Param("roleId") Long roleId, @Param("permissionCode") String permissionCode);
 
     public List<RoleAndPermission> findRoleAndPermissionByRoleId(Long roleId);
 

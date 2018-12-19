@@ -37,6 +37,8 @@ public interface OperatorAndRoleDao {
 
     public int deleteOperatorAndRoleByOperatorId(Long operatorId);
 
-    public List<OperatorAndRole> findOperatorAndRoleByOperatorId(Long operatorId);
+    public int deleteOperatorAndRoleByOperatorIdAndRoleId(@Param("operatorId") Long operatorId, @Param("roleId") Long roleId);
+
+    public List<OperatorAndRole> findOperatorAndRoleByOperatorIdAndOrganizationId(@Param("operatorId") Long operatorId, @Param("organizationId") Long organizationId);
 
 }

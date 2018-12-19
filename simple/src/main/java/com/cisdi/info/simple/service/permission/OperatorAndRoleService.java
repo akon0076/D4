@@ -26,5 +26,5 @@ public interface OperatorAndRoleService {
 
     public void deleteOperatorAndRole(Long operatorAndRoleId);
 
-    public List<OperatorAndRole> findOperatorAndRoleByOperatorId(Long operatorId);
+    public List<OperatorAndRole> findOperatorAndRoleByOperatorIdAndOrganizationId(Long operatorId, Long organizationId);
 }
