@@ -43,7 +43,7 @@ dependencies {
     compile("com.cisdi.info.ms:cisdi-info-ms-db-mybatis:0.0.8-SNAPSHOT")
     compile("com.cisdi.info.ms:cisdi-info-ms-cms:1.0.0.releases")
 }*/
-group 'xc'
+group 'D4'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
