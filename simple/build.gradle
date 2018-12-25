@@ -11,6 +11,7 @@ version '1.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+
 	//阿里云镜像
     maven {
         url 'http://maven.aliyun.com/nexus/content/groups/public/'
@@ -20,6 +21,7 @@ repositories {
     maven {
         url 'http://192.168.20.83:8081/nexus/content/groups/gogogo/'
     }
+
 
 
     /* maven {
