@@ -21,6 +21,7 @@ import com.cisdi.info.simple.service.member.MemberService;
 import com.cisdi.info.simple.service.organization.EmployeeService;
 import com.cisdi.info.simple.service.permission.OperatorService;
 import com.cisdi.info.simple.service.permission.RoleService;
+import com.cisdi.info.simple.util.D4Util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,8 @@ import java.util.Map;
 public class OperatorServiceBean extends BaseService implements OperatorService {
 
     private static Logger logger = LogManager.getLogger();
-
+@Autowired
+private HttpServletRequest httpServletRequest;
     @Autowired
     private EmployeeService employeeService;
 
@@ -118,6 +120,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
 
     public Map<String, Object> checkOperatorByUserNameAndPassWord(LoginDTO loginDTO) {
         try {
+            D4Util.getIpAdrress(httpServletRequest);
             Map<String, Object> restult = new HashMap<String, Object>();
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = requestAttributes.getRequest();
