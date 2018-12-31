@@ -20,7 +20,7 @@ public class DDDException extends RuntimeException {
     protected Map<String,Object> extendedData = new HashMap<String, Object>();
   
     
-    static
+    static 
     {
     	File file = new File(logPath);
 
