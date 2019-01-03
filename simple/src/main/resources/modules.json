@@ -41,177 +41,6 @@
     "routeParamsObj": "",
     "permissions": []
   },
-  "simple/system/CodeTable": {
-    "code": "simple/system/CodeTable",
-    "name1": "码表",
-    "url": "/simple/system/CodeTable",
-    "route": "/simple/system/CodeTable",
-    "iconClass": "",
-    "displayIndex": 0,
-    "parentCode": "simple/system",
-    "parentName": "系统管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_system_CodeTable_Add",
-        "name1": "新增",
-        "fullName": "simple.系统管理.码表.新增",
-        "moduleCode": "simple/system/CodeTable",
-        "urls": [
-          "/simple/system/CodeTable/createCodeTable",
-          "/simple/system/CodeTable/saveCodeTable",
-          "/simple/system/CodeTable/findCodeTablesWithIdNameByName"
-        ]
-      },
-      {
-        "code": "simple_system_CodeTable_Edit",
-        "name1": "编辑",
-        "fullName": "simple.系统管理.码表.编辑",
-        "moduleCode": "simple/system/CodeTable",
-        "urls": [
-          "/simple/system/CodeTable/findCodeTableForEdit",
-          "/simple/system/CodeTable/updateCodeTable",
-          "/simple/system/CodeTable/findCodeTablesWithIdNameByName"
-        ]
-      },
-      {
-        "code": "simple_system_CodeTable_Delete",
-        "name1": "删除",
-        "fullName": "simple.系统管理.码表.删除",
-        "moduleCode": "simple/system/CodeTable",
-        "urls": [
-          "/simple/system/CodeTable/deleteCodeTable"
-        ]
-      },
-      {
-        "code": "simple_system_CodeTable_View",
-        "name1": "查看",
-        "fullName": "simple.系统管理.码表.查看",
-        "moduleCode": "simple/system/CodeTable",
-        "urls": [
-          "/simple/system/CodeTable/findCodeTables",
-          "/simple/system/CodeTable/findCodeTableForView"
-        ]
-      }
-    ]
-  },
-  "simple/organization/Employee": {
-    "code": "simple/organization/Employee",
-    "name1": "职员",
-    "url": "/simple/organization/Employee",
-    "route": "/simple/organization/Employee",
-    "iconClass": "iconfont icon-zhiyuan",
-    "displayIndex": 0,
-    "parentCode": "simple/organization",
-    "parentName": "组织机构",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_organization_Employee_Add",
-        "name1": "新增",
-        "fullName": "simple.组织机构.职员.新增",
-        "moduleCode": "simple/organization/Employee",
-        "urls": [
-          "/simple/organization/Employee/createEmployee",
-          "/simple/organization/Employee/saveEmployee",
-          "/simple/organization/Department/findDepartmentsWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
-        ]
-      },
-      {
-        "code": "simple_organization_Employee_Edit",
-        "name1": "编辑",
-        "fullName": "simple.组织机构.职员.编辑",
-        "moduleCode": "simple/organization/Employee",
-        "urls": [
-          "/simple/organization/Employee/findEmployeeForEdit",
-          "/simple/organization/Employee/updateEmployee",
-          "/simple/organization/Department/findDepartmentsWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
-        ]
-      },
-      {
-        "code": "simple_organization_Employee_Delete",
-        "name1": "删除",
-        "fullName": "simple.组织机构.职员.删除",
-        "moduleCode": "simple/organization/Employee",
-        "urls": [
-          "/simple/organization/Employee/deleteEmployee"
-        ]
-      },
-      {
-        "code": "simple_organization_Employee_View",
-        "name1": "查看",
-        "fullName": "simple.组织机构.职员.查看",
-        "moduleCode": "simple/organization/Employee",
-        "urls": [
-          "/simple/organization/Employee/findEmployees",
-          "/simple/organization/Employee/findEmployeeForView"
-        ]
-      }
-    ]
-  },
-  "simple/organization/Organization": {
-    "code": "simple/organization/Organization",
-    "name1": "单位",
-    "url": "/simple/organization/Organization",
-    "route": "/simple/organization/Organization",
-    "iconClass": "iconfont icon-danwei",
-    "displayIndex": 0,
-    "parentCode": "simple/organization",
-    "parentName": "组织机构",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_organization_Organization_Add",
-        "name1": "新增",
-        "fullName": "simple.组织机构.单位.新增",
-        "moduleCode": "simple/organization/Organization",
-        "urls": [
-          "/simple/organization/Organization/createOrganization",
-          "/simple/organization/Organization/saveOrganization",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
-        ]
-      },
-      {
-        "code": "simple_organization_Organization_Edit",
-        "name1": "编辑",
-        "fullName": "simple.组织机构.单位.编辑",
-        "moduleCode": "simple/organization/Organization",
-        "urls": [
-          "/simple/organization/Organization/findOrganizationForEdit",
-          "/simple/organization/Organization/updateOrganization",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
-        ]
-      },
-      {
-        "code": "simple_organization_Organization_Delete",
-        "name1": "删除",
-        "fullName": "simple.组织机构.单位.删除",
-        "moduleCode": "simple/organization/Organization",
-        "urls": [
-          "/simple/organization/Organization/deleteOrganization"
-        ]
-      },
-      {
-        "code": "simple_organization_Organization_View",
-        "name1": "查看",
-        "fullName": "simple.组织机构.单位.查看",
-        "moduleCode": "simple/organization/Organization",
-        "urls": [
-          "/simple/organization/Organization/findOrganizations",
-          "/simple/organization/Organization/findAllOrganizations",
-          "/simple/organization/Organization/findOrganizationForView"
-        ]
-      }
-    ]
-  },
   "simple/permission": {
     "code": "simple/permission",
     "name1": "授权",
@@ -1008,9 +837,6 @@
       }
     ]
   },
-
-
-
   "simple/report/reportMesShow": {
     "code": "simple/report/reportMesShow",
     "name1": "统计报表",
@@ -1023,14 +849,189 @@
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
-    "permissions": [{
-      "code": "simple_report_reportMesShow_View",
-      "name1": "查看统计报表",
-      "fullName": "simple.报表管理.统计报表.查看统计报表",
-      "moduleCode": "simple/report/reportMesShow",
-      "urls": ["/simple/report/ModelFile/findModelFiles",
-        "/simple/report/ModelFile/findModelFileForView"]
-    }]
+    "permissions": [
+      {
+        "code": "simple_report_reportMesShow_View",
+        "name1": "查看统计报表",
+        "fullName": "simple.报表管理.统计报表.查看统计报表",
+        "moduleCode": "simple/report/reportMesShow",
+        "urls": [
+          "/simple/report/ModelFile/findModelFiles",
+          "/simple/report/ModelFile/findModelFileForView"
+        ]
+      }
+    ]
+  },
+  "simple/system/CodeTable": {
+    "code": "simple/system/CodeTable",
+    "name1": "码表",
+    "url": "/simple/system/CodeTable",
+    "route": "/simple/system/CodeTable",
+    "iconClass": "",
+    "displayIndex": 0,
+    "parentCode": "simple/system",
+    "parentName": "系统管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_system_CodeTable_Edit",
+        "name1": "编辑",
+        "fullName": "simple.系统管理.码表.编辑",
+        "moduleCode": "simple/system/CodeTable",
+        "urls": [
+          "/simple/system/CodeTable/findCodeTableForEdit",
+          "/simple/system/CodeTable/updateCodeTable",
+          "/simple/system/CodeTable/findCodeTablesWithIdNameByName"
+        ]
+      },
+      {
+        "code": "simple_system_CodeTable_Delete",
+        "name1": "删除",
+        "fullName": "simple.系统管理.码表.删除",
+        "moduleCode": "simple/system/CodeTable",
+        "urls": [
+          "/simple/system/CodeTable/deleteCodeTable"
+        ]
+      },
+      {
+        "code": "simple_system_CodeTable_View",
+        "name1": "查看",
+        "fullName": "simple.系统管理.码表.查看",
+        "moduleCode": "simple/system/CodeTable",
+        "urls": [
+          "/simple/system/CodeTable/findCodeTables",
+          "/simple/system/CodeTable/findCodeTableForView"
+        ]
+      },
+      {
+        "code": "simple_system_CodeTable_Add",
+        "name1": "新增",
+        "fullName": "simple.系统管理.码表.新增",
+        "moduleCode": "simple/system/CodeTable",
+        "urls": [
+          "/simple/system/CodeTable/createCodeTable",
+          "/simple/system/CodeTable/saveCodeTable",
+          "/simple/system/CodeTable/findCodeTablesWithIdNameByName"
+        ]
+      }
+    ]
+  },
+  "simple/organization/Employee": {
+    "code": "simple/organization/Employee",
+    "name1": "职员",
+    "url": "/simple/organization/Employee",
+    "route": "/simple/organization/Employee",
+    "iconClass": "iconfont icon-zhiyuan",
+    "displayIndex": 0,
+    "parentCode": "simple/organization",
+    "parentName": "组织机构",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_organization_Employee_Edit",
+        "name1": "编辑",
+        "fullName": "simple.组织机构.职员.编辑",
+        "moduleCode": "simple/organization/Employee",
+        "urls": [
+          "/simple/organization/Employee/findEmployeeForEdit",
+          "/simple/organization/Employee/updateEmployee",
+          "/simple/organization/Department/findDepartmentsWithIdNameByName",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+        ]
+      },
+      {
+        "code": "simple_organization_Employee_Delete",
+        "name1": "删除",
+        "fullName": "simple.组织机构.职员.删除",
+        "moduleCode": "simple/organization/Employee",
+        "urls": [
+          "/simple/organization/Employee/deleteEmployee"
+        ]
+      },
+      {
+        "code": "simple_organization_Employee_View",
+        "name1": "查看",
+        "fullName": "simple.组织机构.职员.查看",
+        "moduleCode": "simple/organization/Employee",
+        "urls": [
+          "/simple/organization/Employee/findEmployees",
+          "/simple/organization/Employee/findEmployeeForView"
+        ]
+      },
+      {
+        "code": "simple_organization_Employee_Add",
+        "name1": "新增",
+        "fullName": "simple.组织机构.职员.新增",
+        "moduleCode": "simple/organization/Employee",
+        "urls": [
+          "/simple/organization/Employee/createEmployee",
+          "/simple/organization/Employee/saveEmployee",
+          "/simple/organization/Department/findDepartmentsWithIdNameByName",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+        ]
+      }
+    ]
+  },
+  "simple/organization/Organization": {
+    "code": "simple/organization/Organization",
+    "name1": "单位",
+    "url": "/simple/organization/Organization",
+    "route": "/simple/organization/Organization",
+    "iconClass": "iconfont icon-danwei",
+    "displayIndex": 0,
+    "parentCode": "simple/organization",
+    "parentName": "组织机构",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_organization_Organization_Edit",
+        "name1": "编辑",
+        "fullName": "simple.组织机构.单位.编辑",
+        "moduleCode": "simple/organization/Organization",
+        "urls": [
+          "/simple/organization/Organization/findOrganizationForEdit",
+          "/simple/organization/Organization/updateOrganization",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+        ]
+      },
+      {
+        "code": "simple_organization_Organization_Delete",
+        "name1": "删除",
+        "fullName": "simple.组织机构.单位.删除",
+        "moduleCode": "simple/organization/Organization",
+        "urls": [
+          "/simple/organization/Organization/deleteOrganization"
+        ]
+      },
+      {
+        "code": "simple_organization_Organization_View",
+        "name1": "查看",
+        "fullName": "simple.组织机构.单位.查看",
+        "moduleCode": "simple/organization/Organization",
+        "urls": [
+          "/simple/organization/Organization/findOrganizations",
+          "/simple/organization/Organization/findAllOrganizations",
+          "/simple/organization/Organization/findOrganizationForView"
+        ]
+      },
+      {
+        "code": "simple_organization_Employee_Add",
+        "name1": "新增",
+        "fullName": "simple.组织机构.职员.新增",
+        "moduleCode": "simple/organization/Employee",
+        "urls": [
+          "/simple/organization/Employee/createEmployee",
+          "/simple/organization/Employee/saveEmployee",
+          "/simple/organization/Department/findDepartmentsWithIdNameByName",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+        ]
+      }
+    ]
   }
-
 }

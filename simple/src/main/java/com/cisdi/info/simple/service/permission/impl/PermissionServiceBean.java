@@ -14,14 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
 public class PermissionServiceBean extends BaseService implements PermissionService {
+    private static Map<String, Permission> permissionMap = new HashMap<>();
 
     private static Logger logger = LogManager.getLogger();
 
@@ -49,13 +47,7 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
         for (Module module : moduleList) {
             List<Permission> modulePermissions = module.getPermissions();
             for (int i = 0; i < modulePermissions.size(); i++) {
-                Permission permission = new Permission();
-                permission.setFullName(modulePermissions.get(i).getFullName());
-                permission.setCode(modulePermissions.get(i).getCode());
-                permission.setModuleCode(modulePermissions.get(i).getModuleCode());
-                permission.setUrls(modulePermissions.get(i).getUrls());
-                String name = module.getName() + module.getPermissions().get(i).getName();
-                permission.setName(name);
+                Permission permission = modulePermissions.get(i);
                 permissions.add(permission);
             }
         }
@@ -82,44 +74,41 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
     }
 
     @Override
-    public Permission findPermission(Long permissionId) {
-        return this.permissionDao.findPermission(permissionId);
+    public Permission findPermission(String code) {
+        if (permissionMap.size() == 0) {
+            loadPermissions();
+        }
+        return permissionMap.get(code);
     }
 
-    //所有外键的Name都以加载
     @Override
-    public Permission findPermissionWithForeignName(Long permissionId) {
-        return this.permissionDao.findPermissionWithForeignName(permissionId);
+    public Permission findPermissionWithForeignName(String code) {
+        if (permissionMap.size() == 0) {
+            loadPermissions();
+        }
+        return permissionMap.get(code);
     }
 
     @Override
     public Permission savePermission(Permission permission) {
-
-        this.setSavePulicColumns(permission);
-
-        Permission permission1 = this.permissionDao.savePermission(permission);
-
         ModuleManager.addPermission(permission);
-
-        return permission1;
+        return permission;
     }
 
     @Override
     public Permission updatePermission(Permission permission) {
-
-        this.setUpdatePulicColumns(permission);
-
-        Permission permission1 = this.permissionDao.updatePermission(permission);
-
         ModuleManager.updatePermission(permission);
-
-        return permission1;
+        return permission;
     }
 
     @Override
     public void deletePermission(String permissionCode) {
+        if (permissionMap.size() == 0) {
+            loadPermissions();
+        }
         // 这里写删除权限点的
-        if (ModuleManager.removePermission(permissionCode)) {
+        Permission permission = permissionMap.get(permissionCode);
+        if (ModuleManager.removePermission(permission)) {
             logger.debug("删除权限点:" + permissionCode + "成功！");
         } else {
             logger.debug("删除权限点:" + permissionCode + "失败！");
@@ -172,7 +161,31 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
      */
     @Override
     public Integer permissionCount() {
-        return this.permissionDao.permissionCount();
+        return permissionMap.size();
+    }
+
+    /**
+     * 加载所有权限
+     */
+    public void loadPermissions() {
+        // 读取json文件中的模块
+        Collection<Module> moduleCollection = ModuleManager.getAllModules();
+        Iterator iterator = moduleCollection.iterator();
+
+        List<Module> moduleList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            moduleList.add((Module) iterator.next());
+        }
+
+        for (Module module : moduleList) {
+            List<Permission> modulePermissions = module.getPermissions();
+            for (int i = 0; i < modulePermissions.size(); i++) {
+                Permission permission = modulePermissions.get(i);
+                String code = modulePermissions.get(i).getCode();
+                permissionMap.put(code, permission);
+            }
+        }
+
     }
 
 }

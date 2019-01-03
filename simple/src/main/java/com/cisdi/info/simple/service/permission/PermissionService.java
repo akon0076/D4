@@ -14,10 +14,9 @@ public interface PermissionService {
 
     public List<Permission> findAllPermissionsWithIdName();
 
-    public Permission findPermission(Long permissionId);
+    public Permission findPermission(String code);
 
-    //所有外键的Name都以加载
-    public Permission findPermissionWithForeignName(Long permissionId);
+    public Permission findPermissionWithForeignName(String code);
 
     public Permission savePermission(Permission permission);
 

@@ -327,22 +327,8 @@ public class ModuleManager {
                 .disableHtmlEscaping().create(); //防止特殊字符出现乱码
     }
 
-    public static void main(String[] args) {
-        modules = new HashMap<String, Module>();
-
-        Module simpleModule = new Module("simple", "系统管理", "", "", "", 1l, "电脑模块", "是", "");
-        modules.put(simpleModule.getCode(), simpleModule);
-
-//        saveModules("F:\\IDEA\\workspace\\xc-project\\src\\main\\resources\\modules.json");
-        loadModules("F:\\IDEA\\workspace\\xc-project\\src\\main\\resources\\modules.json");
-
-        System.out.println(modules.toString());
-    }
-
-
     /**
      * 权限修改
-     * 大概方法就
      *
      * @param permission 需要修改的权限点
      */
@@ -359,10 +345,6 @@ public class ModuleManager {
                 modulePermissions.remove(i);
             }
         }
-        // 将名字加入进去
-        String[] name = permission.getName().split("_");
-        permission.setName(name[name.length - 1]);
-        // 加入修改过后的权限点进模块里
         modulePermissions.add(permission);
         // 将权限点加入模块
         module.setPermissions(modulePermissions);
@@ -378,19 +360,19 @@ public class ModuleManager {
     /**
      * 移除权限点
      *
-     * @param permissionCode
+     * @param permission
      * @return
      */
-    public static boolean removePermission(String permissionCode) {
+    public static boolean removePermission(Permission permission) {
         // 根据权限中的模块编码获取指定模块
-        Module module = getModules().get(permissionCode);
+        Module module = getModules().get(permission.getModuleCode());
         if (module != null) {
             // 取出模块中所有的权限点
             List<Permission> modulePermissions = module.getPermissions();
             if (modulePermissions != null) {
                 // 遍历权限点，找到满足条件的权限点，并删除。
                 for (int i = 0; i < modulePermissions.size(); i++) {
-                    if (modulePermissions.get(i).getCode().equals(permissionCode)) {
+                    if (modulePermissions.get(i).getCode().equals(permission.getCode())) {
                         modulePermissions.remove(i);
                     }
                 }
@@ -405,13 +387,13 @@ public class ModuleManager {
 
                 return true;
             } else {
-                logger.error("模块 " + permissionCode + " 对应的权限点为空！");
-                throw new DDDException("模块 " + permissionCode + " 对应的权限点为空！");
+                logger.error("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
+                throw new DDDException("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
             }
 
         } else {
-            logger.error("找不到" + permissionCode + "对应的权限点！");
-            throw new DDDException("找不到" + permissionCode + "对应的权限点！");
+            logger.error("找不到" + permission.getModuleCode() + "对应的权限点！");
+            throw new DDDException("找不到" + permission.getModuleCode() + "对应的权限点！");
         }
     }
 
@@ -427,10 +409,6 @@ public class ModuleManager {
         if (module != null) {
             // 取出模块中所有的权限点
             List<Permission> modulePermissions = module.getPermissions();
-            // 将名字加入进去
-            String[] name = permission.getName().split("_");
-            // 将名字设置进入权限对象
-            permission.setName(name[name.length - 1]);
             // 加入修改过后的权限点进模块里
             modulePermissions.add(permission);
             // 将权限点加入模块
@@ -442,9 +420,8 @@ public class ModuleManager {
             // 保存模块
             saveModules(Config.moduleFile);
         } else {
-            logger.error("找不到模块编码为:" + permission.getModuleCode() + "的模块");
-
-            throw new DDDException("找不到模块编码为:" + permission.getModuleCode() + "的模块");
+            logger.error("找不到模块编码为:" + permission.getModuleCode() + "的模块,新增权限点失败");
+            throw new DDDException("找不到模块编码为:" + permission.getModuleCode() + "的模块,新增权限点失败");
         }
 
 
