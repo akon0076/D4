@@ -318,10 +318,10 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     @Override
     public void createSuperUser() {
         Employee employee = this.employeeDao.findEmployeeByCode(SuperUserCode);
-        Long employeeId = 0l;
+        Long id = 0l;
         if (employee == null) {
             employee = new Employee();
-            employee.setEId(employeeId);
+            employee.setEId(id);
             employee.setCode(SuperUserCode);
             employee.setName("超级用户");
             employee.setRemark("这是一个用于开发的超级用户，实际使用时请删除");
@@ -340,6 +340,15 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             superOperator.setPersonId(employee.getEId());
             this.operatorDao.saveOperator(superOperator);
         }
+        Organization organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
+        if (organization == null) {
+            organization = new Organization();
+            organization.setEId(id);
+            organization.setName("逆向CDIO实验室");
+            organization.setBusinessLicenseCode("000");
+            organization.setRemark("这是一个用于开发的组织，实际使用时请删除");
+            this.organizationDao.saveOrganization(organization);
+        }
 
         Role superRole = this.roleService.createSuperRole();
         OperatorAndRole operatorAndRole = this.operatorAndRoleDao.findOperatorAndRoleByOperatorAndRole(SuperUserCode, RoleService.SuperCode);
@@ -347,7 +356,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             operatorAndRole = new OperatorAndRole();
             operatorAndRole.setOperatorId(superOperator.getEId());
             operatorAndRole.setRoleId(superRole.getEId());
-            operatorAndRole.setOrganizationId(0l);
+            operatorAndRole.setOrganizationId(id);
             this.operatorAndRoleDao.saveOperatorAndRole(operatorAndRole);
         }
 
