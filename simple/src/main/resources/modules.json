@@ -70,7 +70,7 @@
     "permissions": [
       {
         "code": "simple_permission_Operator_Add",
-        "name1": "新增",
+        "name1": "新增操作员",
         "fullName": "simple.授权.操作员.新增",
         "moduleCode": "simple/permission/Operator",
         "urls": [
@@ -80,7 +80,7 @@
       },
       {
         "code": "simple_permission_Operator_Edit",
-        "name1": "编辑",
+        "name1": "编辑操作员",
         "fullName": "simple.授权.操作员.编辑",
         "moduleCode": "simple/permission/Operator",
         "urls": [
@@ -90,7 +90,7 @@
       },
       {
         "code": "simple_permission_Operator_Delete",
-        "name1": "删除",
+        "name1": "删除操作员",
         "fullName": "simple.授权.操作员.删除",
         "moduleCode": "simple/permission/Operator",
         "urls": [
@@ -99,7 +99,7 @@
       },
       {
         "code": "simple_permission_Operator_View",
-        "name1": "查看",
+        "name1": "查看操作员",
         "fullName": "simple.授权.操作员.查看",
         "moduleCode": "simple/permission/Operator",
         "urls": [
@@ -124,7 +124,7 @@
     "permissions": [
       {
         "code": "simple_permission_Module_Add",
-        "name1": "新增",
+        "name1": "新增模块",
         "fullName": "simple.授权.模块.新增",
         "moduleCode": "simple/permission/Module",
         "urls": [
@@ -135,7 +135,7 @@
       },
       {
         "code": "simple_permission_Module_Edit",
-        "name1": "编辑",
+        "name1": "编辑模块",
         "fullName": "simple.授权.模块.编辑",
         "moduleCode": "simple/permission/Module",
         "urls": [
@@ -146,7 +146,7 @@
       },
       {
         "code": "simple_permission_Module_Delete",
-        "name1": "删除",
+        "name1": "删除模块",
         "fullName": "simple.授权.模块.删除",
         "moduleCode": "simple/permission/Module",
         "urls": [
@@ -155,7 +155,7 @@
       },
       {
         "code": "simple_permission_Module_View",
-        "name1": "查看",
+        "name1": "查看模块",
         "fullName": "simple.授权.模块.查看",
         "moduleCode": "simple/permission/Module",
         "urls": [
@@ -180,7 +180,7 @@
     "permissions": [
       {
         "code": "simple_permission_Permission_Add",
-        "name1": "新增",
+        "name1": "新增权限点",
         "fullName": "simple.授权.权限点.新增",
         "moduleCode": "simple/permission/Permission",
         "urls": [
@@ -197,7 +197,7 @@
       },
       {
         "code": "simple_permission_Permission_Edit",
-        "name1": "编辑",
+        "name1": "编辑权限点",
         "fullName": "simple.授权.权限点.编辑",
         "moduleCode": "simple/permission/Permission",
         "urls": [
@@ -209,7 +209,7 @@
       },
       {
         "code": "simple_permission_Permission_Delete",
-        "name1": "删除",
+        "name1": "删除权限点",
         "fullName": "simple.授权.权限点.删除",
         "moduleCode": "simple/permission/Permission",
         "urls": [
@@ -219,7 +219,7 @@
       },
       {
         "code": "simple_permission_Permission_View",
-        "name1": "查看",
+        "name1": "查看权限点",
         "fullName": "simple.授权.权限点.查看",
         "moduleCode": "simple/permission/Permission",
         "urls": [
@@ -250,7 +250,7 @@
     "permissions": [
       {
         "code": "simple_permission_Role_Add",
-        "name1": "新增",
+        "name1": "新增角色",
         "fullName": "simple.授权.角色.新增",
         "moduleCode": "simple/permission/Role",
         "urls": [
@@ -265,7 +265,7 @@
       },
       {
         "code": "simple_permission_Role_Edit",
-        "name1": "编辑",
+        "name1": "编辑角色",
         "fullName": "simple.授权.角色.编辑",
         "moduleCode": "simple/permission/Role",
         "urls": [
@@ -280,7 +280,7 @@
       },
       {
         "code": "simple_permission_Role_Delete",
-        "name1": "删除",
+        "name1": "删除角色",
         "fullName": "simple.授权.角色.删除",
         "moduleCode": "simple/permission/Role",
         "urls": [
@@ -290,7 +290,7 @@
       },
       {
         "code": "simple_permission_Role_View",
-        "name1": "查看",
+        "name1": "查看角色",
         "fullName": "simple.授权.角色.查看",
         "moduleCode": "simple/permission/Role",
         "urls": [
@@ -332,7 +332,7 @@
     "permissions": [
       {
         "code": "simple_attachment_Attachment_Add",
-        "name1": "新增",
+        "name1": "新增附件",
         "fullName": "simple.附件.附件.新增",
         "moduleCode": "simple/attachment/Attachment",
         "urls": [
@@ -343,7 +343,7 @@
       },
       {
         "code": "simple_attachment_Attachment_Edit",
-        "name1": "编辑",
+        "name1": "编辑附件",
         "fullName": "simple.附件.附件.编辑",
         "moduleCode": "simple/attachment/Attachment",
         "urls": [
@@ -354,7 +354,7 @@
       },
       {
         "code": "simple_attachment_Attachment_Delete",
-        "name1": "删除",
+        "name1": "删除附件",
         "fullName": "simple.附件.附件.删除",
         "moduleCode": "simple/attachment/Attachment",
         "urls": [
@@ -364,7 +364,7 @@
       },
       {
         "code": "simple_attachment_Attachment_View",
-        "name1": "查看",
+        "name1": "查看附件",
         "fullName": "simple.附件.附件.查看",
         "moduleCode": "simple/attachment/Attachment",
         "urls": [
@@ -405,7 +405,7 @@
     "permissions": [
       {
         "code": "simple_systemConfig_SystemConfig_Add",
-        "name1": "新增",
+        "name1": "新增系统参数",
         "fullName": "simple.系统参数.系统参数.新增",
         "moduleCode": "simple/systemConfig/SystemConfig",
         "urls": [
@@ -415,7 +415,7 @@
       },
       {
         "code": "simple_systemConfig_SystemConfig_Edit",
-        "name1": "编辑",
+        "name1": "编辑系统参数",
         "fullName": "simple.系统参数.系统参数.编辑",
         "moduleCode": "simple/systemConfig/SystemConfig",
         "urls": [
@@ -425,7 +425,7 @@
       },
       {
         "code": "simple_systemConfig_SystemConfig_Delete",
-        "name1": "删除",
+        "name1": "删除系统参数",
         "fullName": "simple.系统参数.系统参数.删除",
         "moduleCode": "simple/systemConfig/SystemConfig",
         "urls": [
@@ -434,7 +434,7 @@
       },
       {
         "code": "simple_systemConfig_SystemConfig_View",
-        "name1": "查看",
+        "name1": "查看系统参数",
         "fullName": "simple.系统参数.系统参数.查看",
         "moduleCode": "simple/systemConfig/SystemConfig",
         "urls": [
@@ -459,7 +459,7 @@
     "permissions": [
       {
         "code": "simple_organization_Department_Add",
-        "name1": "新增",
+        "name1": "新增部门",
         "fullName": "simple.部门.部门.新增",
         "moduleCode": "simple/organization/Department",
         "urls": [
@@ -470,7 +470,7 @@
       },
       {
         "code": "simple_organization_Department_Edit",
-        "name1": "编辑",
+        "name1": "编辑部门",
         "fullName": "simple.部门.部门.编辑",
         "moduleCode": "simple/organization/Department",
         "urls": [
@@ -481,7 +481,7 @@
       },
       {
         "code": "simple_organization_Department_Delete",
-        "name1": "删除",
+        "name1": "删除部门",
         "fullName": "simple.部门.部门.删除",
         "moduleCode": "simple/organization/Department",
         "urls": [
@@ -490,7 +490,7 @@
       },
       {
         "code": "simple_organization_Department_View",
-        "name1": "查看",
+        "name1": "查看部门",
         "fullName": "simple.部门.部门.查看",
         "moduleCode": "simple/organization/Department",
         "urls": [
@@ -529,7 +529,7 @@
     "permissions": [
       {
         "code": "simple_qingTui_EmpOpenId_Add",
-        "name1": "新增",
+        "name1": "新增人员与应用",
         "fullName": "simple.人员与应用.人员与应用.新增",
         "moduleCode": "simple/qingTui/EmpOpenId",
         "urls": [
@@ -543,7 +543,7 @@
       },
       {
         "code": "simple_qingTui_EmpOpenId_Edit",
-        "name1": "编辑",
+        "name1": "编辑人员与应用",
         "fullName": "simple.人员与应用.人员与应用.编辑",
         "moduleCode": "simple/qingTui/EmpOpenId",
         "urls": [
@@ -556,7 +556,7 @@
       },
       {
         "code": "simple_qingTui_EmpOpenId_Delete",
-        "name1": "删除",
+        "name1": "删除人员与应用",
         "fullName": "simple.人员与应用.人员与应用.删除",
         "moduleCode": "simple/qingTui/EmpOpenId",
         "urls": [
@@ -565,7 +565,7 @@
       },
       {
         "code": "simple_qingTui_EmpOpenId_View",
-        "name1": "查看",
+        "name1": "查看人员与应用",
         "fullName": "simple.人员与应用.人员与应用.查看",
         "moduleCode": "simple/qingTui/EmpOpenId",
         "urls": [
@@ -590,7 +590,7 @@
     "permissions": [
       {
         "code": "simple_regist_EmployeRegist_Add",
-        "name1": "新增",
+        "name1": "新增人员注册审核",
         "fullName": "simple.注册审核.人员注册审核.新增",
         "moduleCode": "simple/regist/EmployeRegist",
         "urls": [
@@ -601,7 +601,7 @@
       },
       {
         "code": "simple_regist_EmployeRegist_Edit",
-        "name1": "编辑",
+        "name1": "编辑人员注册审核",
         "fullName": "simple.注册审核.人员注册审核.编辑",
         "moduleCode": "simple/regist/EmployeRegist",
         "urls": [
@@ -612,7 +612,7 @@
       },
       {
         "code": "simple_regist_EmployeRegist_Delete",
-        "name1": "删除",
+        "name1": "删除人员注册审核",
         "fullName": "simple.注册审核.人员注册审核.删除",
         "moduleCode": "simple/regist/EmployeRegist",
         "urls": [
@@ -621,7 +621,7 @@
       },
       {
         "code": "simple_regist_EmployeRegist_View",
-        "name1": "查看",
+        "name1": "查看人员注册审核",
         "fullName": "simple.注册审核.人员注册审核.查看",
         "moduleCode": "simple/regist/EmployeRegist",
         "urls": [
@@ -646,7 +646,7 @@
     "permissions": [
       {
         "code": "simple_regist_OrganizationRegist_Add",
-        "name1": "新增",
+        "name1": "新增单位注册审核",
         "fullName": "simple.注册审核.单位注册审核.新增",
         "moduleCode": "simple/regist/OrganizationRegist",
         "urls": [
@@ -657,7 +657,7 @@
       },
       {
         "code": "simple_regist_OrganizationRegist_Edit",
-        "name1": "编辑",
+        "name1": "编辑单位注册审核",
         "fullName": "simple.注册审核.单位注册审核.编辑",
         "moduleCode": "simple/regist/OrganizationRegist",
         "urls": [
@@ -668,7 +668,7 @@
       },
       {
         "code": "simple_regist_OrganizationRegist_Delete",
-        "name1": "删除",
+        "name1": "删除单位注册审核",
         "fullName": "simple.注册审核.单位注册审核.删除",
         "moduleCode": "simple/regist/OrganizationRegist",
         "urls": [
@@ -677,7 +677,7 @@
       },
       {
         "code": "simple_regist_OrganizationRegist_View",
-        "name1": "查看",
+        "name1": "查看单位注册审核",
         "fullName": "simple.注册审核.单位注册审核.查看",
         "moduleCode": "simple/regist/OrganizationRegist",
         "urls": [
@@ -702,7 +702,7 @@
     "permissions": [
       {
         "code": "simple_regist_MemberRegist_Add",
-        "name1": "新增",
+        "name1": "新增商家注册审核",
         "fullName": "simple.商家注册审核.商家注册审核.新增",
         "moduleCode": "simple/regist/MemberRegist",
         "urls": [
@@ -712,7 +712,7 @@
       },
       {
         "code": "simple_regist_MemberRegist_Edit",
-        "name1": "编辑",
+        "name1": "编辑商家注册审核",
         "fullName": "simple.商家注册审核.商家注册审核.编辑",
         "moduleCode": "simple/regist/MemberRegist",
         "urls": [
@@ -722,7 +722,7 @@
       },
       {
         "code": "simple_regist_MemberRegist_Delete",
-        "name1": "删除",
+        "name1": "删除商家注册审核",
         "fullName": "simple.商家注册审核.商家注册审核.删除",
         "moduleCode": "simple/regist/MemberRegist",
         "urls": [
@@ -731,7 +731,7 @@
       },
       {
         "code": "simple_regist_MemberRegist_View",
-        "name1": "查看",
+        "name1": "查看商家注册审核",
         "fullName": "simple.商家注册审核.商家注册审核.查看",
         "moduleCode": "simple/regist/MemberRegist",
         "urls": [
@@ -798,7 +798,7 @@
     "permissions": [
       {
         "code": "simple_report_ModelFile_Add",
-        "name1": "新增",
+        "name1": "新增模板文件管理",
         "fullName": "simple.报表管理.模板文件管理.新增",
         "moduleCode": "simple/report/ModelFile",
         "urls": [
@@ -808,7 +808,7 @@
       },
       {
         "code": "simple_report_ModelFile_Edit",
-        "name1": "编辑",
+        "name1": "编辑模板文件管理",
         "fullName": "simple.报表管理.模板文件管理.编辑",
         "moduleCode": "simple/report/ModelFile",
         "urls": [
@@ -818,7 +818,7 @@
       },
       {
         "code": "simple_report_ModelFile_Delete",
-        "name1": "删除",
+        "name1": "删除模板文件管理",
         "fullName": "simple.报表管理.模板文件管理.删除",
         "moduleCode": "simple/report/ModelFile",
         "urls": [
@@ -827,7 +827,7 @@
       },
       {
         "code": "simple_report_ModelFile_View",
-        "name1": "查看",
+        "name1": "查看模板文件管理",
         "fullName": "simple.报表管理.模板文件管理.查看",
         "moduleCode": "simple/report/ModelFile",
         "urls": [
@@ -852,7 +852,7 @@
     "permissions": [
       {
         "code": "simple_report_reportMesShow_View",
-        "name1": "查看统计报表",
+        "name1": "查看统计报表统计报表",
         "fullName": "simple.报表管理.统计报表.查看统计报表",
         "moduleCode": "simple/report/reportMesShow",
         "urls": [
@@ -877,7 +877,7 @@
     "permissions": [
       {
         "code": "simple_system_CodeTable_Edit",
-        "name1": "编辑",
+        "name1": "编辑码表",
         "fullName": "simple.系统管理.码表.编辑",
         "moduleCode": "simple/system/CodeTable",
         "urls": [
@@ -888,7 +888,7 @@
       },
       {
         "code": "simple_system_CodeTable_Delete",
-        "name1": "删除",
+        "name1": "删除码表",
         "fullName": "simple.系统管理.码表.删除",
         "moduleCode": "simple/system/CodeTable",
         "urls": [
@@ -897,7 +897,7 @@
       },
       {
         "code": "simple_system_CodeTable_View",
-        "name1": "查看",
+        "name1": "查看码表",
         "fullName": "simple.系统管理.码表.查看",
         "moduleCode": "simple/system/CodeTable",
         "urls": [
@@ -907,7 +907,7 @@
       },
       {
         "code": "simple_system_CodeTable_Add",
-        "name1": "新增",
+        "name1": "新增码表",
         "fullName": "simple.系统管理.码表.新增",
         "moduleCode": "simple/system/CodeTable",
         "urls": [
@@ -933,7 +933,7 @@
     "permissions": [
       {
         "code": "simple_organization_Employee_Edit",
-        "name1": "编辑",
+        "name1": "编辑职员",
         "fullName": "simple.组织机构.职员.编辑",
         "moduleCode": "simple/organization/Employee",
         "urls": [
@@ -945,7 +945,7 @@
       },
       {
         "code": "simple_organization_Employee_Delete",
-        "name1": "删除",
+        "name1": "删除职员",
         "fullName": "simple.组织机构.职员.删除",
         "moduleCode": "simple/organization/Employee",
         "urls": [
@@ -954,7 +954,7 @@
       },
       {
         "code": "simple_organization_Employee_View",
-        "name1": "查看",
+        "name1": "查看职员",
         "fullName": "simple.组织机构.职员.查看",
         "moduleCode": "simple/organization/Employee",
         "urls": [
@@ -964,7 +964,7 @@
       },
       {
         "code": "simple_organization_Employee_Add",
-        "name1": "新增",
+        "name1": "新增职员",
         "fullName": "simple.组织机构.职员.新增",
         "moduleCode": "simple/organization/Employee",
         "urls": [
@@ -991,7 +991,7 @@
     "permissions": [
       {
         "code": "simple_organization_Organization_Edit",
-        "name1": "编辑",
+        "name1": "编辑单位",
         "fullName": "simple.组织机构.单位.编辑",
         "moduleCode": "simple/organization/Organization",
         "urls": [
@@ -1002,7 +1002,7 @@
       },
       {
         "code": "simple_organization_Organization_Delete",
-        "name1": "删除",
+        "name1": "删除单位",
         "fullName": "simple.组织机构.单位.删除",
         "moduleCode": "simple/organization/Organization",
         "urls": [
@@ -1011,25 +1011,13 @@
       },
       {
         "code": "simple_organization_Organization_View",
-        "name1": "查看",
+        "name1": "查看单位",
         "fullName": "simple.组织机构.单位.查看",
         "moduleCode": "simple/organization/Organization",
         "urls": [
           "/simple/organization/Organization/findOrganizations",
           "/simple/organization/Organization/findAllOrganizations",
           "/simple/organization/Organization/findOrganizationForView"
-        ]
-      },
-      {
-        "code": "simple_organization_Employee_Add",
-        "name1": "新增",
-        "fullName": "simple.组织机构.职员.新增",
-        "moduleCode": "simple/organization/Employee",
-        "urls": [
-          "/simple/organization/Employee/createEmployee",
-          "/simple/organization/Employee/saveEmployee",
-          "/simple/organization/Department/findDepartmentsWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
         ]
       }
     ]

@@ -354,8 +354,8 @@ public class ModuleManager {
         getModules().put(module.getCode(), module);
         // 保存模块
         saveModules(Config.moduleFile);
-    }
 
+    }
 
     /**
      * 移除权限点
