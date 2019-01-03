@@ -125,26 +125,20 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = requestAttributes.getRequest();
 
-            boolean captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
             Operator operator = new Operator();
-            if (captcha) {
-                String[] username = loginDTO.getUserName().split("@");
-                if (username.length > 1) {//邮箱登录
-                    operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
-                } else {//用户名登录
-                    operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
-                }
-                restult.put("captcha", true);
-                if (operator != null) {
-                    restult.put("isLogin", true);
-                    restult.put("loginUser", this.setLoginUser(operator, loginDTO.getOrganizationId()));
-                    restult.put("type", operator.getType());
-                } else {
-                    restult.put("isLogin", false);
-                }
-
+            String[] username = loginDTO.getUserName().split("@");
+            if (username.length > 1) {//邮箱登录
+                operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
+            } else {//用户名登录
+                operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
+            }
+            restult.put("captcha", true);
+            if (operator != null) {
+                restult.put("isLogin", true);
+                restult.put("loginUser", this.setLoginUser(operator, loginDTO.getOrganizationId()));
+                restult.put("type", operator.getType());
             } else {
-                restult.put("captcha", false);
+                restult.put("isLogin", false);
             }
             return restult;
         } catch (Exception e) {
@@ -206,10 +200,32 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         return null;
     }
 
-    public List<Organization> getOrganizations(LoginDTO loginDTO) {
-        Operator operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
-        List<Organization> organizations = this.getOrganization(operator);
-        return organizations;
+    public Map<String, Object> getOrganizations(LoginDTO loginDTO) {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        Map<String, Object> result = new HashMap<String, Object>();
+        boolean captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
+        if (captcha) {
+            Operator operator = new Operator();
+            String[] username = loginDTO.getUserName().split("@");
+            if (username.length > 1) {//邮箱登录
+                operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
+            } else {//用户名登录
+                operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
+            }
+            result.put("captcha", true);
+            if (operator != null) {
+                List<Organization> organizations = this.getOrganization(operator);
+                result.put("isLogin", true);
+                result.put("organizations", organizations);
+            } else {
+                result.put("isLogin", false);
+            }
+
+        } else {
+            result.put("captcha", false);
+        }
+        return result;
     }
 
     private LoginUser setLoginUser(Operator userOperator, Long organizationId) throws Exception {

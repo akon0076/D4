@@ -5,7 +5,6 @@ package com.cisdi.info.simple.controller.permission;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.permission.PermissionEditDto;
-import com.cisdi.info.simple.dto.permission.PermissionListDto;
 import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.permission.PermissionService;
 import org.apache.logging.log4j.LogManager;
@@ -154,9 +153,9 @@ public class PermissionController {
 	}
 
 	@GetMapping("/deletePermission")
-	public void deletePermission(@RequestParam Long permissionId)
+	public void deletePermission(@RequestParam String permissionCode)
 	{
-		this.permissionService.deletePermission(permissionId);
+		this.permissionService.deletePermission(permissionCode);
 	}
 	@GetMapping("/findPermissionsWithIdNameById")
 	public Permission findPermissionsWithIdNameById(@RequestParam Long permissionId)

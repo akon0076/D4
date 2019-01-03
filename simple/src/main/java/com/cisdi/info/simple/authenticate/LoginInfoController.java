@@ -88,7 +88,7 @@ public class LoginInfoController {
     }
 
     @PostMapping("/getOrganizations")
-    public List<Organization> getOrganization(@Valid @RequestBody LoginDTO loginDTO) {
+    public Map<String, Object> getOrganization(@Valid @RequestBody LoginDTO loginDTO) {
         return this.operatorService.getOrganizations(loginDTO);
     }
 

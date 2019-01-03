@@ -1,9 +1,7 @@
 package com.cisdi.info.simple.service.permission;
 
-import com.cisdi.info.simple.dao.permission.PermissionDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import com.cisdi.info.simple.dto.permission.PermissionListDto;
 import com.cisdi.info.simple.entity.permission.Permission;
 
 import java.util.List;
@@ -25,7 +23,7 @@ public interface PermissionService {
 
     public Permission updatePermission(Permission permission);
 
-    public void deletePermission(Long permissionId);
+    public void deletePermission(String permissionCode);
 
     public List<Permission> getAllPermissions();
 

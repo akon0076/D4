@@ -1,10 +1,8 @@
 package com.cisdi.info.simple.service.permission.impl;
 
-import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.dao.permission.PermissionDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import com.cisdi.info.simple.dto.permission.PermissionListDto;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.base.BaseService;
@@ -13,12 +11,11 @@ import com.cisdi.info.simple.util.ModuleManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,15 +28,45 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
     @Autowired
     private PermissionDao permissionDao;
 
+    /**
+     * 根据分页参数查询权限点
+     *
+     * @param pageDTO 分页参数
+     * @return
+     */
     @Override
     public PageResultDTO findPermissions(PageDTO pageDTO) {
-        pageDTO.setStartIndex((pageDTO.getCurrentPage()-1)*pageDTO.getPageSize());
-        List<Permission> roleDTOS = this.permissionDao.findPermissions(pageDTO);
-        Long totalCount = this.permissionDao.findPermissionTotalCount(pageDTO);
+        // 读取json文件中的模块
+        Collection<Module> moduleCollection = ModuleManager.getAllModules();
+        Iterator iterator = moduleCollection.iterator();
+
+        List<Module> moduleList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            moduleList.add((Module) iterator.next());
+        }
+
+        List<Permission> permissions = new ArrayList<>();
+        for (Module module : moduleList) {
+            List<Permission> modulePermissions = module.getPermissions();
+            for (int i = 0; i < modulePermissions.size(); i++) {
+                Permission permission = new Permission();
+                permission.setFullName(modulePermissions.get(i).getFullName());
+                permission.setCode(modulePermissions.get(i).getCode());
+                permission.setModuleCode(modulePermissions.get(i).getModuleCode());
+                permission.setUrls(modulePermissions.get(i).getUrls());
+                String name = module.getName() + module.getPermissions().get(i).getName();
+                permission.setName(name);
+                permissions.add(permission);
+            }
+        }
+        int startIndex = (pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize();
+        int pageSize = pageDTO.getPageSize();
+        long totalCount = permissions.size();
+        List<Permission> permissionList = permissions.subList(startIndex, startIndex + pageSize);
 
         PageResultDTO pageResultDTO = new PageResultDTO();
+        pageResultDTO.setDatas(permissionList);
         pageResultDTO.setTotalCount(totalCount);
-        pageResultDTO.setDatas(roleDTOS);
 
         return pageResultDTO;
     }
@@ -90,28 +117,12 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
     }
 
     @Override
-    public void deletePermission(Long permissionId) {
-        Permission permission = findPermission(permissionId);
-        if(permission != null){
-            this.permissionDao.deletePermission(permissionId);
-            String code  = permission.getCode();
-            if(code != null){
-                // 这里写删除权限点的
-                if(ModuleManager.removePermission(permission)){
-                    logger.debug("删除权限点:" + code + "成功！");
-                }else {
-                    logger.debug("删除权限点:" + code + "失败！");
-                }
-            }else {
-
-                logger.error("找不到"+ permissionId + "对应权限点编码！");
-
-                throw  new DDDException("找不到"+ permissionId + "对应模块编码！");
-            }
-        }else {
-            logger.error("找不到权限点ID为" + permissionId + "的权限点！");
-
-            throw  new DDDException("找不到权限点ID为" + permissionId + "的权限点！");
+    public void deletePermission(String permissionCode) {
+        // 这里写删除权限点的
+        if (ModuleManager.removePermission(permissionCode)) {
+            logger.debug("删除权限点:" + permissionCode + "成功！");
+        } else {
+            logger.debug("删除权限点:" + permissionCode + "失败！");
         }
     }
 
@@ -126,12 +137,13 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
 
     /**
      * 保存到数据库
-     * @param permissions  从module.json中获取的权限
+     *
+     * @param permissions 从module.json中获取的权限
      */
     @Override
     public void savePermissionsToDataBase(List<Permission> permissions) {
         Integer count = 0;
-        for(Permission permission : permissions){
+        for (Permission permission : permissions) {
             this.permissionDao.savePermission(permission);
             count++;
         }
@@ -140,23 +152,27 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
 
     /**
      * 更新module.json的文件
+     *
      * @param permissions 从module.json中获取的权限
      */
     @Override
     public void updatePermissionsToDataBase(List<Permission> permissions) {
         Integer count = 0;
-        for(Permission permission : permissions){
+        for (Permission permission : permissions) {
             this.permissionDao.updatePermission(permission);
             count++;
         }
         logger.info("权限条数:" + count);
     }
+
     /**
      * 获取权限点总数
+     *
      * @return 权限点数量
      */
     @Override
     public Integer permissionCount() {
         return this.permissionDao.permissionCount();
     }
+
 }

@@ -378,19 +378,19 @@ public class ModuleManager {
     /**
      * 移除权限点
      *
-     * @param permission
+     * @param permissionCode
      * @return
      */
-    public static boolean removePermission(Permission permission) {
+    public static boolean removePermission(String permissionCode) {
         // 根据权限中的模块编码获取指定模块
-        Module module = getModules().get(permission.getModuleCode());
+        Module module = getModules().get(permissionCode);
         if (module != null) {
             // 取出模块中所有的权限点
             List<Permission> modulePermissions = module.getPermissions();
             if (modulePermissions != null) {
                 // 遍历权限点，找到满足条件的权限点，并删除。
                 for (int i = 0; i < modulePermissions.size(); i++) {
-                    if (modulePermissions.get(i).getCode().equals(permission.getCode())) {
+                    if (modulePermissions.get(i).getCode().equals(permissionCode)) {
                         modulePermissions.remove(i);
                     }
                 }
@@ -405,15 +405,13 @@ public class ModuleManager {
 
                 return true;
             } else {
-                logger.error("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
-
-                throw new DDDException("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
+                logger.error("模块 " + permissionCode + " 对应的权限点为空！");
+                throw new DDDException("模块 " + permissionCode + " 对应的权限点为空！");
             }
 
         } else {
-            logger.error("找不到" + permission.getModuleCode() + "对应的权限点！");
-
-            throw new DDDException("找不到" + permission.getModuleCode() + "对应的权限点！");
+            logger.error("找不到" + permissionCode + "对应的权限点！");
+            throw new DDDException("找不到" + permissionCode + "对应的权限点！");
         }
     }
 
