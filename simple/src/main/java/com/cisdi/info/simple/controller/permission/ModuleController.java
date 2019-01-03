@@ -143,18 +143,6 @@ public class ModuleController {
 		moduleEditDto.setParentModules(this.moduleService.findAllModulesWithIdName());
 	}
 
-	@PostMapping("/saveModule")
-	public Module saveModule(@RequestBody Module module)
-	{
-		return this.moduleService.saveModule(module);
-	}
-
-	@PostMapping("/updateModule")
-	public Module updateModule(@RequestBody Module module)
-	{
-		return this.moduleService.updateModule(module);
-	}
-
 	@GetMapping("/deleteModule")
 	public void deleteModule(@RequestParam Long moduleId)
 	{

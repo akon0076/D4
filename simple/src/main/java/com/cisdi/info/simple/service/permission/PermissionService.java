@@ -27,18 +27,6 @@ public interface PermissionService {
     public List<Permission> getAllPermissions();
 
     /**
-     * 初始化数据到权限列表
-     * @param permissions  从module.json中获取的权限
-     */
-    void savePermissionsToDataBase(List<Permission> permissions);
-
-    /**
-     * 更新权限数据到列表
-     * @param permissions 从module.json中获取的权限
-     */
-    void updatePermissionsToDataBase(List<Permission> permissions);
-
-    /**
      * 权限点总数
      * @return 获取权限点总数
      */

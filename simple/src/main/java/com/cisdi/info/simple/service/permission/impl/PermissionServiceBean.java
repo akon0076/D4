@@ -65,12 +65,29 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
 
     @Override
     public List<Permission> findAllPermissions() {
-        return this.permissionDao.findAllPermissions();
+        // 读取json文件中的模块
+        Collection<Module> moduleCollection = ModuleManager.getAllModules();
+        Iterator iterator = moduleCollection.iterator();
+
+        List<Module> moduleList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            moduleList.add((Module) iterator.next());
+        }
+
+        List<Permission> permissions = new ArrayList<>();
+        for (Module module : moduleList) {
+            List<Permission> modulePermissions = module.getPermissions();
+            for (int i = 0; i < modulePermissions.size(); i++) {
+                Permission permission = modulePermissions.get(i);
+                permissions.add(permission);
+            }
+        }
+        return permissions;
     }
 
     @Override
     public List<Permission> findAllPermissionsWithIdName() {
-        return this.permissionDao.findAllPermissionsWithIdName();
+        return null;
     }
 
     @Override
@@ -122,36 +139,6 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
             permissions.addAll(module.getPermissions());
         }
         return permissions;
-    }
-
-    /**
-     * 保存到数据库
-     *
-     * @param permissions 从module.json中获取的权限
-     */
-    @Override
-    public void savePermissionsToDataBase(List<Permission> permissions) {
-        Integer count = 0;
-        for (Permission permission : permissions) {
-            this.permissionDao.savePermission(permission);
-            count++;
-        }
-        logger.info("权限条数:" + count);
-    }
-
-    /**
-     * 更新module.json的文件
-     *
-     * @param permissions 从module.json中获取的权限
-     */
-    @Override
-    public void updatePermissionsToDataBase(List<Permission> permissions) {
-        Integer count = 0;
-        for (Permission permission : permissions) {
-            this.permissionDao.updatePermission(permission);
-            count++;
-        }
-        logger.info("权限条数:" + count);
     }
 
     /**
