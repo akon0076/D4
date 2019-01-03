@@ -3,6 +3,7 @@ package com.cisdi.info.simple.service.permission;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
+import com.cisdi.info.simple.entity.organization.Organization;
 import com.cisdi.info.simple.entity.permission.Operator;
 
 import java.util.List;
@@ -32,6 +33,8 @@ public interface OperatorService {
     public void deleteOperator(Long operatorId);
 
     public Map<String, Object> checkOperatorByUserNameAndPassWord(LoginDTO loginDTO);
+
+    public List<Organization> getOrganizations(LoginDTO loginDTO);
 
     public Map<String, Object> mobileCheckOperatorByUserNameAndPassWord(LoginDTO loginDTO);
 

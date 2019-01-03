@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
  * @author 许洲
  * userRoles 此次登陆人对应的角色
  * loginVip 后台登陆 该值为空
@@ -17,7 +16,7 @@ import java.util.List;
  * userName 登陆人名称
  * userPermissionsCode 登陆人所有的权限编码
  */
-public class LoginUser implements Serializable{
+public class LoginUser implements Serializable {
 
 	private static final long serialVersionUID = 4510107943850149711L;
 
@@ -38,11 +37,13 @@ public class LoginUser implements Serializable{
 		this.loginMember = loginMember;
 	}
 
-	private  Member  loginMember;
+	private Member loginMember;
 
 	private String userName;
 
 	private Organization currentOrganization;
+
+	private List<Organization> organizations;
 
 	public List<Long> getUserRoles() {
 		return userRoles;
@@ -90,5 +91,13 @@ public class LoginUser implements Serializable{
 
 	public void setLoginEmployee(Employee loginEmployee) {
 		this.loginEmployee = loginEmployee;
+	}
+
+	public List<Organization> getOrganizations() {
+		return organizations;
+	}
+
+	public void setOrganizations(List<Organization> organizations) {
+		this.organizations = organizations;
 	}
 }

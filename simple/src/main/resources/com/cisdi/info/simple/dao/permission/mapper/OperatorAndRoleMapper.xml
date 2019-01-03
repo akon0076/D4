@@ -180,7 +180,7 @@
     </delete>
 
     <!-- 根据operator_id查询所有对应的角色信息 -->
-    <select id="findOperatorAndRoleByOperatorIdAndOrganizationId" resultMap="OperatorAndRoleList" >
+    <select id="findOperatorAndRoleByOperatorId" resultMap="OperatorAndRoleList" >
         select
             simple_operator_and_role.eId,
             simple_operator_and_role.operator_id,
@@ -189,6 +189,5 @@
         from
             simple_operator_and_role
         where simple_operator_and_role.operator_id = #{operatorId}
-        and simple_operator_and_role.organization_id = #{organizationId}
     </select>
 </mapper>
