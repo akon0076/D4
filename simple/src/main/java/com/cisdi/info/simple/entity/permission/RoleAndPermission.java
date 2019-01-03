@@ -1,13 +1,12 @@
 package com.cisdi.info.simple.entity.permission;
 
-import com.cisdi.info.simple.entity.base.*;
-import javax.persistence.*;
-import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 
-import java.util.Date;
-import com.cisdi.info.simple.entity.organization.Organization;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import java.io.Serializable;
 
 @DEntity(label="角色权限点",comment="",moduleLabel="授权")
 @Entity(name="simple_role_and_permission")
@@ -21,6 +20,10 @@ public class RoleAndPermission extends BaseEntity implements Serializable{
 	@DColumn(index=4,label="角色Id",comment="角色Id")
 	@Column(name="roleId",length=200,nullable=false,unique=false)
 	private Long roleId;
+
+	@DColumn(index=5,label="模块编码",comment="模块编码")
+	@Column(name="moduleCode",length=200,nullable=false,unique=false)
+	private String moduleCode;
 
 
 	public RoleAndPermission() {
@@ -46,5 +49,13 @@ public class RoleAndPermission extends BaseEntity implements Serializable{
 
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
+	}
+
+	public String getModuleCode() {
+		return moduleCode;
+	}
+
+	public void setModuleCode(String moduleCode) {
+		this.moduleCode = moduleCode;
 	}
 }

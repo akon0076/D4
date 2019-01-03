@@ -1,87 +1,57 @@
 package com.cisdi.info.simple.entity.permission;
 
-import com.cisdi.info.simple.entity.base.*;
-import javax.persistence.*;
-import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
-import com.cisdi.info.simple.annotation.DEntity;
-
-import java.util.ArrayList;
-import java.util.Date;
-import com.cisdi.info.simple.entity.organization.Organization;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-@DEntity(label="模块",comment="",moduleLabel="授权")
-@Entity(name="simple_module")
 public class Module extends BaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Expose
-	@DColumn(index = 3, label = "编码", comment = "编码")
-	@Column(length = 200, nullable = false, unique = true)
 	private String code;
 
 	@SerializedName("name1")
 	@Expose
-	@DColumn(index = 4, label = "名称", comment = "名称")
-	@Column(length = 200, nullable = true, unique = false)
 	private String name;
 
 	@Expose
-	@DColumn(index = 5, label = "URL地址", comment = "地址")
-	@Column(length = 500, nullable = true, unique = false)
 	private String url;
 
 	@Expose
-	@DColumn(index = 6, label = "路由", comment = "路由")
-	@Column(length = 200, nullable = true, unique = false)
 	private String route;
 
 
 	@Expose
-	@DColumn(index = 7, label = "图标", comment = "图标")
-	@Column(length = 200, nullable = true, unique = false)
-
 	private String iconClass;
 
 	@Expose
-	@DColumn(index = 8, label = "显示顺序", comment = "显示顺序")
-	@Column(length = 250, nullable = true, unique = false)
 	private Long displayIndex;
 
-	@DColumn(index = 9, label = "上级模块", foreignEntity = "Module", comment = "上级模块")
-	@Column(length = 250, nullable = true, unique = false)
 	private Long parentId;
 
 	@Transient
 	private Module parent;
 
 	@Expose
-	@DColumn(index = 10, label = "上级模块编码", comment = "上级模块编码")
-	@Column(length = 500, nullable = true, unique = false)
 	private String parentCode;
 
 	@Expose
 	@Transient
-	@DColumn(index = 9, label = "上级模块", foreignEntity = "Module", comment = "上级模块")
 	private String parentName;
 
 	@Expose
-	@DColumn(index = 10, label = "模块类型", codeTable = "模块类型", comment = "模块类型")
-	@Column(length = 250, nullable = true, unique = false)
 	private String moduleType;
 
 	@Expose
-	@DColumn(index = 11, label = "在用", codeTable = "逻辑", comment = "在用")
-	@Column(length = 250, nullable = true, unique = false)
 	private String isInUse;
 
 	@Expose
-	@DColumn(index = 12, label = "路由参数对象", comment = "路由参数对象")
-	@Column(length = 200, nullable = true, unique = false)
 	private String routeParamsObj;
 
 	@Transient

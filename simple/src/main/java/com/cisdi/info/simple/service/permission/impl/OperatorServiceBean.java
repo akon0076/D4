@@ -321,6 +321,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         Long employeeId = 0l;
         if (employee == null) {
             employee = new Employee();
+            employee.setEId(employeeId);
             employee.setCode(SuperUserCode);
             employee.setName("超级用户");
             employee.setRemark("这是一个用于开发的超级用户，实际使用时请删除");
