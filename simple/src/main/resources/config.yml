@@ -1,13 +1,13 @@
 simple:
-  workspapce: E:\\SpringBoot\\workplace
+  workspapce: D:\\CodeSpace\\ideaWorkspace\\graduateDesign
   serverPath: ${workspapce}\\D4\\simple
   uiPath: ${workspapce}\\D4_pc_ui
   codeTablesFile: ${serverPath}\\src\\main\\resources\\codetables.json
   moduleFile: ${serverPath}\\src\\main\\resources\\modules.json
   velocityTemplate: ${serverPath}\\src\\main\\resources
-  exceptionLogPath: D:\\DDDException
-  uploadFileAddress: D:\\spring_files
-  staticFilePath: D:\\DDDFile\\
+  exceptionLogPath: D:\\D4\\DDDException
+  uploadFileAddress: D:\\D4\\spring_files
+  staticFilePath: D:\\D4\\DDDFile\\
 
   applicationName: 框架
   applicationCode: DDD4

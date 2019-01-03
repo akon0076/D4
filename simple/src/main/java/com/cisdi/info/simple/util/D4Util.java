@@ -6,8 +6,8 @@ import com.cisdi.info.simple.entity.base.Condition;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -167,4 +167,35 @@ public class D4Util {
         return null;
     }
 */
+
+    /**
+     * 处理数据方法
+     * <p>批量将List<Object>类型的数据转换成List<Map<T>>的数据</p>
+     * @param rows 行数据
+     * @return rowList 返回处理的结果 List<Map<String ,String>> 其中是已经处理好的  对象->map
+     * @author gjt
+     */
+    public static List<Map> objectToListMap(List<Object> rows ) {
+
+        if (rows.size() < 0) {
+            throw new DDDException("传入数据不能为空");
+        }
+
+        List<Map> rowList = new ArrayList<>();
+        for (int i = 0; i < rows.size(); i++) {
+            Class clazz = rows.get(i).getClass();
+            Field[] fields = clazz.getDeclaredFields();
+            Map<String, Object> getFieldsNames = new HashMap<>();
+            for (int j = 0; j < fields.length; j++) {
+                fields[j].setAccessible(true);
+                try {
+                    getFieldsNames.put(fields[j].getName() ,fields[j].get(rows.get(i)));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            rowList.add(getFieldsNames);
+        }
+        return rowList;
+    }
 }
