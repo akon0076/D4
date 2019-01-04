@@ -4,8 +4,10 @@ import com.cisdi.info.simple.dao.permission.RoleAndPermissionDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.permission.RoleAndPermissionDto;
+import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.entity.permission.RoleAndPermission;
 import com.cisdi.info.simple.service.base.BaseService;
+import com.cisdi.info.simple.service.permission.PermissionService;
 import com.cisdi.info.simple.service.permission.RoleAndPermissionService;
 import com.cisdi.info.simple.util.ModuleManager;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +26,8 @@ public class RoleAndPermissionServiceBean extends BaseService implements RoleAnd
 
     @Autowired
     private RoleAndPermissionDao roleAndPermissionDao;
+    @Autowired
+    private PermissionService permissionService;
 
     @Override
     public PageResultDTO findRoleAndPermissions(PageDTO pageDTO) {
@@ -84,6 +88,8 @@ public class RoleAndPermissionServiceBean extends BaseService implements RoleAnd
         roleAndPermission.setRoleId(roleAndPermissionDto.getRoleId());
         for (String permissionCode : addPermissions) {
             roleAndPermission.setPermissionCode(permissionCode);
+            Permission permission = permissionService.findPermission(permissionCode);
+            roleAndPermission.setModuleCode(permission.getModuleCode());
             //加入新的角色权限点对应关系
             this.roleAndPermissionDao.saveRoleAndPermission(roleAndPermission);
         }

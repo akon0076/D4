@@ -53,8 +53,10 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
         }
         int startIndex = (pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize();
         int pageSize = pageDTO.getPageSize();
+        int end = startIndex + pageSize;
         long totalCount = permissions.size();
-        List<Permission> permissionList = permissions.subList(startIndex, startIndex + pageSize);
+        end = permissions.size() < end ? permissions.size() : end;
+        List<Permission> permissionList = permissions.subList(startIndex, end);
 
         PageResultDTO pageResultDTO = new PageResultDTO();
         pageResultDTO.setDatas(permissionList);
@@ -109,12 +111,14 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
     @Override
     public Permission savePermission(Permission permission) {
         ModuleManager.addPermission(permission);
+        permissionMap.put(permission.getCode(), permission);
         return permission;
     }
 
     @Override
     public Permission updatePermission(Permission permission) {
         ModuleManager.updatePermission(permission);
+        permissionMap.put(permission.getCode(), permission);
         return permission;
     }
 
@@ -126,6 +130,7 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
         // 这里写删除权限点的
         Permission permission = permissionMap.get(permissionCode);
         if (ModuleManager.removePermission(permission)) {
+            permissionMap.remove(permissionCode);
             logger.debug("删除权限点:" + permissionCode + "成功！");
         } else {
             logger.debug("删除权限点:" + permissionCode + "失败！");

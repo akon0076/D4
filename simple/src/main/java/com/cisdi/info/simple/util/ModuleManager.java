@@ -340,8 +340,6 @@ public class ModuleManager {
         // 遍历权限点，找到满足条件的权限点，并删除。
         for (int i = 0; i < modulePermissions.size(); i++) {
             if (modulePermissions.get(i).getCode().equals(permission.getCode())) {
-                // 将url设置进入即将修改的权限对象中
-                permission.setUrls(modulePermissions.get(i).getUrls());
                 modulePermissions.remove(i);
             }
         }

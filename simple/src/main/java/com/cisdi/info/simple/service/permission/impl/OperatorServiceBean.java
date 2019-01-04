@@ -318,7 +318,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     @Override
     public void createSuperUser() {
         Employee employee = this.employeeDao.findEmployeeByCode(SuperUserCode);
-        Long id = 0l;
+        Long id = 1l;
         if (employee == null) {
             employee = new Employee();
             employee.setEId(id);
@@ -345,6 +345,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             organization = new Organization();
             organization.setEId(id);
             organization.setName("逆向CDIO实验室");
+            organization.setCode("000");
             organization.setBusinessLicenseCode("000");
             organization.setRemark("这是一个用于开发的组织，实际使用时请删除");
             this.organizationDao.saveOrganization(organization);
