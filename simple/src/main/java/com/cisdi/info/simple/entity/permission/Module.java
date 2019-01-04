@@ -16,8 +16,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@DEntity(label = "模块", comment = "", moduleLabel = "授权")
-@Entity(name="simple_module")
+/*@DEntity(label = "模块", comment = "", moduleLabel = "授权")
+@Entity(name="simple_module")*/
 public class Module extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
