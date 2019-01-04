@@ -28,18 +28,19 @@ public class LogAspect {
     private final static Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
     /**
-     * 定义切面，拦截所有controller方法
+     * 定义切面，拦截所有Service方法
      */
-    @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
-    public void controllerLog() {
+    @Pointcut("@within(org.springframework.stereotype.Service)")
+    public void serviceLog() {
     }
 
+
     /**
-     * 前置处理，在调用controller方法前，用于日志记录
+     * 前置处理，在调用Service方法前，用于日志记录
      *
      * @param joinPoint
      */
-    @Before("controllerLog()")
+    @Before("serviceLog()")
     public void doBeforeController(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
@@ -56,7 +57,7 @@ public class LogAspect {
         logger.debug("-----------------------------------------------------------------------------------------------------");
     }
 
-    @Around(value = "controllerLog()")
+    @Around(value = "serviceLog()")
     public Object doAfterController(ProceedingJoinPoint joinPoint) {
         try {
             long start = System.currentTimeMillis();
