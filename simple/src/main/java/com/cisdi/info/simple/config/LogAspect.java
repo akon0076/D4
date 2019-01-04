@@ -1,3 +1,4 @@
+/*
 package com.cisdi.info.simple.config;
 
 import com.cisdi.info.simple.entity.permission.LoginUser;
@@ -17,28 +18,34 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+*/
 /**
  * @author:chengbg
  * @date:2018/9/7
- */
+ *//*
+
 @Aspect
 @Component
 public class LogAspect {
 
     private final static Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
-    /**
+    */
+/**
      * 定义切面，拦截所有controller方法
-     */
+     *//*
+
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
     public void controllerLog() {
     }
 
-    /**
+    */
+/**
      * 前置处理，在调用controller方法前，用于日志记录
      *
      * @param joinPoint
-     */
+     *//*
+
     @Before("controllerLog()")
     public void doBeforeController(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -72,3 +79,4 @@ public class LogAspect {
     }
 
 }
+*/

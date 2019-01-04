@@ -107,14 +107,14 @@ public class ModuleController {
 		return this.moduleService.findModule(moduleId);
 	}
 
-	@GetMapping("/findModuleForView")
+/*	@GetMapping("/findModuleForView")
 	public Module findModuleForView(@RequestParam Long moduleId)
 	{
 		return this.moduleService.findModuleWithForeignName(moduleId);
-	}
+	}*/
 
 	@GetMapping("/findModuleForEdit")
-	public ModuleEditDto findModuleForEdit(@RequestParam Long moduleId)
+	public ModuleEditDto findModuleForEdit(@RequestParam String moduleId)
 	{
 		ModuleEditDto moduleEditDto = new ModuleEditDto();
 		moduleEditDto.setModule(this.moduleService.findModuleWithForeignName(moduleId));
@@ -144,9 +144,8 @@ public class ModuleController {
 	}
 
 	@PostMapping("/saveModule")
-	public Module saveModule(@RequestBody Module module)
-	{
-		return this.moduleService.saveModule(module);
+	public void saveModule(@RequestBody Module module) throws Exception {
+	this.moduleService.saveModule(module);
 	}
 
 	@PostMapping("/updateModule")
@@ -156,7 +155,7 @@ public class ModuleController {
 	}
 
 	@GetMapping("/deleteModule")
-	public void deleteModule(@RequestParam Long moduleId)
+	public void deleteModule(@RequestParam String moduleId)
 	{
 		this.moduleService.deleteModule(moduleId);
 	}

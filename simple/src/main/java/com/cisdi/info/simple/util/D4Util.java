@@ -2,14 +2,13 @@ package com.cisdi.info.simple.util;
 
 
 import com.cisdi.info.simple.DDDException;
-import com.cisdi.info.simple.entity.base.Condition;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+
 
 public class D4Util {
 
@@ -33,6 +32,31 @@ public class D4Util {
 //        System.out.print(map.toString());
         map.put(key, value);
         return "";
+    }
+    //解析方法名
+    public static String  getAttributerGetterName(String attritureName){
+        String invokeMethodName = attritureName.substring(0, 1).toUpperCase().concat(attritureName.substring(1));
+        return "get"+invokeMethodName;
+    }
+
+    //通过传入的对象和字符串调用该对象的方法,并返回结果
+    public static <T> T invokeMethodByString(Object obj, String method) {
+        if(obj==null){
+            throw new IllegalArgumentException();
+        }
+        Class clazz=obj.getClass();
+        try {
+            Method method1= clazz.getDeclaredMethod(method,null);
+               return  (T) method1.invoke(obj, null);
+        } catch (NoSuchMethodException e) {
+            throw new DDDException(clazz.getCanonicalName()+" 无此构造方法:"+method);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+      return null;
+
     }
     public  static String assembleSql(String columnName,String content){
         if(columnName==null||columnName==""||content==null||content==""){
