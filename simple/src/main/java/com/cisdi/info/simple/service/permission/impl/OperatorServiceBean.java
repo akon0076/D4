@@ -2,9 +2,9 @@ package com.cisdi.info.simple.service.permission.impl;
 
 
 import com.cisdi.info.simple.DDDException;
-import com.cisdi.info.simple.util.CaptchaHelper;
 import com.cisdi.info.simple.dao.member.MemberDao;
 import com.cisdi.info.simple.dao.organization.EmployeeDao;
+import com.cisdi.info.simple.dao.organization.OrganizationDao;
 import com.cisdi.info.simple.dao.permission.OperatorAndRoleDao;
 import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
@@ -12,6 +12,7 @@ import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
 import com.cisdi.info.simple.entity.member.Member;
 import com.cisdi.info.simple.entity.organization.Employee;
+import com.cisdi.info.simple.entity.organization.Organization;
 import com.cisdi.info.simple.entity.permission.LoginUser;
 import com.cisdi.info.simple.entity.permission.Operator;
 import com.cisdi.info.simple.entity.permission.OperatorAndRole;
@@ -21,7 +22,7 @@ import com.cisdi.info.simple.service.member.MemberService;
 import com.cisdi.info.simple.service.organization.EmployeeService;
 import com.cisdi.info.simple.service.permission.OperatorService;
 import com.cisdi.info.simple.service.permission.RoleService;
-import com.cisdi.info.simple.util.D4Util;
+import com.cisdi.info.simple.util.CaptchaHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +34,14 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
 public class OperatorServiceBean extends BaseService implements OperatorService {
 
     private static Logger logger = LogManager.getLogger();
-@Autowired
-private HttpServletRequest httpServletRequest;
+
     @Autowired
     private EmployeeService employeeService;
 
@@ -55,6 +53,9 @@ private HttpServletRequest httpServletRequest;
 
     @Autowired
     private OperatorAndRoleDao operatorAndRoleDao;
+
+    @Autowired
+    private OrganizationDao organizationDao;
 
     @Autowired
     private RoleService roleService;
@@ -120,7 +121,6 @@ private HttpServletRequest httpServletRequest;
 
     public Map<String, Object> checkOperatorByUserNameAndPassWord(LoginDTO loginDTO) {
         try {
-            D4Util.getIpAdrress(httpServletRequest);
             Map<String, Object> restult = new HashMap<String, Object>();
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = requestAttributes.getRequest();
@@ -129,16 +129,15 @@ private HttpServletRequest httpServletRequest;
             Operator operator = new Operator();
             if (captcha) {
                 String[] username = loginDTO.getUserName().split("@");
-                if(username.length > 1){//邮箱登录
+                if (username.length > 1) {//邮箱登录
                     operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
-                }
-                else{//用户名登录
+                } else {//用户名登录
                     operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
                 }
                 restult.put("captcha", true);
                 if (operator != null) {
                     restult.put("isLogin", true);
-                    restult.put("loginUser", this.setLoginUser(operator));
+                    restult.put("loginUser", this.setLoginUser(operator, loginDTO.getOrganizationId()));
                     restult.put("type", operator.getType());
                 } else {
                     restult.put("isLogin", false);
@@ -160,16 +159,15 @@ private HttpServletRequest httpServletRequest;
             Map<String, Object> restult = new HashMap<String, Object>();
             Operator operator = new Operator();
             String[] username = loginDTO.getUserName().split("@");
-            if(username.length > 1){//邮箱登录
+            if (username.length > 1) {//邮箱登录
                 operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
-            }
-            else{//用户名登录
+            } else {//用户名登录
                 operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
             }
             if (operator != null) {
                 restult.put("isLogin", true);
-                restult.put("loginUser", this.setLoginUser(operator));
-                restult.put("type",operator.getType());
+                restult.put("loginUser", this.setLoginUser(operator, loginDTO.getOrganizationId()));
+                restult.put("type", operator.getType());
             } else {
                 restult.put("isLogin", false);
             }
@@ -188,16 +186,16 @@ private HttpServletRequest httpServletRequest;
             HttpServletRequest request = requestAttributes.getRequest();
             boolean captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
             if (captcha) {
-            Operator operator = this.operatorDao.findOperatorByUserNameAndPassWordAndMember(loginDTO);
-            result.put("captcha", true);
-            if (operator != null) {
-                result.put("isLogin", true);
-                result.put("loginUser", this.setLoginMember(operator));
-                result.put("type", operator.getType());
+                Operator operator = this.operatorDao.findOperatorByUserNameAndPassWordAndMember(loginDTO);
+                result.put("captcha", true);
+                if (operator != null) {
+                    result.put("isLogin", true);
+                    result.put("loginUser", this.setLoginMember(operator));
+                    result.put("type", operator.getType());
+                } else {
+                    result.put("isLogin", false);
+                }
             } else {
-                result.put("isLogin", false);
-            }
-               } else {
                 result.put("captcha", false);
             }
             return result;
@@ -208,7 +206,13 @@ private HttpServletRequest httpServletRequest;
         return null;
     }
 
-    private LoginUser setLoginUser(Operator userOperator) throws Exception {
+    public List<Organization> getOrganizations(LoginDTO loginDTO) {
+        Operator operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
+        List<Organization> organizations = this.getOrganization(operator);
+        return organizations;
+    }
+
+    private LoginUser setLoginUser(Operator userOperator, Long organizationId) throws Exception {
         try {
             Employee employee = this.employeeService.findEmployeeWithForeignName(userOperator.getPersonId());
             if (employee == null) {
@@ -217,7 +221,9 @@ private HttpServletRequest httpServletRequest;
             }
             //这行代码可以和 ModuleService中的 constructNewTree 方法合并
             List<String> permissionCodes = this.operatorDao.findPermissions(userOperator.getEId());
+            Organization organization = organizationDao.findOrganization(organizationId);
             LoginUser loginUser = new LoginUser();
+            loginUser.setCurrentOrganization(organization);
             loginUser.setLoginOperator(userOperator);
             loginUser.setLoginEmployee(employee);
             loginUser.setUserPermissionsCode(permissionCodes);
@@ -233,6 +239,28 @@ private HttpServletRequest httpServletRequest;
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Organization> getOrganization(Operator loginOperator) {
+        Set<Long> organizations = new HashSet<>();
+        if (loginOperator != null) {
+            List<OperatorAndRole> operatorAndRoles = this.operatorAndRoleDao.findOperatorAndRoleByOperatorId(loginOperator.getEId());
+            if (operatorAndRoles != null) {
+                for (int i = 0; i < operatorAndRoles.size(); i++) {
+                    if (operatorAndRoles.get(i).getOrganizationId() != null) {
+                        organizations.add(operatorAndRoles.get(i).getOrganizationId());
+                    }
+                }
+            }
+        }
+        List<Organization> list = new ArrayList<>();
+        Long[] organizationsList = new Long[organizations.size()];
+        organizations.toArray(organizationsList);
+        for (int i = 0; i < organizationsList.length; i++) {
+            Organization organization = organizationDao.findOrganization(organizationsList[i]);
+            list.add(organization);
+        }
+        return list;
     }
 
     private LoginUser setLoginMember(Operator userOperator) throws Exception {

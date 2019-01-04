@@ -939,5 +939,98 @@
     "isInUse": "是",
     "routeParamsObj": "",
     "permissions": []
+  },
+  "simple/report": {
+    "code": "simple/report",
+    "name1": "报表管理",
+    "url": "",
+    "route": "",
+    "iconClass": "",
+    "displayIndex": 1,
+    "parentCode": "基础管理",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/report/ModelFile": {
+    "code": "simple/report/ModelFile",
+    "name1": "模板文件管理",
+    "url": "/simple/report/ModelFile",
+    "route": "/simple/report/ModelFile",
+    "iconClass": "",
+    "displayIndex": 1,
+    "parentCode": "simple/report",
+    "parentName": "报表管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_report_ModelFile_Add",
+        "name1": "新增",
+        "fullName": "simple.报表管理.模板文件管理.新增",
+        "moduleCode": "simple/report/ModelFile",
+        "urls": [
+          "/simple/report/ModelFile/createModelFile",
+          "/simple/report/ModelFile/saveModelFile"
+        ]
+      },
+      {
+        "code": "simple_report_ModelFile_Edit",
+        "name1": "编辑",
+        "fullName": "simple.报表管理.模板文件管理.编辑",
+        "moduleCode": "simple/report/ModelFile",
+        "urls": [
+          "/simple/report/ModelFile/findModelFileForEdit",
+          "/simple/report/ModelFile/updateModelFile"
+        ]
+      },
+      {
+        "code": "simple_report_ModelFile_Delete",
+        "name1": "删除",
+        "fullName": "simple.报表管理.模板文件管理.删除",
+        "moduleCode": "simple/report/ModelFile",
+        "urls": [
+          "/simple/report/ModelFile/deleteModelFile"
+        ]
+      },
+      {
+        "code": "simple_report_ModelFile_View",
+        "name1": "查看",
+        "fullName": "simple.报表管理.模板文件管理.查看",
+        "moduleCode": "simple/report/ModelFile",
+        "urls": [
+          "/simple/report/ModelFile/findModelFiles",
+          "/simple/report/ModelFile/findModelFileForView"
+        ]
+      }
+    ]
+  },
+
+
+
+  "simple/report/reportMesShow": {
+    "code": "simple/report/reportMesShow",
+    "name1": "统计报表",
+    "url": "/simple/report/reportMesShow",
+    "route": "/simple/report/reportMesShow",
+    "iconClass": "",
+    "displayIndex": 2,
+    "parentCode": "simple/report",
+    "parentName": "报表管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [{
+      "code": "simple_report_reportMesShow_View",
+      "name1": "查看统计报表",
+      "fullName": "simple.报表管理.统计报表.查看统计报表",
+      "moduleCode": "simple/report/reportMesShow",
+      "urls": ["/simple/report/ModelFile/findModelFiles",
+        "/simple/report/ModelFile/findModelFileForView"]
+    }]
   }
+
 }

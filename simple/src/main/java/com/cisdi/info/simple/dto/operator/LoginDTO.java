@@ -5,6 +5,7 @@ public class LoginDTO {
     private String userName;
     private String password;
     private String captcha;
+    private Long organizationId;
 
     public String getUserName() {
         return userName;
@@ -28,5 +29,13 @@ public class LoginDTO {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 }
