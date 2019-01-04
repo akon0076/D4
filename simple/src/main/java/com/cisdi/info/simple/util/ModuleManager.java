@@ -80,7 +80,6 @@ public class ModuleManager {
     public static boolean hasPermission(String url, Long roleId) {
         Set<Long> roles = urlRoles.get(url);
         if (roles == null) {
-            logger.error(String.format("非法请求 %s,可能是恶意攻击，请报告管理员", url));
             return false;
         }
         if (roles.contains(roleId)) {
