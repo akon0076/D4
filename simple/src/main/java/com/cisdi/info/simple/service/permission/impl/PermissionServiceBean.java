@@ -1,10 +1,8 @@
 package com.cisdi.info.simple.service.permission.impl;
 
-import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.dao.permission.PermissionDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import com.cisdi.info.simple.dto.permission.PermissionListDto;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.base.BaseService;
@@ -13,105 +11,129 @@ import com.cisdi.info.simple.util.ModuleManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
 public class PermissionServiceBean extends BaseService implements PermissionService {
+    private static Map<String, Permission> permissionMap = new HashMap<>();
 
     private static Logger logger = LogManager.getLogger();
 
     @Autowired
     private PermissionDao permissionDao;
 
+    /**
+     * 根据分页参数查询权限点
+     *
+     * @param pageDTO 分页参数
+     * @return
+     */
     @Override
     public PageResultDTO findPermissions(PageDTO pageDTO) {
-        pageDTO.setStartIndex((pageDTO.getCurrentPage()-1)*pageDTO.getPageSize());
-        List<Permission> roleDTOS = this.permissionDao.findPermissions(pageDTO);
-        Long totalCount = this.permissionDao.findPermissionTotalCount(pageDTO);
+        // 读取json文件中的模块
+        Collection<Module> moduleCollection = ModuleManager.getAllModules();
+        Iterator iterator = moduleCollection.iterator();
+
+        List<Module> moduleList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            moduleList.add((Module) iterator.next());
+        }
+
+        List<Permission> permissions = new ArrayList<>();
+        for (Module module : moduleList) {
+            List<Permission> modulePermissions = module.getPermissions();
+            for (int i = 0; i < modulePermissions.size(); i++) {
+                Permission permission = modulePermissions.get(i);
+                permissions.add(permission);
+            }
+        }
+        int startIndex = (pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize();
+        int pageSize = pageDTO.getPageSize();
+        int end = startIndex + pageSize;
+        long totalCount = permissions.size();
+        end = permissions.size() < end ? permissions.size() : end;
+        List<Permission> permissionList = permissions.subList(startIndex, end);
 
         PageResultDTO pageResultDTO = new PageResultDTO();
+        pageResultDTO.setDatas(permissionList);
         pageResultDTO.setTotalCount(totalCount);
-        pageResultDTO.setDatas(roleDTOS);
 
         return pageResultDTO;
     }
 
     @Override
     public List<Permission> findAllPermissions() {
-        return this.permissionDao.findAllPermissions();
+        // 读取json文件中的模块
+        Collection<Module> moduleCollection = ModuleManager.getAllModules();
+        Iterator iterator = moduleCollection.iterator();
+
+        List<Module> moduleList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            moduleList.add((Module) iterator.next());
+        }
+
+        List<Permission> permissions = new ArrayList<>();
+        for (Module module : moduleList) {
+            List<Permission> modulePermissions = module.getPermissions();
+            for (int i = 0; i < modulePermissions.size(); i++) {
+                Permission permission = modulePermissions.get(i);
+                permissions.add(permission);
+            }
+        }
+        return permissions;
     }
 
     @Override
     public List<Permission> findAllPermissionsWithIdName() {
-        return this.permissionDao.findAllPermissionsWithIdName();
+        return null;
     }
 
     @Override
-    public Permission findPermission(Long permissionId) {
-        return this.permissionDao.findPermission(permissionId);
+    public Permission findPermission(String code) {
+        if (permissionMap.size() == 0) {
+            loadPermissions();
+        }
+        return permissionMap.get(code);
     }
 
-    //所有外键的Name都以加载
     @Override
-    public Permission findPermissionWithForeignName(Long permissionId) {
-        return this.permissionDao.findPermissionWithForeignName(permissionId);
+    public Permission findPermissionWithForeignName(String code) {
+        if (permissionMap.size() == 0) {
+            loadPermissions();
+        }
+        return permissionMap.get(code);
     }
 
     @Override
     public Permission savePermission(Permission permission) {
-
-        this.setSavePulicColumns(permission);
-
-        Permission permission1 = this.permissionDao.savePermission(permission);
-
         ModuleManager.addPermission(permission);
-
-        return permission1;
+        permissionMap.put(permission.getCode(), permission);
+        return permission;
     }
 
     @Override
     public Permission updatePermission(Permission permission) {
-
-        this.setUpdatePulicColumns(permission);
-
-        Permission permission1 = this.permissionDao.updatePermission(permission);
-
         ModuleManager.updatePermission(permission);
-
-        return permission1;
+        permissionMap.put(permission.getCode(), permission);
+        return permission;
     }
 
     @Override
-    public void deletePermission(Long permissionId) {
-        Permission permission = findPermission(permissionId);
-        if(permission != null){
-            this.permissionDao.deletePermission(permissionId);
-            String code  = permission.getCode();
-            if(code != null){
-                // 这里写删除权限点的
-                if(ModuleManager.removePermission(permission)){
-                    logger.debug("删除权限点:" + code + "成功！");
-                }else {
-                    logger.debug("删除权限点:" + code + "失败！");
-                }
-            }else {
-
-                logger.error("找不到"+ permissionId + "对应权限点编码！");
-
-                throw  new DDDException("找不到"+ permissionId + "对应模块编码！");
-            }
-        }else {
-            logger.error("找不到权限点ID为" + permissionId + "的权限点！");
-
-            throw  new DDDException("找不到权限点ID为" + permissionId + "的权限点！");
+    public void deletePermission(String permissionCode) {
+        if (permissionMap.size() == 0) {
+            loadPermissions();
+        }
+        // 这里写删除权限点的
+        Permission permission = permissionMap.get(permissionCode);
+        if (ModuleManager.removePermission(permission)) {
+            permissionMap.remove(permissionCode);
+            logger.debug("删除权限点:" + permissionCode + "成功！");
+        } else {
+            logger.debug("删除权限点:" + permissionCode + "失败！");
         }
     }
 
@@ -125,38 +147,37 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
     }
 
     /**
-     * 保存到数据库
-     * @param permissions  从module.json中获取的权限
-     */
-    @Override
-    public void savePermissionsToDataBase(List<Permission> permissions) {
-        Integer count = 0;
-        for(Permission permission : permissions){
-            this.permissionDao.savePermission(permission);
-            count++;
-        }
-        logger.info("权限条数:" + count);
-    }
-
-    /**
-     * 更新module.json的文件
-     * @param permissions 从module.json中获取的权限
-     */
-    @Override
-    public void updatePermissionsToDataBase(List<Permission> permissions) {
-        Integer count = 0;
-        for(Permission permission : permissions){
-            this.permissionDao.updatePermission(permission);
-            count++;
-        }
-        logger.info("权限条数:" + count);
-    }
-    /**
      * 获取权限点总数
+     *
      * @return 权限点数量
      */
     @Override
     public Integer permissionCount() {
-        return this.permissionDao.permissionCount();
+        return permissionMap.size();
     }
+
+    /**
+     * 加载所有权限
+     */
+    public void loadPermissions() {
+        // 读取json文件中的模块
+        Collection<Module> moduleCollection = ModuleManager.getAllModules();
+        Iterator iterator = moduleCollection.iterator();
+
+        List<Module> moduleList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            moduleList.add((Module) iterator.next());
+        }
+
+        for (Module module : moduleList) {
+            List<Permission> modulePermissions = module.getPermissions();
+            for (int i = 0; i < modulePermissions.size(); i++) {
+                Permission permission = modulePermissions.get(i);
+                String code = modulePermissions.get(i).getCode();
+                permissionMap.put(code, permission);
+            }
+        }
+
+    }
+
 }

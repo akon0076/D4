@@ -5,7 +5,6 @@ package com.cisdi.info.simple.controller.permission;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.permission.PermissionEditDto;
-import com.cisdi.info.simple.dto.permission.PermissionListDto;
 import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.permission.PermissionService;
 import org.apache.logging.log4j.LogManager;
@@ -16,158 +15,148 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-
-/**module
-{
-"simple/permission/Permission": {
-"code": "simple/permission/Permission",
-"name1": "权限点",
-"url": "/simple/permission/Permission",
-"route": "/simple/permission/Permission",
-"iconClass": "",
-"displayIndex": 1,
-"parentCode": "simple/permission",
-"parentName": "授权",
-"moduleType": "电脑模块",
-"isInUse": "是",
-"routeParamsObj": "",
-"permissions":
-	[
-	{
-	"code": "simple_permission_Permission_Add",
-	"name1": "新增",
-	"fullName": "simple.授权.权限点.新增",
-	"moduleCode": "simple/permission/Permission",
-	urls:[
-		"/simple/permission/Permission/createPermission",
-		"/simple/permission/Permission/savePermission"
-	]
-	},
-	{
-	"code": "simple_permission_Permission_Edit",
-	"name1": "编辑",
-	"fullName": "simple.授权.权限点.编辑",
-	"moduleCode": "simple/permission/Permission",
-	urls:[
-		"/simple/permission/Permission/findPermissionForEdit",
-		"/simple/permission/Permission/updatePermission"
-	]
-	},
-	{
-	"code": "simple_permission_Permission_Delete",
-	"name1": "删除",
-	"fullName": "simple.授权.权限点.删除",
-	"moduleCode": "simple/permission/Permission",
-	urls:[
-	"/simple/permission/Permission/deletePermission"
-	]
-	},
-	{
-	"code": "simple_permission_Permission_View",
-	"name1": "查看",
-	"fullName": "simple.授权.权限点.查看",
-	"moduleCode": "simple/permission/Permission",
-	urls:[
-	"/simple/permission/Permission/findPermissions",
-	"/simple/permission/Permission/findPermissionForView"
-	]
-	}
-	]
-}
-}
-*/
+/**
+ * module
+ * {
+ * "simple/permission/Permission": {
+ * "code": "simple/permission/Permission",
+ * "name1": "权限点",
+ * "url": "/simple/permission/Permission",
+ * "route": "/simple/permission/Permission",
+ * "iconClass": "",
+ * "displayIndex": 1,
+ * "parentCode": "simple/permission",
+ * "parentName": "授权",
+ * "moduleType": "电脑模块",
+ * "isInUse": "是",
+ * "routeParamsObj": "",
+ * "permissions":
+ * [
+ * {
+ * "code": "simple_permission_Permission_Add",
+ * "name1": "新增",
+ * "fullName": "simple.授权.权限点.新增",
+ * "moduleCode": "simple/permission/Permission",
+ * urls:[
+ * "/simple/permission/Permission/createPermission",
+ * "/simple/permission/Permission/savePermission"
+ * ]
+ * },
+ * {
+ * "code": "simple_permission_Permission_Edit",
+ * "name1": "编辑",
+ * "fullName": "simple.授权.权限点.编辑",
+ * "moduleCode": "simple/permission/Permission",
+ * urls:[
+ * "/simple/permission/Permission/findPermissionForEdit",
+ * "/simple/permission/Permission/updatePermission"
+ * ]
+ * },
+ * {
+ * "code": "simple_permission_Permission_Delete",
+ * "name1": "删除",
+ * "fullName": "simple.授权.权限点.删除",
+ * "moduleCode": "simple/permission/Permission",
+ * urls:[
+ * "/simple/permission/Permission/deletePermission"
+ * ]
+ * },
+ * {
+ * "code": "simple_permission_Permission_View",
+ * "name1": "查看",
+ * "fullName": "simple.授权.权限点.查看",
+ * "moduleCode": "simple/permission/Permission",
+ * urls:[
+ * "/simple/permission/Permission/findPermissions",
+ * "/simple/permission/Permission/findPermissionForView"
+ * ]
+ * }
+ * ]
+ * }
+ * }
+ */
 
 @RestController
 @RequestMapping("/simple/permission/Permission")
 @CrossOrigin(allowCredentials = "true")
 public class PermissionController {
-	private static Logger logger = LogManager.getLogger();
+    private static Logger logger = LogManager.getLogger();
 
 
+    @Autowired
+    private PermissionService permissionService;
 
-	@Autowired private PermissionService permissionService;
 
+    /**
+     * 查询所有的权限
+     *
+     * @return
+     */
+    @GetMapping("/findAllPermissions")
+    public List<Permission> findAllPermissions() {
+        return this.permissionService.findAllPermissions();
+    }
 
-	/**
-	 * 查询所有的权限
-	 * @return
-	 */
-	@GetMapping("/findAllPermissions")
-	public List<Permission> findAllPermissions()
-	{
-		return this.permissionService.findAllPermissions();
-	}
+    @PostMapping("/findPermissions")
+    public PageResultDTO findPermissions(@RequestBody PageDTO pageDTO) {
+        return this.permissionService.findPermissions(pageDTO);
+    }
 
-	@PostMapping("/findPermissions")
-	public PageResultDTO findPermissions(@RequestBody PageDTO pageDTO){
-		return this.permissionService.findPermissions(pageDTO);
-	}
+    @GetMapping("/findPermission")
+    public Permission findPermission(@RequestParam String code) {
+        return this.permissionService.findPermission(code);
+    }
 
-	@GetMapping("/findPermission")
-	public Permission findPermission(@RequestParam Long permissionId)
-	{
-		return this.permissionService.findPermission(permissionId);
-	}
+    @GetMapping("/findPermissionForView")
+    public Permission findPermissionForView(@RequestParam String code) {
+        return this.permissionService.findPermissionWithForeignName(code);
+    }
 
-	@GetMapping("/findPermissionForView")
-	public Permission findPermissionForView(@RequestParam Long permissionId)
-	{
-		return this.permissionService.findPermissionWithForeignName(permissionId);
-	}
+    @GetMapping("/findPermissionForEdit")
+    public PermissionEditDto findPermissionForEdit(@RequestParam String code) {
+        PermissionEditDto permissionEditDto = new PermissionEditDto();
+        permissionEditDto.setPermission(this.permissionService.findPermissionWithForeignName(code));
+        this.preparePermissionEditDto(permissionEditDto);
 
-	@GetMapping("/findPermissionForEdit")
-	public PermissionEditDto findPermissionForEdit(@RequestParam Long permissionId)
-	{
-		PermissionEditDto permissionEditDto = new PermissionEditDto();
-		permissionEditDto.setPermission(this.permissionService.findPermissionWithForeignName(permissionId));
+        return permissionEditDto;
+    }
 
-		this.preparePermissionEditDto(permissionEditDto);
+    //创建新的权限点
+    @GetMapping("/createPermission")
+    public PermissionEditDto createPermission() {
+        PermissionEditDto permissionEditDto = new PermissionEditDto();
+        permissionEditDto.setPermission(new Permission());
 
-		return permissionEditDto;
-	}
+        this.preparePermissionEditDto(permissionEditDto);
+        return permissionEditDto;
+    }
 
-	//创建新的权限点
-	@GetMapping("/createPermission")
-	public PermissionEditDto createPermission()
-	{
-		PermissionEditDto permissionEditDto = new PermissionEditDto();
-		permissionEditDto.setPermission(new Permission());
+    private void preparePermissionEditDto(PermissionEditDto permissionEditDto) {
+    }
 
-		this.preparePermissionEditDto(permissionEditDto);
-		return permissionEditDto;
-	}
+    @PostMapping("/savePermission")
+    public Permission savePermission(@RequestBody Permission permission) {
+        return this.permissionService.savePermission(permission);
+    }
 
-	private void preparePermissionEditDto(PermissionEditDto permissionEditDto)
-	{
-	}
+    @PostMapping("/updatePermission")
+    public Permission updatePermission(@RequestBody Permission permission) {
+        return this.permissionService.updatePermission(permission);
+    }
 
-	@PostMapping("/savePermission")
-	public Permission savePermission(@RequestBody Permission permission)
-	{
-		return this.permissionService.savePermission(permission);
-	}
+    @GetMapping("/deletePermission")
+    public void deletePermission(@RequestParam String code) {
+        this.permissionService.deletePermission(code);
+    }
 
-	@PostMapping("/updatePermission")
-	public Permission updatePermission(@RequestBody Permission permission)
-	{
-		return this.permissionService.updatePermission(permission);
-	}
+    @GetMapping("/findPermissionsWithIdNameById")
+    public Permission findPermissionsWithIdNameById(@RequestParam Long permissionId) {
+        return null;//this.permissionService.findPermissionsWithIdNameById(permissionId);
+    }
 
-	@GetMapping("/deletePermission")
-	public void deletePermission(@RequestParam Long permissionId)
-	{
-		this.permissionService.deletePermission(permissionId);
-	}
-	@GetMapping("/findPermissionsWithIdNameById")
-	public Permission findPermissionsWithIdNameById(@RequestParam Long permissionId)
-	{
-		return null;//this.permissionService.findPermissionsWithIdNameById(permissionId);
-	}
-
-	@GetMapping("/findPermissionsWithIdNameByName")
-	public List<Permission> findPermissionsWithIdNameByName(String permissionName)
-	{
-		return null;//this.permissionService.findPermissionsWithIdNameByName(permissionName);
-	}
+    @GetMapping("/findPermissionsWithIdNameByName")
+    public List<Permission> findPermissionsWithIdNameByName(String permissionName) {
+        return null;//this.permissionService.findPermissionsWithIdNameByName(permissionName);
+    }
 }
 

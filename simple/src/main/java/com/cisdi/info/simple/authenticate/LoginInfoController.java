@@ -88,7 +88,7 @@ public class LoginInfoController {
     }
 
     @PostMapping("/getOrganizations")
-    public List<Organization> getOrganization(@Valid @RequestBody LoginDTO loginDTO) {
+    public Map<String, Object> getOrganization(@Valid @RequestBody LoginDTO loginDTO) {
         return this.operatorService.getOrganizations(loginDTO);
     }
 
@@ -111,28 +111,6 @@ public class LoginInfoController {
         {
 
         }
-    }
-
-    @GetMapping("/test")
-    public String test(HttpServletRequest request) throws JSONException{
-        System.out.println("ddddd");
-        JSONObject result = new JSONObject();
-        result.put("state",true);
-        result.put("result","");
-        result.put("data","可以访问,用户当前组织为");
-
-        return result.toString();
-    }
-
-
-    @PostMapping("/test2")
-    public String test2( HttpServletRequest request ){
-        Enumeration<String> headers = request.getHeaderNames();
-        while(headers.hasMoreElements()){
-            String name = headers.nextElement();
-        }
-
-        return "hello cloud";
     }
 
     @GetMapping("/logout")

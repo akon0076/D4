@@ -125,26 +125,20 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = requestAttributes.getRequest();
 
-            boolean captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
             Operator operator = new Operator();
-            if (captcha) {
-                String[] username = loginDTO.getUserName().split("@");
-                if (username.length > 1) {//邮箱登录
-                    operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
-                } else {//用户名登录
-                    operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
-                }
-                restult.put("captcha", true);
-                if (operator != null) {
-                    restult.put("isLogin", true);
-                    restult.put("loginUser", this.setLoginUser(operator, loginDTO.getOrganizationId()));
-                    restult.put("type", operator.getType());
-                } else {
-                    restult.put("isLogin", false);
-                }
-
+            String[] username = loginDTO.getUserName().split("@");
+            if (username.length > 1) {//邮箱登录
+                operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
+            } else {//用户名登录
+                operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
+            }
+            restult.put("captcha", true);
+            if (operator != null) {
+                restult.put("isLogin", true);
+                restult.put("loginUser", this.setLoginUser(operator, loginDTO.getOrganizationId()));
+                restult.put("type", operator.getType());
             } else {
-                restult.put("captcha", false);
+                restult.put("isLogin", false);
             }
             return restult;
         } catch (Exception e) {
@@ -206,10 +200,32 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         return null;
     }
 
-    public List<Organization> getOrganizations(LoginDTO loginDTO) {
-        Operator operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
-        List<Organization> organizations = this.getOrganization(operator);
-        return organizations;
+    public Map<String, Object> getOrganizations(LoginDTO loginDTO) {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        Map<String, Object> result = new HashMap<String, Object>();
+        boolean captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
+        if (captcha) {
+            Operator operator = new Operator();
+            String[] username = loginDTO.getUserName().split("@");
+            if (username.length > 1) {//邮箱登录
+                operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
+            } else {//用户名登录
+                operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
+            }
+            result.put("captcha", true);
+            if (operator != null) {
+                List<Organization> organizations = this.getOrganization(operator);
+                result.put("isLogin", true);
+                result.put("organizations", organizations);
+            } else {
+                result.put("isLogin", false);
+            }
+
+        } else {
+            result.put("captcha", false);
+        }
+        return result;
     }
 
     private LoginUser setLoginUser(Operator userOperator, Long organizationId) throws Exception {
@@ -302,9 +318,10 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     @Override
     public void createSuperUser() {
         Employee employee = this.employeeDao.findEmployeeByCode(SuperUserCode);
-        Long employeeId = 0l;
+        Long id = 1l;
         if (employee == null) {
             employee = new Employee();
+            employee.setEId(id);
             employee.setCode(SuperUserCode);
             employee.setName("超级用户");
             employee.setRemark("这是一个用于开发的超级用户，实际使用时请删除");
@@ -323,6 +340,16 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             superOperator.setPersonId(employee.getEId());
             this.operatorDao.saveOperator(superOperator);
         }
+        Organization organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
+        if (organization == null) {
+            organization = new Organization();
+            organization.setEId(id);
+            organization.setName("逆向CDIO实验室");
+            organization.setCode("000");
+            organization.setBusinessLicenseCode("000");
+            organization.setRemark("这是一个用于开发的组织，实际使用时请删除");
+            this.organizationDao.saveOrganization(organization);
+        }
 
         Role superRole = this.roleService.createSuperRole();
         OperatorAndRole operatorAndRole = this.operatorAndRoleDao.findOperatorAndRoleByOperatorAndRole(SuperUserCode, RoleService.SuperCode);
@@ -330,7 +357,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             operatorAndRole = new OperatorAndRole();
             operatorAndRole.setOperatorId(superOperator.getEId());
             operatorAndRole.setRoleId(superRole.getEId());
-            operatorAndRole.setOrganizationId(0l);
+            operatorAndRole.setOrganizationId(id);
             this.operatorAndRoleDao.saveOperatorAndRole(operatorAndRole);
         }
 
