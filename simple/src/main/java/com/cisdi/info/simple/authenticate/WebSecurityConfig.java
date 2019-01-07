@@ -63,42 +63,21 @@ public class WebSecurityConfig implements WebMvcConfigurer {
             HttpSession session = request.getSession();
             String uri = request.getRequestURI();
             LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");
-            if(uri.startsWith("/file/")){
+            if (uri.startsWith("/file/")) {
                 return true;
             }
-            if (loginUser == null) {
-                if (Config.whiteURLs.contains(uri)) {
-                    return true;
-                } else {
-                    logger.error(String.format("非法请求 %s,可能是恶意攻击，请报告管理员", uri));
-                    response.setStatus(401);
-                    return false;
-                }
-
-            }
-
-            boolean hasPermission = ModuleManager.hasPermission(uri, loginUser.getUserRoles());
-            if (hasPermission) {
+            if (Config.whiteURLs.contains(uri)) {
                 return true;
-            } else {
-                if (Config.whiteURLs.contains(uri)) {
+            }
+            if (loginUser != null) {
+                boolean hasPermission = ModuleManager.hasPermission(uri, loginUser.getUserRoles());
+                if (hasPermission) {
                     return true;
                 }
-                logger.error(String.format("非法请求 %s,可能是恶意攻击，请报告管理员", uri));
-                response.setStatus(401);
-                return false;
             }
-
-//            判断是否已有该用户登录的session
-//            if(session.getAttribute(SESSION_KEY) != null){
-//                return true;
-//            }
-//            public void setLoginUser(LoginUser loginUser){
-//                this.setSessionItem("loginUser", loginUser);
-//            跳转到登录页
-//            String url = "/login";
-//            response.sendRedirect(url);
-//            return false;
+            logger.error(String.format("非法请求 %s,可能是恶意攻击，请报告管理员", uri));
+            response.setStatus(401);
+            return false;
         }
     }
 }

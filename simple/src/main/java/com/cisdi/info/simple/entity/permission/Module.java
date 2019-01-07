@@ -8,15 +8,17 @@ import com.cisdi.info.simple.annotation.DEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.cisdi.info.simple.entity.base.Entity;
 import com.cisdi.info.simple.entity.organization.Organization;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@DEntity(label="模块",comment="",moduleLabel="授权")
-@Entity(name="simple_module")
-public class Module extends BaseEntity implements Serializable{
+/*@DEntity(label = "模块", comment = "", moduleLabel = "授权")
+@Entity(name="simple_module")*/
+public class Module extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Expose
@@ -91,16 +93,23 @@ public class Module extends BaseEntity implements Serializable{
 	@Transient
 	private List<Permission> permissions = new ArrayList<Permission>();
 
+	public String getHideAttribute() {
+		return hideAttribute;
+	}
+
+	public void setHideAttribute(String hideAttribute) {
+		this.hideAttribute = hideAttribute;
+	}
+
+	private String hideAttribute;
 	public Module() {
 	}
 
-	public Module(String code, String name, String url, String route, String iconClass, Long displayIndex, String moduleType, String isInUse, String routeParamsObj)
-	{
+	public Module(String code, String name, String url, String route, String iconClass, Long displayIndex, String moduleType, String isInUse, String routeParamsObj) {
 		this(code, name, url, route, iconClass, displayIndex, "", "", moduleType, isInUse, routeParamsObj);
 	}
 
-	public Module(String code, String name, String url, String route, String iconClass, Long displayIndex, String moduleType, String isInUse, String routeParamsObj, Module parent)
-	{
+	public Module(String code, String name, String url, String route, String iconClass, Long displayIndex, String moduleType, String isInUse, String routeParamsObj, Module parent) {
 		this(code, name, url, route, iconClass, displayIndex, parent.getCode(), parent.getName(), moduleType, isInUse, routeParamsObj);
 	}
 

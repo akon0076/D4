@@ -1,13 +1,13 @@
 package com.cisdi.info.simple.entity.organization;
 
-import com.cisdi.info.simple.entity.base.*;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
 
-import com.cisdi.info.simple.entity.organization.Organization;
-import com.cisdi.info.simple.entity.organization.Employee;
+
 import java.util.List;
 
 @DEntity(label="部门",comment="",moduleLabel="部门")

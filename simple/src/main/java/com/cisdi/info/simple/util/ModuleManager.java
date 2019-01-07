@@ -18,13 +18,15 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ModuleManager {
     private static Logger logger = LogManager.getLogger();
     private static Map<String, Module> modules = null;
     private static Map<String, Set<Long>> urlRoles = new HashMap<String, Set<Long>>();
-
+    private static ReentrantReadWriteLock writeLock = new ReentrantReadWriteLock();
     public static Module findModule(String code) {
+        refresh();
         return getModules().get(code);
     }
 
@@ -80,7 +82,6 @@ public class ModuleManager {
     public static boolean hasPermission(String url, Long roleId) {
         Set<Long> roles = urlRoles.get(url);
         if (roles == null) {
-            logger.error(String.format("非法请求 %s,可能是恶意攻击，请报告管理员", url));
             return false;
         }
         if (roles.contains(roleId)) {
@@ -119,6 +120,10 @@ public class ModuleManager {
         loadModules();
         return modules;
     }
+  public static Map<String, Module> getModulesForEdit() {
+        loadModules();
+        return modules;
+    }
 
     /**
      * 新增模块
@@ -127,9 +132,8 @@ public class ModuleManager {
      * @param newModule
      */
     public static void addModule(String code, Module newModule) {
-
+        refresh();
         getModules().put(code, newModule);
-
         saveModules(Config.moduleFile);
     }
 
@@ -145,27 +149,25 @@ public class ModuleManager {
     }
 
     public static void addModule(Module module) {
-        String code = StringUtils.trimToEmpty(module.getCode());
-        String[] codeParts = StringUtils.split(code, '/');
-        if (codeParts.length != 3) {
-            throw new DDDException("%s 是无效的模块编码，格式如：system_module_entity");
+        writeLock.writeLock().lock();
+        try {
+            if(module.getParentCode()!=null&&!"".equals(module.getParentCode())){
+                module.setCode(module.getParentCode()+"/"+module.getCode());
+                if( ModuleManager.findModule(module.getCode())!=null){
+                    throw new DDDException(module.getCode()+" 编码重复,请重新输入");
+                }
+                ModuleManager.addModule(module.getCode(),module);
+            }
+            else{
+                if( ModuleManager.findModule(module.getCode())!=null){
+                    throw new DDDException(module.getCode()+" 编码重复,请重新输入");
+                }
+                ModuleManager.addModule(module.getCode(),module);
+            }
         }
-
-        String systemCode = codeParts[0];
-        Module systemModule = findModuleByCode(systemCode);
-        if (systemModule == null) {
-            systemModule = new Module(systemCode, systemCode, "", "", "", 1l, "是", module.getModuleType(), "");
-            addModule(systemCode, systemModule);
+        finally {
+            writeLock.writeLock().unlock();
         }
-
-        String moduleCode = systemCode + "/" + codeParts[1];
-        Module moduleModule = findModuleByCode(moduleCode);
-        if (moduleModule == null) {
-            moduleModule = new Module(moduleCode, module.getParentName(), "", "", "", 1l, module.getModuleType(), "是", "", systemModule);
-            addModule(moduleCode, moduleModule);
-        }
-        addModule(code, module);
-        saveModules(Config.moduleFile);
     }
 
 //    public static void  addModule(String code, String name, String url, String route, String iconClass, Long displayIndex, String moduleType,  String routeParamsObj,String moduleName)
@@ -233,32 +235,45 @@ public class ModuleManager {
         return getModules().get(code);
     }
 
+    //通过Module编码判断是否有子模块
+    public static boolean hasChildrenModule(String code){
+        for (Module module : getModules().values()) {
+            if (module.getParentCode()!=null&&!"".equals(module.getParentCode())&&module.getParentCode().equals(code)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * 删除模块
      *
      * @param code 模块编码
      */
     public static boolean removeModule(String code) {
-
-        Module module = getModules().get(code);
-        System.out.println(module.getCode());
-        if (module != null) {
-            // 如果是父级模块
-            if (module.getParentCode().equals("")) {
-
-                logger.error("请先删除:" + code + "对应的子模块");
-
-                throw new DDDException("请先删除:" + code + "对应的子模块");
+        writeLock.writeLock().lock();
+        try {
+            Module module = getModules().get(code);
+            if (module != null) {
+                // 如果是父级模块
+                if (hasChildrenModule(code)) {
+                    logger.error("请先删除" + module.getName() + "对应的子模块");
+                    throw new DDDException("请先删除" + module.getName() + "对应的子模块");
+                } else {
+                    getModules().remove(code);
+                    saveModules(Config.moduleFile);
+                    return true;
+                }
             } else {
-                getModules().remove(code);
-                saveModules(Config.moduleFile);
-                return true;
+                logger.error("找不到编码为" + module.getName() + "对应的模块");
+                throw new DDDException("找不到编码为" + module.getName() + "对应的模块");
             }
-        } else {
-            logger.error("找不到编码为::" + code + "对应的模块");
-
-            throw new DDDException("找不到编码为:" + code + "对应的模块");
         }
+        finally {
+            writeLock.writeLock().unlock();
+        }
+
     }
 
     /**
@@ -316,7 +331,22 @@ public class ModuleManager {
     public static Collection<Module> getAllModules() {
         return getModules().values();
     }
-
+    public static void refresh(){
+        Gson gson = new Gson();
+        String json = null;
+        try {
+            json = FileUtils.readFileToString(new File(Config.moduleFile), "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
+        }.getType());
+    }
+    //每次重新读文件
+    public static Collection<Module> findAllModules(){
+        refresh();
+        return getModules().values();
+    }
     private static Gson createGson() {
         return new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
@@ -327,22 +357,8 @@ public class ModuleManager {
                 .disableHtmlEscaping().create(); //防止特殊字符出现乱码
     }
 
-    public static void main(String[] args) {
-        modules = new HashMap<String, Module>();
-
-        Module simpleModule = new Module("simple", "系统管理", "", "", "", 1l, "电脑模块", "是", "");
-        modules.put(simpleModule.getCode(), simpleModule);
-
-//        saveModules("F:\\IDEA\\workspace\\xc-project\\src\\main\\resources\\modules.json");
-        loadModules("F:\\IDEA\\workspace\\xc-project\\src\\main\\resources\\modules.json");
-
-        System.out.println(modules.toString());
-    }
-
-
     /**
      * 权限修改
-     * 大概方法就
      *
      * @param permission 需要修改的权限点
      */
@@ -354,15 +370,9 @@ public class ModuleManager {
         // 遍历权限点，找到满足条件的权限点，并删除。
         for (int i = 0; i < modulePermissions.size(); i++) {
             if (modulePermissions.get(i).getCode().equals(permission.getCode())) {
-                // 将url设置进入即将修改的权限对象中
-                permission.setUrls(modulePermissions.get(i).getUrls());
                 modulePermissions.remove(i);
             }
         }
-        // 将名字加入进去
-        String[] name = permission.getName().split("_");
-        permission.setName(name[name.length - 1]);
-        // 加入修改过后的权限点进模块里
         modulePermissions.add(permission);
         // 将权限点加入模块
         module.setPermissions(modulePermissions);
@@ -372,8 +382,8 @@ public class ModuleManager {
         getModules().put(module.getCode(), module);
         // 保存模块
         saveModules(Config.moduleFile);
-    }
 
+    }
 
     /**
      * 移除权限点
@@ -406,13 +416,11 @@ public class ModuleManager {
                 return true;
             } else {
                 logger.error("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
-
                 throw new DDDException("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
             }
 
         } else {
             logger.error("找不到" + permission.getModuleCode() + "对应的权限点！");
-
             throw new DDDException("找不到" + permission.getModuleCode() + "对应的权限点！");
         }
     }
@@ -429,10 +437,6 @@ public class ModuleManager {
         if (module != null) {
             // 取出模块中所有的权限点
             List<Permission> modulePermissions = module.getPermissions();
-            // 将名字加入进去
-            String[] name = permission.getName().split("_");
-            // 将名字设置进入权限对象
-            permission.setName(name[name.length - 1]);
             // 加入修改过后的权限点进模块里
             modulePermissions.add(permission);
             // 将权限点加入模块
@@ -444,9 +448,8 @@ public class ModuleManager {
             // 保存模块
             saveModules(Config.moduleFile);
         } else {
-            logger.error("找不到模块编码为:" + permission.getModuleCode() + "的模块");
-
-            throw new DDDException("找不到模块编码为:" + permission.getModuleCode() + "的模块");
+            logger.error("找不到模块编码为:" + permission.getModuleCode() + "的模块,新增权限点失败");
+            throw new DDDException("找不到模块编码为:" + permission.getModuleCode() + "的模块,新增权限点失败");
         }
 
 

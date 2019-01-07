@@ -19,13 +19,13 @@ public interface ModuleService {
     public Module findModule(Long moduleId);
 
     //所有外键的Name都以加载
-    public Module findModuleWithForeignName(Long moduleId);
+    public Module findModuleWithForeignName(String moduleCode);
 
-    public Module saveModule(Module module);
+    public void saveModule(Module module) throws Exception;
 
     public Module updateModule(Module module);
 
-    public void deleteModule(Long moduleId);
+    public void deleteModule(String moduleCode);
 
     public ModuleTreeNode constructNewTree(Long operatorId, String modelType);
 

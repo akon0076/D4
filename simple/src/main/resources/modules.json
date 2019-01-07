@@ -1,6 +1,6 @@
 {
   "simple": {
-    "code": "基础管理",
+    "code": "simple",
     "name1": "基础管理",
     "url": "",
     "route": "",
@@ -23,20 +23,6 @@
     "parentCode": "",
     "parentName": "",
     "moduleType": "移动模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/system": {
-    "code": "simple/system",
-    "name1": "系统管理",
-    "url": "",
-    "route": "",
-    "iconClass": "",
-    "displayIndex": 6,
-    "parentCode": "simple",
-    "parentName": "simple",
-    "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
     "permissions": []
@@ -211,20 +197,6 @@
         ]
       }
     ]
-  },
-  "simple/permission": {
-    "code": "simple/permission",
-    "name1": "授权",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-iot-sq ",
-    "displayIndex": 3,
-    "parentCode": "simple",
-    "parentName": "simple",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
   },
   "simple/permission/Operator": {
     "code": "simple/permission/Operator",
@@ -481,7 +453,7 @@
     "route": "",
     "iconClass": "iconfont icon-fujian",
     "displayIndex": 5,
-    "parentCode": "基础管理",
+    "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
     "isInUse": "是",
@@ -554,7 +526,7 @@
     "route": "",
     "iconClass": "iconfont icon-xitongcanshu ",
     "displayIndex": 4,
-    "parentCode": "基础管理",
+    "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
     "isInUse": "是",
@@ -623,7 +595,7 @@
     "iconClass": "iconfont icon-bumen",
     "displayIndex": 0,
     "parentCode": "simple/organization",
-    "parentName": "部门",
+    "parentName": "组织机构",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
@@ -912,20 +884,6 @@
       }
     ]
   },
-  "simple/organization": {
-    "code": "simple/organization",
-    "name1": "组织机构",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-zuzhi",
-    "displayIndex": 1,
-    "parentCode": "simple",
-    "parentName": "simple",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/regist": {
     "code": "simple/regist",
     "name1": "注册审核",
@@ -934,6 +892,141 @@
     "iconClass": "",
     "displayIndex": 10,
     "parentCode": "基础管理",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/report": {
+    "code": "simple/report",
+    "name1": "报表管理",
+    "url": "",
+    "route": "",
+    "iconClass": "",
+    "displayIndex": 1,
+    "parentCode": "基础管理",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/report/ModelFile": {
+    "code": "simple/report/ModelFile",
+    "name1": "模板文件管理",
+    "url": "/simple/report/ModelFile",
+    "route": "/simple/report/ModelFile",
+    "iconClass": "",
+    "displayIndex": 1,
+    "parentCode": "simple/report",
+    "parentName": "报表管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_report_ModelFile_Add",
+        "name1": "新增",
+        "fullName": "simple.报表管理.模板文件管理.新增",
+        "moduleCode": "simple/report/ModelFile",
+        "urls": [
+          "/simple/report/ModelFile/createModelFile",
+          "/simple/report/ModelFile/saveModelFile"
+        ]
+      },
+      {
+        "code": "simple_report_ModelFile_Edit",
+        "name1": "编辑",
+        "fullName": "simple.报表管理.模板文件管理.编辑",
+        "moduleCode": "simple/report/ModelFile",
+        "urls": [
+          "/simple/report/ModelFile/findModelFileForEdit",
+          "/simple/report/ModelFile/updateModelFile"
+        ]
+      },
+      {
+        "code": "simple_report_ModelFile_Delete",
+        "name1": "删除",
+        "fullName": "simple.报表管理.模板文件管理.删除",
+        "moduleCode": "simple/report/ModelFile",
+        "urls": [
+          "/simple/report/ModelFile/deleteModelFile"
+        ]
+      },
+      {
+        "code": "simple_report_ModelFile_View",
+        "name1": "查看",
+        "fullName": "simple.报表管理.模板文件管理.查看",
+        "moduleCode": "simple/report/ModelFile",
+        "urls": [
+          "/simple/report/ModelFile/findModelFiles",
+          "/simple/report/ModelFile/findModelFileForView"
+        ]
+      }
+    ]
+  },
+  "simple/report/reportMesShow": {
+    "code": "simple/report/reportMesShow",
+    "name1": "统计报表",
+    "url": "/simple/report/reportMesShow",
+    "route": "/simple/report/reportMesShow",
+    "iconClass": "",
+    "displayIndex": 2,
+    "parentCode": "simple/report",
+    "parentName": "报表管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_report_reportMesShow_View",
+        "name1": "查看统计报表",
+        "fullName": "simple.报表管理.统计报表.查看统计报表",
+        "moduleCode": "simple/report/reportMesShow",
+        "urls": [
+          "/simple/report/ModelFile/findModelFiles",
+          "/simple/report/ModelFile/findModelFileForView"
+        ]
+      }
+    ]
+  },
+  "simple/system": {
+    "code": "simple/system",
+    "name1": "系统管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-icon-test",
+    "displayIndex": 6,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/organization": {
+    "code": "simple/organization",
+    "name1": "组织机构",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-zuzhi",
+    "displayIndex": 2,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/permission": {
+    "code": "simple/permission",
+    "name1": "授权",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-iot-sq ",
+    "displayIndex": 1,
+    "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
     "isInUse": "是",

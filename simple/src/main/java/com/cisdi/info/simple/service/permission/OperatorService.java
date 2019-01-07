@@ -33,6 +33,8 @@ public interface OperatorService {
 
     public Map<String, Object> checkOperatorByUserNameAndPassWord(LoginDTO loginDTO);
 
+    public Map<String, Object> getOrganizations(LoginDTO loginDTO);
+
     public Map<String, Object> mobileCheckOperatorByUserNameAndPassWord(LoginDTO loginDTO);
 
     public Map<String, Object> checkMemberByUserNameAndPassWord(LoginDTO loginDTO);

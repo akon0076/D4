@@ -23,6 +23,8 @@ public class DDDException extends RuntimeException {
     static
     {
     	File file = new File(logPath);
+
+
     	if(! file.exists())
     	{
     		file.mkdirs();

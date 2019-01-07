@@ -264,10 +264,12 @@ public class EntityClass{
 		this.moduleLabel = dEntity.moduleLabel();
 
 		Entity entity = (Entity)clazz.getDeclaredAnnotation(Entity.class);
+      if(entity!=null){//不生成表
+		  this.tableName = entity.name();
 
-		this.tableName = entity.name();
+		  this.className =this.clazz.getSimpleName();
 
-		this.className =this.clazz.getSimpleName();
+	  }
 
 	}
 

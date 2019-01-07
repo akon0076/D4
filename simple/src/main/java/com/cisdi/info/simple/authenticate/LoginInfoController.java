@@ -19,7 +19,6 @@ import com.cisdi.info.simple.entity.regist.OrganizationRegist;
 import com.cisdi.info.simple.service.attachment.AttachmentService;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.member.MemberService;
-import com.cisdi.info.simple.service.organization.OrganizationService;
 import com.cisdi.info.simple.service.organization.impl.EmployeeServiceBean;
 import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.permission.OperatorService;
@@ -27,13 +26,13 @@ import com.cisdi.info.simple.service.qingTui.impl.EmpOpenIdServiceBean;
 import com.cisdi.info.simple.service.regist.EmployeRegistService;
 import com.cisdi.info.simple.service.regist.OrganizationRegistService;
 import com.cisdi.info.simple.util.MailUtil;
+import com.cisdi.info.simple.util.NudgePlusConfig;
 import com.cisdi.nudgeplus.sdk.service.OAuthService;
 import com.cisdi.nudgeplus.tmsbeans.beans.UserInfoResult;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.cisdi.info.simple.util.NudgePlusConfig;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
@@ -88,6 +87,11 @@ public class LoginInfoController {
         return  result;
     }
 
+    @PostMapping("/getOrganizations")
+    public Map<String, Object> getOrganization(@Valid @RequestBody LoginDTO loginDTO) {
+        return this.operatorService.getOrganizations(loginDTO);
+    }
+
     @GetMapping("/phoneLoginSubmit")
     public void phoneLoginSubmit(HttpServletResponse response) throws Exception{
 
@@ -107,28 +111,6 @@ public class LoginInfoController {
         {
 
         }
-    }
-
-    @GetMapping("/test")
-    public String test(HttpServletRequest request) throws JSONException{
-        System.out.println("ddddd");
-        JSONObject result = new JSONObject();
-        result.put("state",true);
-        result.put("result","");
-        result.put("data","可以访问,用户当前组织为");
-
-        return result.toString();
-    }
-
-
-    @PostMapping("/test2")
-    public String test2( HttpServletRequest request ){
-        Enumeration<String> headers = request.getHeaderNames();
-        while(headers.hasMoreElements()){
-            String name = headers.nextElement();
-        }
-
-        return "hello cloud";
     }
 
     @GetMapping("/logout")
@@ -206,7 +188,7 @@ public class LoginInfoController {
             LoginDTO loginDTO = new LoginDTO();
             loginDTO.setUserName(bindingDto.getName());
             loginDTO.setPassword(bindingDto.getPassword());
-            
+
             Map<String, Object> result = this.operatorService.mobileCheckOperatorByUserNameAndPassWord(loginDTO);//检查用户名和密码
             Boolean isCheck = Boolean.parseBoolean(result.get("isLogin").toString());
             if (isCheck) {

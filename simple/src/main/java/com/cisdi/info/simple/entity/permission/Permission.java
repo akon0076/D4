@@ -1,42 +1,27 @@
 package com.cisdi.info.simple.entity.permission;
 
-import com.cisdi.info.simple.entity.base.*;
-import javax.persistence.*;
-import java.io.Serializable;
-import com.cisdi.info.simple.annotation.DColumn;
-import com.cisdi.info.simple.annotation.DEntity;
-
-import java.util.Date;
-import com.cisdi.info.simple.entity.organization.Organization;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.List;
 
-@DEntity(label="权限点",comment="",moduleLabel="授权")
-@Entity(name="simple_permission")
 public class Permission extends BaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Expose
-	@DColumn(index=3,label="编码",comment="编码")
-	@Column(length=200,nullable=false,unique=false)
 	private String code;
 
 	@Expose
 	@SerializedName("name1")
-	@DColumn(index=4,label="名称",comment="名称")
-	@Column(length=200,nullable=false,unique=false)
 	private String name;
 
 	@Expose
-	@DColumn(index=5,label="全名",comment="名称加上模块名称")
-	@Column(length=200,nullable=false,unique=false)
 	private String fullName;
 
 	@Expose
-	@DColumn(index=6,label="模块编码",comment="模块编码")
-	@Column(length=100,nullable=false,unique=false)
 	private String moduleCode;
 
 	//权限点需要的访问的URLs
