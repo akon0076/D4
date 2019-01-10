@@ -5,18 +5,14 @@ import com.cisdi.info.simple.dao.permission.ModuleDao;
 import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import com.cisdi.info.simple.dto.operator.LoginDTO;
-import com.cisdi.info.simple.dto.permission.ModuleListDto;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
-import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.permission.PermissionService;
 import com.cisdi.info.simple.util.Config;
 import com.cisdi.info.simple.util.D4Util;
 import com.cisdi.info.simple.util.ModuleManager;
-import com.sun.org.apache.bcel.internal.generic.DUP;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,6 +57,8 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
            String [] anditems=pageDTO.getContent().split("\\s+and\\s");
           for(Module module :list){
               String  result= D4Util.invokeMethodByString(module,methodName);
+              if(result==null)
+                  result = "";
               boolean mark=true;
               for(int i=0;i<anditems.length;i++) {
                    if(!result.contains(anditems[i])){
@@ -84,6 +82,8 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
            String [] items=pageDTO.getContent().split("\\s+");//or
            for(Module module :list){
                String  result= D4Util.invokeMethodByString(module,methodName);
+               if(result==null)
+                   result = "";
                boolean mark=false;
                for(int i=0;i<items.length;i++) {
                    if(result.contains(items[i])){
