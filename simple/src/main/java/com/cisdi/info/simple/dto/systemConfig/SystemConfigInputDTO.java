@@ -5,15 +5,16 @@ package com.cisdi.info.simple.dto.systemConfig;
  * Created by 向鑫 on 2018/11/30
  */
 public class SystemConfigInputDTO {
-    public Long getEid() {
+
+    public String getEid() {
         return eid;
     }
 
-    public void setEid(Long eid) {
+    public void setEid(String eid) {
         this.eid = eid;
     }
 
-    public Long  eid;
+    public String  eid;
     public String getName() {
         return name;
     }

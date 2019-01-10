@@ -1,6 +1,6 @@
 package com.cisdi.info.simple.entity.systemConfig;
 
-import com.cisdi.info.simple.entity.base.*;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import javax.persistence.*;
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
@@ -13,7 +13,7 @@ public class SystemConfig extends BaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@DColumn(index=3,label="键",comment="键")
-	@Column(name="system_config_key",length=255,nullable=false,unique=false)
+	@Column(name="system_config_key",length=255,nullable=false,unique=true)
 	private String systemConfigKey;
 
 	@DColumn(index=4,label="值",comment="值")

@@ -6,8 +6,10 @@ import com.cisdi.info.simple.dao.foreignKey.ForeignKeyExcuteDao;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.entity.base.ColumnInfo;
 import com.cisdi.info.simple.entity.organization.Organization;
+import com.cisdi.info.simple.entity.systemConfig.SystemConfig;
 import com.cisdi.info.simple.service.attachment.AttachmentService;
 import com.cisdi.info.simple.service.base.BaseService;
+import com.cisdi.info.simple.service.systemConfig.SystemConfigService;
 import com.cisdi.info.simple.util.D4Util;
 import com.cisdi.info.simple.util.EntityManager;
 import org.junit.Test;
@@ -17,9 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +41,13 @@ public class TestEntityClass {
 
     @Autowired
     AttachmentService attachmentService;
+    @Autowired
+    SystemConfigService systemConfigService;
+    @Test
+    public void testFile(){
+    System.out.println(systemConfigService.getFilePathByKey("testFile2"));
+    System.out.println(systemConfigService.getStringValueByKey("testFile2"));
+    }
     @Test
     public void testPath(){
         URL path= Thread.currentThread().getContextClassLoader().getResource("");
@@ -125,15 +131,6 @@ public void checkForeignEntity()
         }
         errors.append("，不能删除，请检查处理后再删除");
     }
-
-
-
-
-
-
-
-
-
 
 
 

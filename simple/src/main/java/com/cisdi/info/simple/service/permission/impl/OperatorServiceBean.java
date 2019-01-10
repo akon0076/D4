@@ -34,6 +34,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Service
@@ -68,6 +69,9 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
 
     @Autowired
     private CaptchaHelper captchaHelper;
+    @Autowired
+    private HttpServletRequest request;
+
 
     public PageResultDTO findOperators(PageDTO pageDTO) {
         pageDTO.setStartIndex((pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize());
@@ -201,29 +205,73 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     }
 
     public Map<String, Object> getOrganizations(LoginDTO loginDTO) {
+
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         Map<String, Object> result = new HashMap<String, Object>();
-        boolean captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
-        if (captcha) {
-            Operator operator = new Operator();
-            String[] username = loginDTO.getUserName().split("@");
-            if (username.length > 1) {//邮箱登录
-                operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
-            } else {//用户名登录
-                operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
-            }
-            result.put("captcha", true);
-            if (operator != null) {
-                List<Organization> organizations = this.getOrganization(operator);
-                result.put("isLogin", true);
-                result.put("organizations", organizations);
-            } else {
-                result.put("isLogin", false);
-            }
 
-        } else {
-            result.put("captcha", false);
+         Integer verctifyCount= (Integer) request.getSession().getAttribute(request.getSession().getId()+"");
+         if(verctifyCount==null||verctifyCount<2){
+             result.put("hasVertify",false);
+             Operator operator = new Operator();
+             String[] username = loginDTO.getUserName().split("@");
+             if (username.length > 1) {//邮箱登录
+                 operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
+             } else {//用户名登录
+                 operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
+             }
+             if (operator != null) {
+                 List<Organization> organizations = this.getOrganization(operator);
+                 result.put("isLogin", true);
+                 result.put("organizations", organizations);
+             } else {
+                 result.put("isLogin", false);
+             }
+         }else{
+             result.put("hasVertify",true);
+                 Operator operator = new Operator();
+                 String[] username = loginDTO.getUserName().split("@");
+                 if (username.length > 1) {//邮箱登录
+                     operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
+                 } else {//用户名登录
+                     operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
+                 }
+                 result.put("captcha", true);
+                 if (operator != null) {
+                     if(verctifyCount<=2){
+                         List<Organization> organizations = this.getOrganization(operator);
+                         result.put("isLogin", true);
+                         result.put("organizations", organizations);
+                         result.put("hasVertify",false);
+                     }
+                     else{
+                         boolean captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
+                         if(captcha){
+                             List<Organization> organizations = this.getOrganization(operator);
+                             result.put("isLogin", true);
+                             result.put("organizations", organizations);
+                         }
+                         else{
+                             result.put("isLogin", false);
+                             result.put("captcha", false);
+                         }
+                     }
+                 } else {
+                     result.put("isLogin", false);
+                 }
+         }
+
+        if(result.get("isLogin")==null||!(boolean)result.get("isLogin")){
+            if (request.getSession().getAttribute(request.getSession().getId() + "") == null) {
+                request.getSession().setAttribute(request.getSession().getId()+"",1);
+            }
+            else{
+                int count=(int)request.getSession().getAttribute(request.getSession().getId()+"");
+                request.getSession().setAttribute(request.getSession().getId()+"",++count);
+            }
+        }
+        else if((boolean)result.get("isLogin")){
+            request.getSession().setAttribute(request.getSession().getId()+"",0);
         }
         return result;
     }

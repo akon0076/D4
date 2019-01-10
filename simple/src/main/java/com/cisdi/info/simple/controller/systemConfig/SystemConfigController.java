@@ -128,7 +128,13 @@ public class SystemConfigController {
 	public SystemConfigEditDto createSystemConfig()
 	{
 		SystemConfigEditDto systemConfigEditDto = new SystemConfigEditDto();
-		systemConfigEditDto.setSystemConfig(new SystemConfig());
+		SystemConfig systemConfig=new SystemConfig();
+		systemConfig.setRemark("");
+		systemConfig.setSystemConfigDescription("");
+		systemConfig.setSystemConfigValue("");
+		systemConfig.setSystemConfigKey("");
+		systemConfig.setName("");
+		systemConfigEditDto.setSystemConfig(systemConfig);
 
 		this.prepareSystemConfigEditDto(systemConfigEditDto);
 		return systemConfigEditDto;
@@ -191,7 +197,7 @@ public class SystemConfigController {
 		systemConfig.setSystemConfigValue(inputDTO.getSystemConfigValue());
 		systemConfig.setSystemConfigDescription(inputDTO.getSystemConfigDescription());
 		systemConfig.setRemark(inputDTO.getRemark());
-		systemConfig.setEId(inputDTO.getEid());
+		systemConfig.setEId(Long.parseLong(inputDTO.getEid()));
         return this.systemConfigService.updateSystemConfig(systemConfig);
 	}
 

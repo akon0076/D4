@@ -5,6 +5,8 @@ import com.cisdi.info.simple.entity.systemConfig.SystemConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 import org.apache.ibatis.annotations.Param;
+
+import java.io.InputStream;
 import java.util.List;
 
 @Mapper
@@ -35,4 +37,8 @@ public interface SystemConfigDao {
     public Integer deleteSystemConfig(@Param("systemConfigId") Long systemConfigId);
 
     public List<SystemConfig> findSystemConfigsByCondition(@Param("sql")String  sql);
+
+    public String getStringValueByKey(String key);
+
+    public Long getFilePathByKey(String key);
 }

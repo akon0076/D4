@@ -17,10 +17,10 @@ repositories {
         url 'http://maven.aliyun.com/nexus/content/groups/public/'
     }
 
-    //公司maven仓库
+/*    //公司maven仓库
     maven {
         url 'http://192.168.20.83:8081/nexus/content/groups/gogogo/'
-    }
+    }*/
 
 
 

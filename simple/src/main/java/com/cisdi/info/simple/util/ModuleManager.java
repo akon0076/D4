@@ -18,13 +18,15 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ModuleManager {
     private static Logger logger = LogManager.getLogger();
     private static Map<String, Module> modules = null;
     private static Map<String, Set<Long>> urlRoles = new HashMap<String, Set<Long>>();
-
+    private static ReentrantReadWriteLock writeLock = new ReentrantReadWriteLock();
     public static Module findModule(String code) {
+        refresh();
         return getModules().get(code);
     }
 
@@ -118,6 +120,10 @@ public class ModuleManager {
         loadModules();
         return modules;
     }
+  public static Map<String, Module> getModulesForEdit() {
+        loadModules();
+        return modules;
+    }
 
     /**
      * 新增模块
@@ -126,9 +132,8 @@ public class ModuleManager {
      * @param newModule
      */
     public static void addModule(String code, Module newModule) {
-
+        refresh();
         getModules().put(code, newModule);
-
         saveModules(Config.moduleFile);
     }
 
@@ -144,27 +149,25 @@ public class ModuleManager {
     }
 
     public static void addModule(Module module) {
-        String code = StringUtils.trimToEmpty(module.getCode());
-        String[] codeParts = StringUtils.split(code, '/');
-        if (codeParts.length != 3) {
-            throw new DDDException("%s 是无效的模块编码，格式如：system_module_entity");
+        writeLock.writeLock().lock();
+        try {
+            if(module.getParentCode()!=null&&!"".equals(module.getParentCode())){
+                module.setCode(module.getParentCode()+"/"+module.getCode());
+                if( ModuleManager.findModule(module.getCode())!=null){
+                    throw new DDDException(module.getCode()+" 编码重复,请重新输入");
+                }
+                ModuleManager.addModule(module.getCode(),module);
+            }
+            else{
+                if( ModuleManager.findModule(module.getCode())!=null){
+                    throw new DDDException(module.getCode()+" 编码重复,请重新输入");
+                }
+                ModuleManager.addModule(module.getCode(),module);
+            }
         }
-
-        String systemCode = codeParts[0];
-        Module systemModule = findModuleByCode(systemCode);
-        if (systemModule == null) {
-            systemModule = new Module(systemCode, systemCode, "", "", "", 1l, "是", module.getModuleType(), "");
-            addModule(systemCode, systemModule);
+        finally {
+            writeLock.writeLock().unlock();
         }
-
-        String moduleCode = systemCode + "/" + codeParts[1];
-        Module moduleModule = findModuleByCode(moduleCode);
-        if (moduleModule == null) {
-            moduleModule = new Module(moduleCode, module.getParentName(), "", "", "", 1l, module.getModuleType(), "是", "", systemModule);
-            addModule(moduleCode, moduleModule);
-        }
-        addModule(code, module);
-        saveModules(Config.moduleFile);
     }
 
 //    public static void  addModule(String code, String name, String url, String route, String iconClass, Long displayIndex, String moduleType,  String routeParamsObj,String moduleName)
@@ -232,32 +235,45 @@ public class ModuleManager {
         return getModules().get(code);
     }
 
+    //通过Module编码判断是否有子模块
+    public static boolean hasChildrenModule(String code){
+        for (Module module : getModules().values()) {
+            if (module.getParentCode()!=null&&!"".equals(module.getParentCode())&&module.getParentCode().equals(code)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * 删除模块
      *
      * @param code 模块编码
      */
     public static boolean removeModule(String code) {
-
-        Module module = getModules().get(code);
-        System.out.println(module.getCode());
-        if (module != null) {
-            // 如果是父级模块
-            if (module.getParentCode().equals("")) {
-
-                logger.error("请先删除:" + code + "对应的子模块");
-
-                throw new DDDException("请先删除:" + code + "对应的子模块");
+        writeLock.writeLock().lock();
+        try {
+            Module module = getModules().get(code);
+            if (module != null) {
+                // 如果是父级模块
+                if (hasChildrenModule(code)) {
+                    logger.error("请先删除" + module.getName() + "对应的子模块");
+                    throw new DDDException("请先删除" + module.getName() + "对应的子模块");
+                } else {
+                    getModules().remove(code);
+                    saveModules(Config.moduleFile);
+                    return true;
+                }
             } else {
-                getModules().remove(code);
-                saveModules(Config.moduleFile);
-                return true;
+                logger.error("找不到编码为" + module.getName() + "对应的模块");
+                throw new DDDException("找不到编码为" + module.getName() + "对应的模块");
             }
-        } else {
-            logger.error("找不到编码为::" + code + "对应的模块");
-
-            throw new DDDException("找不到编码为:" + code + "对应的模块");
         }
+        finally {
+            writeLock.writeLock().unlock();
+        }
+
     }
 
     /**
@@ -315,7 +331,22 @@ public class ModuleManager {
     public static Collection<Module> getAllModules() {
         return getModules().values();
     }
-
+    public static void refresh(){
+        Gson gson = new Gson();
+        String json = null;
+        try {
+            json = FileUtils.readFileToString(new File(Config.moduleFile), "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
+        }.getType());
+    }
+    //每次重新读文件
+    public static Collection<Module> findAllModules(){
+        refresh();
+        return getModules().values();
+    }
     private static Gson createGson() {
         return new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
