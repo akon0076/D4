@@ -3,10 +3,10 @@ package com.cisdi.info.simple.service.systemConfig.impl;
 import com.cisdi.info.simple.dao.systemConfig.SystemConfigDao;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
+import com.cisdi.info.simple.entity.attachment.Attachment;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import com.cisdi.info.simple.entity.base.Condition;
-import com.cisdi.info.simple.util.D4Util;
+import com.cisdi.info.simple.service.attachment.AttachmentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.cisdi.info.simple.entity.systemConfig.SystemConfig;
@@ -27,6 +27,9 @@ public class SystemConfigServiceBean extends BaseService implements SystemConfig
 
 	@Autowired
 	private SystemConfigDao systemConfigDao;
+
+	@Autowired
+	private  AttachmentService attachmentService;
 
 	public PageResultDTO findSystemConfigs(PageDTO pageDTO)
 	{
@@ -76,24 +79,36 @@ public class SystemConfigServiceBean extends BaseService implements SystemConfig
 	{
 		//TODO:请在此校验参数的合法性
 		this.setSavePulicColumns(systemConfig);
-		Integer rows = this.systemConfigDao.saveSystemConfig(systemConfig);
-		if(rows != 1)
-		{
-			String error = "新增保存系统参数出错，数据库应该返回1,但返回了 "+rows;
-			throw new DDDException(error);
+		try {
+			Integer rows = this.systemConfigDao.saveSystemConfig(systemConfig);
+			if(rows != 1)
+			{
+				String error = "新增保存系统参数出错，数据库应该返回1,但返回了 "+rows;
+				throw new DDDException(error);
+			}
 		}
+		catch (Exception e){
+			throw new DDDException("系统参数不能有重复的键");
+		}
+
+
 		return systemConfig;
 	}
 
 	public SystemConfig updateSystemConfig(SystemConfig systemConfig)
 	{
 		//TODO:请在此校验参数的合法性
+		try {
 		this.setUpdatePulicColumns(systemConfig);
 		Integer rows = this.systemConfigDao.updateSystemConfig(systemConfig);
 		if(rows != 1)
 		{
 			String error = "修改保存系统参数出错，数据库应该返回1,但返回了 "+rows+",数据可能被删除";
 			throw new DDDException(error);
+		}
+		}
+		catch (Exception e){
+			throw new DDDException("系统参数不能有重复的键");
 		}
 		return systemConfig;
 	}
@@ -123,5 +138,33 @@ errors.append("\t\t").append(entry.getKey()).append("\t").append(entry.getValue(
 			String error = "删除系统参数出错，数据库应该返回1,但返回了 "+rows+",数据可能已经被删除";
 			throw new DDDException(error);
 		}
+	}
+
+	/**
+	 *
+	 * @param key 系统参数的key
+	 * @return  系统参数的value,否则返回null
+	 */
+	@Override
+	public String getStringValueByKey(String key) {
+		if(key==null||"".equals(key)){
+			throw new DDDException("传入的key不能为空");
+		}
+		String value = this.systemConfigDao.getStringValueByKey(key);
+		return value;
+	}
+
+	/**
+	 *
+	 * @param key 系统参数的key
+	 * @return 系统参数的配置文件信息,否则返回null
+	 */
+	@Override
+	public  List<Attachment> getFilePathByKey(String key) {
+		Long eid = this.systemConfigDao.getFilePathByKey(key);
+		if (eid == null)
+			return null;
+        List<Attachment>  attachments=   this.attachmentService.findAllUploadedFilesByIdAndName(eid+"","simple_system_config");
+		return attachments;
 	}
 }

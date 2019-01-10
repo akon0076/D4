@@ -2,8 +2,10 @@ package com.cisdi.info.simple.service.systemConfig;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
+import com.cisdi.info.simple.entity.attachment.Attachment;
 import com.cisdi.info.simple.entity.systemConfig.SystemConfig;
 
+import java.io.InputStream;
 import java.util.List;
 
 public interface SystemConfigService {
@@ -29,4 +31,8 @@ public interface SystemConfigService {
 
     public void deleteSystemConfig(Long systemConfigId);
 
+
+    public String getStringValueByKey(String key);
+
+    public  List<Attachment> getFilePathByKey(String key);
 }

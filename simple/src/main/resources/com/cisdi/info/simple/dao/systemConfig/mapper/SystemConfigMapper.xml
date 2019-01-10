@@ -151,5 +151,10 @@
     <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
         select * from simple_employee where code = #{code}
     </select>
-
+  <select id="getStringValueByKey" resultType="java.lang.String" parameterType="java.lang.String">
+        select system_config_value from  simple_system_config where system_config_key=#{key}
+  </select>
+    <select id="getFilePathByKey" resultType="java.lang.Long" parameterType="java.lang.String">
+        select eid from  simple_system_config where system_config_key=#{key}
+    </select>
 </mapper>
