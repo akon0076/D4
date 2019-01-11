@@ -19,26 +19,78 @@ import java.util.List;
 @Component(value = "${EntityNameLow}Dao")
 public interface ${EntityNameUp}Dao {
 
+    /**
+    * 根据分页参数查询${entityClass.label}集合
+    *
+    * @param pageDTO 分页条件
+    */
     public List<${EntityNameUp}> find${EntityNameUp}s(PageDTO pageDTO);
 
+    /**
+    * 查询全部${entityClass.label}集合
+    *
+    */
     public List<${EntityNameUp}> findAll${EntityNameUp}s();
 
+    /**
+    * 查询所有${entityClass.label}集合(只提取ID 和 Name)
+    *
+    */
     public List<${EntityNameUp}> findAll${EntityNameUp}sWithIdName();
 
+    /**
+    * 根据名称查询${entityClass.label}集合(只提取ID 和 Name)
+    *
+    * @param ${EntityNameLow}Name 名称
+    */
     public List<${EntityNameUp}> find${EntityNameUp}sWithIdNameByName(@Param("${EntityNameLow}Name") String ${EntityNameLow}Name);
 
+    /**
+    * 根据ID查询指定的${entityClass.label}(只提取ID 和 Name)
+    *
+    * @param ${EntityNameLow}Id Id
+    */
     public ${EntityNameUp} find${EntityNameUp}sWithIdNameById(@Param(" ${EntityNameLow}Id") Long ${EntityNameLow}Id);
 
+    /**
+    * 根据分页参数查询${entityClass.label}集合的数量
+    *
+    * @param pageDTO 分页条件
+    */
     public Long find${EntityNameUp}TotalCount(PageDTO pageDTO);
 
+    /**
+    * 根据ID查询指定的${entityClass.label}
+    *
+    * @param ${EntityNameLow}Id Id
+    */
     public ${EntityNameUp} find${EntityNameUp}(@Param("${EntityNameLow}Id") Long ${EntityNameLow}Id);
 
-    //所有外键的Name都以加载
+    /**
+    * 根据ID查询指定的${entityClass.label}(包含外键)
+    *
+    * @param ${EntityNameLow}Id Id
+    */
     public ${EntityNameUp} find${EntityNameUp}WithForeignName(@Param("${EntityNameLow}Id") Long ${EntityNameLow}Id);
 
+    /**
+    * 新增${entityClass.label}
+    *
+    * @param ${EntityNameLow} 实体对象
+    */
     public Integer save${EntityNameUp}(${EntityNameUp} ${EntityNameLow});
 
+    /**
+    * 更新${entityClass.label}
+    *
+    * @param ${EntityNameLow} 实体对象
+    */
     public Integer update${EntityNameUp}(${EntityNameUp} ${EntityNameLow});
 
+    /**
+    * 根据ID删除${entityClass.label}
+    *
+    * @param ${EntityNameLow}Id ID
+    */
     public Integer delete${EntityNameUp}(@Param("${EntityNameLow}Id") Long ${EntityNameLow}Id);
 }

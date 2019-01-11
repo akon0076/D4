@@ -5,15 +5,10 @@ import com.cisdi.info.simple.dao.permission.RoleAndPermissionDao;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.entity.permission.RoleAndPermission;
-
-import com.cisdi.info.simple.service.permission.RoleAndPermissionService;
-import com.cisdi.info.simple.service.permission.impl.RoleAndPermissionServiceBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +22,7 @@ public class ModuleManager {
     private static Map<String, Module> modules = null;
     private static Map<String, Set<Long>> urlRoles = new HashMap<String, Set<Long>>();
     private static ReentrantReadWriteLock writeLock = new ReentrantReadWriteLock();
+
     public static Module findModule(String code) {
         refresh();
         return getModules().get(code);
@@ -122,7 +118,8 @@ public class ModuleManager {
         loadModules();
         return modules;
     }
-  public static Map<String, Module> getModulesForEdit() {
+
+    public static Map<String, Module> getModulesForEdit() {
         loadModules();
         return modules;
     }
@@ -153,21 +150,19 @@ public class ModuleManager {
     public static void addModule(Module module) {
         writeLock.writeLock().lock();
         try {
-            if(module.getParentCode()!=null&&!"".equals(module.getParentCode())){
-                module.setCode(module.getParentCode()+"/"+module.getCode());
-                if( ModuleManager.findModule(module.getCode())!=null){
-                    throw new DDDException(module.getCode()+" 编码重复,请重新输入");
+            if (module.getParentCode() != null && !"".equals(module.getParentCode())) {
+                module.setCode(module.getParentCode() + "/" + module.getCode());
+                if (ModuleManager.findModule(module.getCode()) != null) {
+                    throw new DDDException(module.getCode() + " 编码重复,请重新输入");
                 }
-                ModuleManager.addModule(module.getCode(),module);
-            }
-            else{
-                if( ModuleManager.findModule(module.getCode())!=null){
-                    throw new DDDException(module.getCode()+" 编码重复,请重新输入");
+                ModuleManager.addModule(module.getCode(), module);
+            } else {
+                if (ModuleManager.findModule(module.getCode()) != null) {
+                    throw new DDDException(module.getCode() + " 编码重复,请重新输入");
                 }
-                ModuleManager.addModule(module.getCode(),module);
+                ModuleManager.addModule(module.getCode(), module);
             }
-        }
-        finally {
+        } finally {
             writeLock.writeLock().unlock();
         }
     }
@@ -238,9 +233,9 @@ public class ModuleManager {
     }
 
     //通过Module编码判断是否有子模块
-    public static boolean hasChildrenModule(String code){
+    public static boolean hasChildrenModule(String code) {
         for (Module module : getModules().values()) {
-            if (module.getParentCode()!=null&&!"".equals(module.getParentCode())&&module.getParentCode().equals(code)) {
+            if (module.getParentCode() != null && !"".equals(module.getParentCode()) && module.getParentCode().equals(code)) {
                 return true;
             }
         }
@@ -271,8 +266,7 @@ public class ModuleManager {
                 logger.error("找不到编码为" + module.getName() + "对应的模块");
                 throw new DDDException("找不到编码为" + module.getName() + "对应的模块");
             }
-        }
-        finally {
+        } finally {
             writeLock.writeLock().unlock();
         }
 
@@ -333,7 +327,8 @@ public class ModuleManager {
     public static Collection<Module> getAllModules() {
         return getModules().values();
     }
-    public static void refresh(){
+
+    public static void refresh() {
         Gson gson = new Gson();
         String json = null;
         try {
@@ -344,11 +339,13 @@ public class ModuleManager {
         modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
         }.getType());
     }
+
     //每次重新读文件
-    public static Collection<Module> findAllModules(){
+    public static Collection<Module> findAllModules() {
         refresh();
         return getModules().values();
     }
+
     private static Gson createGson() {
         return new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
@@ -364,14 +361,14 @@ public class ModuleManager {
      *
      * @param permission 需要修改的权限点
      */
-    public static void updatePermission(Permission permission) {
+    public static void updatePermission(Permission permission, String lastCode) {
         // 根据权限中的模块编码获取指定模块
         Module module = getModules().get(permission.getModuleCode());
         // 取出模块中所有的权限点
         List<Permission> modulePermissions = module.getPermissions();
         // 遍历权限点，找到满足条件的权限点，并删除。
         for (int i = 0; i < modulePermissions.size(); i++) {
-            if (modulePermissions.get(i).getCode().equals(permission.getCode())) {
+            if (modulePermissions.get(i).getCode().equals(lastCode)) {
                 modulePermissions.remove(i);
             }
         }

@@ -37,7 +37,7 @@ public class DetailTablePolicy extends DynamicTableRenderPolicy {
             if (tableStartNumber < 0) {
                 table.insertNewTableRow(table.getNumberOfRows());
             } else {
-                tableRow = table.insertNewTableRow(tableStartNumber - 1);
+                tableRow = table.insertNewTableRow(tableStartNumber - 1 + i);
             }
             copyTableRow(tableRow, row);
             List<String> list = tableData.get(i);

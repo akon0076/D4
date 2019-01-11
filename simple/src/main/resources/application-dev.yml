@@ -28,7 +28,7 @@ spring:
   mvc:
     static-path-pattern: /file/**
   resources:
-    static-locations: file:D://DDDFile/
+    static-locations: file:D://D4/DDDFile/
 
 logging:
   file: d:/DDDLog/ddd.log #日志文件输出目录

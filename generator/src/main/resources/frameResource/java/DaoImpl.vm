@@ -88,7 +88,7 @@
         select * from ${entityClass.tableName} where eid = #{${EntityNameLow}Id}
     </select>
 
-    <!-- -->
+    <!-- 根据ID查询指定的实体(包含外键) -->
     <select id="find${EntityNameUp}WithForeignName" resultType="${entityClass.clazz.name}" parameterType="java.lang.Long">
         select
         #foreach($columnInfo in ${entityClass.dbColumnInfos})
