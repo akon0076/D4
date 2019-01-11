@@ -51,7 +51,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	[
 	{
 	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Add",
-	"name1": "新增",
+	"name1": "新增{entityClass.label}",
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.新增",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
@@ -72,7 +72,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	},
 	{
 	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Edit",
-	"name1": "编辑",
+	"name1": "编辑{entityClass.label}",
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.编辑",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
@@ -93,7 +93,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	},
 	{
 	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Delete",
-	"name1": "删除",
+	"name1": "删除{entityClass.label}",
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.删除",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
@@ -102,7 +102,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	},
 	{
 	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_View",
-	"name1": "查看",
+	"name1": "查看{entityClass.label}",
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.查看",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
@@ -142,26 +142,43 @@ ${d4Util.addMapItem($imports,$import,$import)}
 	${import1}
 	#end
 
+	/**
+	* 根据分页参数查询${entityClass.label}集合
+	*
+	* @param pageDTO 分页条件
+	*/
 	@PostMapping("/find${EntityNameUp}s")
 	public PageResultDTO find${EntityNameUp}s(@RequestBody PageDTO pageDTO){
 		return this.${EntityNameLow}Service.find${EntityNameUp}s(pageDTO);
 	}
 
+	/**
+	* 根据ID查询指定的${entityClass.label}
+	*
+	* @param ${EntityNameLow}Id Id
+	*/
 	@GetMapping("/find${EntityNameUp}")
-	public ${EntityNameUp} find${EntityNameUp}(@RequestParam Long ${EntityNameLow}Id)
-	{
+	public ${EntityNameUp} find${EntityNameUp}(@RequestParam Long ${EntityNameLow}Id){
 		return this.${EntityNameLow}Service.find${EntityNameUp}(${EntityNameLow}Id);
 	}
 
+	/**
+	* 根据ID查询指定的${entityClass.label}(包含外键名称)
+	*
+	* @param ${EntityNameLow}Id Id
+	*/
 	@GetMapping("/find${EntityNameUp}ForView")
-	public ${EntityNameUp} find${EntityNameUp}ForView(@RequestParam Long ${EntityNameLow}Id)
-	{
+	public ${EntityNameUp} find${EntityNameUp}ForView(@RequestParam Long ${EntityNameLow}Id){
 		return this.${EntityNameLow}Service.find${EntityNameUp}WithForeignName(${EntityNameLow}Id);
 	}
 
+	/**
+	* 根据ID查询指定的${entityClass.label}(包含${entityClass.label}和外键名称)
+	*
+	* @param ${EntityNameLow}Id Id
+	*/
 	@GetMapping("/find${EntityNameUp}ForEdit")
-	public ${EntityNameUp}EditDto find${EntityNameUp}ForEdit(@RequestParam Long ${EntityNameLow}Id)
-	{
+	public ${EntityNameUp}EditDto find${EntityNameUp}ForEdit(@RequestParam Long ${EntityNameLow}Id){
 		#set($editDto="${stringUtils.uncapitalize(${editDtoClassName})}")
 		${editDtoClassName} ${editDto} = new ${editDtoClassName}();
 		${editDto}.set${EntityNameUp}(this.${EntityNameLow}Service.find${EntityNameUp}WithForeignName(${EntityNameLow}Id));
@@ -171,10 +188,12 @@ ${d4Util.addMapItem($imports,$import,$import)}
 		return ${editDto};
 	}
 
-	//创建新的${entityClass.label}
+	/**
+	* 创建新的${entityClass.label}
+	*
+	*/
 	@GetMapping("/create${EntityNameUp}")
-	public ${EntityNameUp}EditDto create${EntityNameUp}()
-	{
+	public ${EntityNameUp}EditDto create${EntityNameUp}(){
 		#set($editDto="${stringUtils.uncapitalize(${editDtoClassName})}")
 		${editDtoClassName} ${editDto} = new ${editDtoClassName}();
 		${editDto}.set${EntityNameUp}(new ${EntityNameUp}());
@@ -183,8 +202,7 @@ ${d4Util.addMapItem($imports,$import,$import)}
 		return ${editDto};
 	}
 
-	private void prepare${EntityNameUp}EditDto(${editDtoClassName} ${editDto})
-	{
+	private void prepare${EntityNameUp}EditDto(${editDtoClassName} ${editDto}){
 	#foreach($columnInfo in $entityClass.columnInfos)
 		#if($columnInfo.definitionType == "CodeTable")
 		${editDto}.set${stringUtils.capitalize(${columnInfo.fieldName})}CodeTables(this.codeTableService.findCodeTablesByCodeType("${columnInfo.codeTable}"));
@@ -198,32 +216,48 @@ ${d4Util.addMapItem($imports,$import,$import)}
 	#end
 	}
 
+	/**
+	* 更新${entityClass.label}
+	*
+	* @param ${EntityNameLow} 实体对象
+	*/
 	@PostMapping("/save${EntityNameUp}")
-	public ${EntityNameUp} save${EntityNameUp}(@RequestBody ${EntityNameUp} ${EntityNameLow})
-	{
+	public ${EntityNameUp} save${EntityNameUp}(@RequestBody ${EntityNameUp} ${EntityNameLow}){
 		return this.${EntityNameLow}Service.save${EntityNameUp}(${EntityNameLow});
 	}
 
 	@PostMapping("/update${EntityNameUp}")
-	public ${EntityNameUp} update${EntityNameUp}(@RequestBody ${EntityNameUp} ${EntityNameLow})
-	{
+	public ${EntityNameUp} update${EntityNameUp}(@RequestBody ${EntityNameUp} ${EntityNameLow}){
 		return this.${EntityNameLow}Service.update${EntityNameUp}(${EntityNameLow});
 	}
 
+	/**
+	* 根据ID删除${entityClass.label}
+	*
+	* @param ${EntityNameLow}Id ID
+	*/
 	@GetMapping("/delete${EntityNameUp}")
-	public void delete${EntityNameUp}(@RequestParam Long ${EntityNameLow}Id)
-	{
+	public void delete${EntityNameUp}(@RequestParam Long ${EntityNameLow}Id){
 		this.${EntityNameLow}Service.delete${EntityNameUp}(${EntityNameLow}Id);
 	}
+
+	/**
+	* 根据ID查询指定的${entityClass.label}(只提取ID 和 Name)
+	*
+	* @param ${EntityNameLow}Id Id
+	*/
 	@GetMapping("/find${EntityNameUp}sWithIdNameById")
-	public ${EntityNameUp} find${EntityNameUp}sWithIdNameById(@RequestParam Long ${EntityNameLow}Id)
-	{
+	public ${EntityNameUp} find${EntityNameUp}sWithIdNameById(@RequestParam Long ${EntityNameLow}Id){
 		return this.${EntityNameLow}Service.find${EntityNameUp}sWithIdNameById(${EntityNameLow}Id);
 	}
 
+	/**
+	* 根据名称查询${entityClass.label}集合(只提取ID 和 Name)
+	*
+	* @param ${EntityNameLow}Name 名称
+	*/
 	@GetMapping("/find${EntityNameUp}sWithIdNameByName")
-	public List<${EntityNameUp}> find${EntityNameUp}sWithIdNameByName(String ${EntityNameLow}Name)
-	{
+	public List<${EntityNameUp}> find${EntityNameUp}sWithIdNameByName(String ${EntityNameLow}Name){
 		return this.${EntityNameLow}Service.find${EntityNameUp}sWithIdNameByName(${EntityNameLow}Name);
 	}
 }
