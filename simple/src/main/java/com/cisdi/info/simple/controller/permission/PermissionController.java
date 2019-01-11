@@ -140,8 +140,8 @@ public class PermissionController {
     }
 
     @PostMapping("/updatePermission")
-    public Permission updatePermission(@RequestBody Permission permission) {
-        return this.permissionService.updatePermission(permission);
+    public Permission updatePermission(@RequestBody PermissionEditDto permissionEditDto) {
+        return this.permissionService.updatePermission(permissionEditDto);
     }
 
     @GetMapping("/deletePermission")

@@ -2,6 +2,7 @@ package com.cisdi.info.simple.service.permission;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
+import com.cisdi.info.simple.dto.permission.PermissionEditDto;
 import com.cisdi.info.simple.entity.permission.Permission;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface PermissionService {
 
     public Permission savePermission(Permission permission);
 
-    public Permission updatePermission(Permission permission);
+    public Permission updatePermission(PermissionEditDto permissionEditDto);
 
     public void deletePermission(String permissionCode);
 

@@ -1,8 +1,10 @@
 package com.cisdi.info.simple.service.permission.impl;
 
+import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.dao.permission.PermissionDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
+import com.cisdi.info.simple.dto.permission.PermissionEditDto;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.base.BaseService;
@@ -26,45 +28,6 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
 
     @Autowired
     private PermissionDao permissionDao;
-
-    ///**
-    // * 根据分页参数查询权限点
-    // *
-    // * @param pageDTO 分页参数
-    // * @return
-    // */
-    //@Override
-    //public PageResultDTO findPermissions(PageDTO pageDTO) {
-    //    // 读取json文件中的模块
-    //    Collection<Module> moduleCollection = ModuleManager.getAllModules();
-    //    Iterator iterator = moduleCollection.iterator();
-    //
-    //    List<Module> moduleList = new ArrayList<>();
-    //    while (iterator.hasNext()) {
-    //        moduleList.add((Module) iterator.next());
-    //    }
-    //
-    //    List<Permission> permissions = new ArrayList<>();
-    //    for (Module module : moduleList) {
-    //        List<Permission> modulePermissions = module.getPermissions();
-    //        for (int i = 0; i < modulePermissions.size(); i++) {
-    //            Permission permission = modulePermissions.get(i);
-    //            permissions.add(permission);
-    //        }
-    //    }
-    //    int startIndex = (pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize();
-    //    int pageSize = pageDTO.getPageSize();
-    //    int end = startIndex + pageSize;
-    //    long totalCount = permissions.size();
-    //    end = permissions.size() < end ? permissions.size() : end;
-    //    List<Permission> permissionList = permissions.subList(startIndex, end);
-    //
-    //    PageResultDTO pageResultDTO = new PageResultDTO();
-    //    pageResultDTO.setDatas(permissionList);
-    //    pageResultDTO.setTotalCount(totalCount);
-    //
-    //    return pageResultDTO;
-    //}
 
     @Override
     public PageResultDTO findPermissions(PageDTO pageDTO) {
@@ -170,14 +133,27 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
 
     @Override
     public Permission savePermission(Permission permission) {
+        loadPermissions();
+        if (permissionMap.containsKey(permission.getCode())) {
+            logger.debug("权限点编码必须唯一！");
+            throw new DDDException("权限点编码必须唯一！");
+        }
         ModuleManager.addPermission(permission);
         permissionMap.put(permission.getCode(), permission);
         return permission;
     }
 
     @Override
-    public Permission updatePermission(Permission permission) {
-        ModuleManager.updatePermission(permission);
+    public Permission updatePermission(PermissionEditDto permissionEditDto) {
+        String lastCode = permissionEditDto.getLastCode();
+        Permission permission = permissionEditDto.getPermission();
+        loadPermissions();
+        if (permissionMap.containsKey(permission.getCode())) {
+            logger.debug("权限点编码必须唯一！");
+            throw new DDDException("权限点编码必须唯一！");
+        }
+        ModuleManager.updatePermission(permission, lastCode);
+        permissionMap.remove(lastCode);
         permissionMap.put(permission.getCode(), permission);
         return permission;
     }
@@ -218,6 +194,7 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
      * 加载所有权限
      */
     public void loadPermissions() {
+        permissionMap = new HashMap<>();
         // 读取json文件中的模块
         Collection<Module> moduleCollection = ModuleManager.getAllModules();
         Iterator iterator = moduleCollection.iterator();

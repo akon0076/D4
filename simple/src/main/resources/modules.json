@@ -1032,30 +1032,5 @@
         ]
       }
     ]
-  },
-  "simple/Test": {
-    "code": "simple/test/Test",
-    "name1": "测试增加模块",
-    "url": null,
-    "route": null,
-    "iconClass": null,
-    "displayIndex": 999,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": null,
-    "permissions": [
-      {
-        "code": "test",
-        "name1": "新增测试权限点",
-        "fullName": "测试增加模块.新增测试权限点",
-        "moduleCode": "simple/test/Test",
-        "urls": [
-          "/simple/organization/Employee/findEmployees",
-          "/simple/organization/Employee/findEmployeeForView"
-        ]
-      }
-    ]
   }
 }
