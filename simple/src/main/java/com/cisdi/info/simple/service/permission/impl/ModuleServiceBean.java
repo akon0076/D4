@@ -207,7 +207,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
     }
 
     /**
-     * @Author April
+     * @Author April_Xiang
      * @param operatorId 操作员Id
      * @param modelType 模块类型
      * @return  根据moduleCode找到所有模块,并生成树
@@ -238,9 +238,11 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
                 if(module==null)
                     throw new DDDException("找不到编码为"+tempString+"的模块");
                 Module parentNode = this.findFirstCanBeUse(module);
-                ModuleTreeNode moduleTreeNodeChild=this.convertModule2TreeNode(module,0);
+                ModuleTreeNode moduleTreeNodeChild=this.convertModule2TreeNode(module,1);
                 treeNodeMap.put(tempString,moduleTreeNodeChild);
                 if(parentNode!=null){
+                    ModuleTreeNode moduleTreeNodeParent = treeNodeMap.get(parentNode.getCode());
+                    moduleTreeNodeChild.setLevel((Integer.parseInt(moduleTreeNodeParent.getLevel())+1)+"");
                     treeNodeMap.get(parentNode.getCode()).getNodes().add(moduleTreeNodeChild);
                 }
                 else{
