@@ -43,4 +43,6 @@ public interface OperatorService {
 
     public void createSuperUser();
 
+    public List<String> findAllModuleCodesByOperatorId(Long operatorId);
+
 }

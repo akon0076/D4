@@ -138,6 +138,8 @@
     <select id="findRoleAndPermissionByRoleId" parameterType="java.lang.Long" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
         select * from simple_role_and_permission where role_id = #{roleId}
     </select>
-
+    <delete id="deleteRoleAndPermissionByModuleCode">
+        DELETE  from simple_role_and_permission where module_code=#{moduleCode}
+    </delete>
 
 </mapper>

@@ -105,4 +105,9 @@ public class RoleAndPermissionServiceBean extends BaseService implements RoleAnd
     public List<RoleAndPermission> findRoleAndPermissionByRoleId(Long roleId) {
         return this.roleAndPermissionDao.findRoleAndPermissionByRoleId(roleId);
     }
+
+    @Override
+    public Integer deleteRoleAndPermissionByModuleCode(String moduleCode) {
+        return  this.roleAndPermissionDao.deleteRoleAndPermissionByModuleCode(moduleCode);
+    }
 }

@@ -7,6 +7,8 @@ import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
 
 import java.util.Date;
+import java.util.List;
+
 import com.cisdi.info.simple.entity.organization.Organization;
 
 import javax.persistence.Column;
@@ -88,6 +90,7 @@ public class Operator extends BaseEntity implements Serializable{
 	public void setPersonId(Long personId) {
 		this.personId = personId;
 	}
+
 
 
 	

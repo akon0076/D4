@@ -13,6 +13,7 @@ import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.permission.PermissionService;
+import com.cisdi.info.simple.service.permission.RoleAndPermissionService;
 import com.cisdi.info.simple.util.Config;
 import com.cisdi.info.simple.util.D4Util;
 import com.cisdi.info.simple.util.ModuleManager;
@@ -41,6 +42,8 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private RoleAndPermissionService roleAndPermissionService;
 
     @Override
     public PageResultDTO findModules(PageDTO pageDTO) {
@@ -146,30 +149,21 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
      * @return
      */
     @Override
-    public synchronized Module updateModule(Module module) {
+    public Module updateModule(Module module) {
 
-        if(module.getParentCode()!=null&&!"".equals(module.getParentCode())&&!module.getCode().contains(module.getParentCode()+"/")){
-            module.setCode(module.getParentCode()+"/"+module.getCode());
-        }
         //找到要修改的Module
         Module primaryModule = ModuleManager.findModule(module.getHideAttribute());
         if (primaryModule == null) {
             throw new DDDException("该模板已经被删除,或者已经被更改");
         }
-        for(int i=0;i<primaryModule.getPermissions().size();i++) {
-             primaryModule.getPermissions().get(i).setModuleCode(module.getCode());
-        }
-        module.setPermissions(primaryModule.getPermissions());
        if(ModuleManager.getModulesForEdit().remove(module.getHideAttribute())==null) {
            throw new DDDException("该模板已经被删除,或者已经被更改");
        }
-
         ModuleManager.getModulesForEdit().put(module.getHideAttribute(), module);
 
         //遍历每个模块,找到当前要修改的子模块进行更改
         for(Module childModule :ModuleManager.getAllModules()){
             if (childModule.getParentCode()!=null&&!"".equals(childModule.getParentCode())&&childModule.getParentCode().equals(module.getHideAttribute())) {
-                childModule.setParentCode(module.getCode());
                 childModule.setParentName(module.getName());
             }
         }
@@ -190,6 +184,8 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
             String code = module.getCode();
             if (code != null) {
                 if (ModuleManager.removeModule(code)) {
+                   //删除该模块分配的权限
+                    roleAndPermissionService.deleteRoleAndPermissionByModuleCode(code);
                     logger.debug("删除模块:" + code + "成功！");
                 } else {
                     logger.debug("删除模块:" + code + "失败！");
@@ -206,161 +202,70 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
 
     }
 
+    /**
+     * @Author April
+     * @param operatorId 操作员Id
+     * @param modelType 模块类型
+     * @return  根据moduleCode找到所有模块,并生成树
+     */
     @Override
     public ModuleTreeNode constructNewTree(Long operatorId, String modelType) {
-//        PageDTO pageDTO = new PageDTO();
-//        pageDTO.setColumnName(String.valueOf(operatorId));
-//        pageDTO.setContent(modelType);
-        List<String> permissionCodes = this.operatorDao.findPermissions(operatorId);
-
-        List<ModuleTreeNode> subSystemModules = new ArrayList<ModuleTreeNode>();
-        Map<String, ModuleTreeNode> moduleTreeNodes = new HashMap<String, ModuleTreeNode>();
-        if ("电脑模块".equals(modelType)) {
-            for (String permissionCode : permissionCodes) {
-//                if(permissionCode.equals("pm_spaceRenting_basicManagement_BuildingInformation_Add")){
-//                   System.out.println();
-//                   System.out.println("DDDD");
-//                }
-                String[] permissionCodeParts = StringUtils.split(permissionCode, "_");
-                if (permissionCodeParts != null && permissionCodeParts.length < 3) {
+          //找到该操作员对应的所有ModuleCode
+        List<String> moduleCodes = this.operatorDao.findAllModuleCodesByOperatorId(operatorId);
+        ModuleTreeNode allModuleTreeNode=new ModuleTreeNode();
+        Map<String, ModuleTreeNode> treeNodeMap = new HashMap<>();
+        Set<ModuleTreeNode> topTreeNode = new HashSet<>();
+        for(int i=0;i<moduleCodes.size();i++) {
+            String[] codeString = StringUtils.split(moduleCodes.get(i), "/");
+            String tempString = "";
+            for(int j=0;j<codeString.length;j++) {
+                if(j==0){
+                    tempString = codeString[j];
+                }
+                else{
+                   tempString+="/"+codeString[j];
+                }
+                if (treeNodeMap.get(tempString)!=null)
                     continue;
-                }
-                String subSystemName = permissionCodeParts[0];
-                if ("mobile".equals(subSystemName)) {
+                Module module = ModuleManager.findModuleByCode(tempString);
+                if("否".equals(module.getIsInUse()))
                     continue;
+                if(module==null)
+                    throw new DDDException("找不到编码为"+tempString+"的模块");
+                Module parentNode = this.findFirstCanBeUse(module);
+                ModuleTreeNode moduleTreeNodeChild=this.convertModule2TreeNode(module,0);
+                treeNodeMap.put(tempString,moduleTreeNodeChild);
+                if(parentNode!=null){
+                    treeNodeMap.get(parentNode.getCode()).getNodes().add(moduleTreeNodeChild);
                 }
-                String moduleName = permissionCodeParts[0] + "/" + permissionCodeParts[1];
-                String entityName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2];
-                if(permissionCodeParts.length>=5){
-                    entityName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2]+"/"+permissionCodeParts[3];
-                }
-                if (moduleTreeNodes.containsKey(entityName)) continue;
-
-                ModuleTreeNode subSystemModuleTreeNode = moduleTreeNodes.get(subSystemName);
-                if (subSystemModuleTreeNode == null) {
-                    Module subSystemModule = findMoudle(subSystemName);
-                    // x_x 命名之后存在的数据相同 -start
-                    String name = subSystemModule.getName();
-                    if (name.split("_").length > 1) {
-                        subSystemModule.setName(name.split("_")[1]);
-                    }
-                    // x_x 命名之后存在的数据相同 -end
-
-                    if ("否".equals(subSystemModule.getIsInUse())) continue;
-                    subSystemModuleTreeNode = this.convertModule2TreeNode(subSystemModule, 1);
-                    subSystemModules.add(subSystemModuleTreeNode);
-                    moduleTreeNodes.put(subSystemName, subSystemModuleTreeNode);
-                }
-
-                ModuleTreeNode moduleModuleTreeNode = moduleTreeNodes.get(moduleName);
-                ModuleTreeNode moduleModuleTreeNode1 = moduleTreeNodes.get(moduleName);
-                if (moduleModuleTreeNode == null) {
-                    Module moduleModule = findMoudle(moduleName);
-                    // x_x 命名之后存在的数据相同 -start
-                    String name = moduleModule.getName();
-                    if (name.split("_").length > 1) {
-                        moduleModule.setName(name.split("_")[1]);
-                    }
-                    // x_x 命名之后存在的数据相同 -end
-                    if ("否".equals(moduleModule.getIsInUse())) continue;
-                    moduleModuleTreeNode = this.convertModule2TreeNode(moduleModule, 2);
-                    subSystemModuleTreeNode.addNode(moduleModuleTreeNode);
-                    moduleTreeNodes.put(moduleName, moduleModuleTreeNode);
-                }
-                if(permissionCodeParts.length>=5){
-                    moduleName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2];
-                    entityName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2]+"/"+permissionCodeParts[3];
-                    moduleModuleTreeNode1 = moduleTreeNodes.get(moduleName);
-                    if (moduleModuleTreeNode1 == null) {
-                        Module moduleModule = findMoudle(moduleName);
-                        if ("否".equals(moduleModule.getIsInUse())) continue;
-                        moduleModuleTreeNode1 = this.convertModule2TreeNode(moduleModule, 3);
-                        moduleModuleTreeNode.addNode(moduleModuleTreeNode1);
-                        moduleTreeNodes.put(moduleName, moduleModuleTreeNode1);
-                    }
-                }
-                Module entityModule = findMoudle(entityName);
-                // x_x 命名之后存在的数据相同 -start
-                String name = entityModule.getName();
-                if (name.split("_").length > 1) {
-                    entityModule.setName(name.split("_")[1]);
-
-                }
-                // x_x 命名之后存在的数据相同 -end
-
-                if ("否".equals(entityModule.getIsInUse())) continue;
-                ModuleTreeNode entityModuleTreeNode = this.convertModule2TreeNode(entityModule, 3);
-                if(permissionCodeParts.length>=5){
-                    entityModuleTreeNode = this.convertModule2TreeNode(entityModule, 4);
-                    moduleModuleTreeNode1.addNode(entityModuleTreeNode);
-                    moduleTreeNodes.put(entityName, entityModuleTreeNode);
-                }else {
-                    moduleModuleTreeNode.addNode(entityModuleTreeNode);
-                    moduleTreeNodes.put(entityName, entityModuleTreeNode);
+                else{
+                    topTreeNode.add(moduleTreeNodeChild);
                 }
             }
-
-
-            ModuleTreeNode rootModuleTreeNode = new ModuleTreeNode();
-            rootModuleTreeNode.setId("root");
-            rootModuleTreeNode.setName("root");
-            rootModuleTreeNode.setText("根节点");
-            rootModuleTreeNode.getNodes().addAll(subSystemModules);
-            sort(rootModuleTreeNode);
-            return rootModuleTreeNode;
-        } else if ("移动模块".equals(modelType)) {
-            for (String permissionCode : permissionCodes) {
-                String[] permissionCodeParts = StringUtils.split(permissionCode, "_");
-                String subSystemName = permissionCodeParts[0];
-                if (!"mobile".equals(subSystemName)) {
-                    continue;
-                }
-                String moduleName = permissionCodeParts[0] + "/" + permissionCodeParts[1];
-
-                ModuleTreeNode subSystemModuleTreeNode = moduleTreeNodes.get(subSystemName);
-                if (subSystemModuleTreeNode == null) {
-                    Module subSystemModule = findMoudle(subSystemName);
-                    // x_x 命名之后存在的数据相同 -start
-                    String name = subSystemModule.getName();
-                    if (name.split("_").length > 1) {
-                        subSystemModule.setName(name.split("_")[1]);
-                    }
-                    // x_x 命名之后存在的数据相同 -end
-
-                    if ("否".equals(subSystemModule.getIsInUse())) continue;
-                    subSystemModuleTreeNode = this.convertModule2TreeNode(subSystemModule, 1);
-                    subSystemModules.add(subSystemModuleTreeNode);
-                    moduleTreeNodes.put(subSystemName, subSystemModuleTreeNode);
-                }
-
-                ModuleTreeNode moduleModuleTreeNode = moduleTreeNodes.get(moduleName);
-                if (moduleModuleTreeNode == null) {
-                    Module moduleModule = findMoudle(moduleName);
-                    // x_x 命名之后存在的数据相同 -start
-                    String name = moduleModule.getName();
-                    if (name.split("_").length > 1) {
-                        moduleModule.setName(name.split("_")[1]);
-                    }
-                    // x_x 命名之后存在的数据相同 -end
-                    if ("否".equals(moduleModule.getIsInUse())) continue;
-                    moduleModuleTreeNode = this.convertModule2TreeNode(moduleModule, 2);
-                    subSystemModuleTreeNode.addNode(moduleModuleTreeNode);
-                    moduleTreeNodes.put(moduleName, moduleModuleTreeNode);
-                }
-            }
-
-
-            ModuleTreeNode rootModuleTreeNode = new ModuleTreeNode();
-            rootModuleTreeNode.setId("root");
-            rootModuleTreeNode.setName("root");
-            rootModuleTreeNode.setText("根节点");
-            rootModuleTreeNode.getNodes().addAll(subSystemModules);
-            sort(rootModuleTreeNode);
-            return rootModuleTreeNode;
         }
-        return null;
+        ModuleTreeNode rootModuleTreeNode = new ModuleTreeNode();
+        rootModuleTreeNode.setId("root");
+        rootModuleTreeNode.setName("root");
+        rootModuleTreeNode.setText("根节点");
+        rootModuleTreeNode.getNodes().addAll(topTreeNode);
+        sort(rootModuleTreeNode);
+        return rootModuleTreeNode;
     }
-
+    //通过传入的module找到第一个可用的父module
+    public Module findFirstCanBeUse(Module module){
+        String code=module.getParentCode();
+        if (code == null || "".equals(code))
+            return null;
+        Module parentNode=ModuleManager.findModuleByCode(code);
+        if(parentNode==null)
+            throw new DDDException("编码为"+module.getCode()+"的父模块编码("+code+")无法找到");
+        if ("是".equals(parentNode.getIsInUse())) {
+            return parentNode;
+        }
+        else{
+            return findFirstCanBeUse(parentNode);
+        }
+    }
     /**
      * 初始化模块进入数据库
      *

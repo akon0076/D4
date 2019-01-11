@@ -6,6 +6,8 @@ import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.entity.permission.RoleAndPermission;
 
+import com.cisdi.info.simple.service.permission.RoleAndPermissionService;
+import com.cisdi.info.simple.service.permission.impl.RoleAndPermissionServiceBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

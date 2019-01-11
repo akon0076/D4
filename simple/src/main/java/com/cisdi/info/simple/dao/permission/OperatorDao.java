@@ -49,4 +49,6 @@ public interface OperatorDao {
     public List<String> findPermissionsByIdAndType(PageDTO pageDTO);
 
     public Operator findOperatorByEmailAndPassWord(LoginDTO loginDTO);
+
+    public List<String> findAllModuleCodesByOperatorId(Long operatorId);
 }

@@ -190,4 +190,13 @@ LEFT JOIN simple_module t4 ON t4.`code` = t3.module_code
            <select id="findOperatorByUserNameAndPassWordAndMember" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
        SELECT *  FROM simple_operator where code=#{userName} and pass_word=#{password} and type='商家'
     </select>
+    <select id="findAllModuleCodesByOperatorId"  resultType="java.lang.String" parameterType="java.lang.Long">
+        select DISTINCT t0.module_code
+            from  simple_role_and_permission t0
+            where t0.role_id in (
+            select t3.eid
+            from simple_operator_and_role t1
+            left join simple_role t3 on t1.role_id = t3.eid
+            left join simple_operator t2 on t1.operator_id = t2.eid where t2.eid =#{operatorId})
+    </select>
 </mapper>

@@ -410,4 +410,9 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         }
 
     }
+
+    @Override
+    public List<String> findAllModuleCodesByOperatorId(Long operatorId) {
+        return operatorDao.findAllModuleCodesByOperatorId(operatorId);
+    }
 }
