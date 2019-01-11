@@ -2,20 +2,18 @@
 
 package com.cisdi.info.simple.controller.permission;
 
-import com.cisdi.info.simple.dto.permission.ModuleListDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.util.List;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import com.cisdi.info.simple.service.system.CodeTableService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.cisdi.info.simple.dto.permission.ModuleEditDto;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.service.permission.ModuleService;
-import com.cisdi.info.simple.service.permission.ModuleService;
+import com.cisdi.info.simple.service.system.CodeTableService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 
@@ -101,17 +99,17 @@ public class ModuleController {
 		return this.moduleService.findModules(pageDTO);
 	}
 
+	@GetMapping("/findAllModules")
+	public List<Module> findAllModules()
+	{
+		return this.moduleService.findAllModules();
+	}
+
 	@GetMapping("/findModule")
 	public Module findModule(@RequestParam Long moduleId)
 	{
 		return this.moduleService.findModule(moduleId);
 	}
-
-/*	@GetMapping("/findModuleForView")
-	public Module findModuleForView(@RequestParam Long moduleId)
-	{
-		return this.moduleService.findModuleWithForeignName(moduleId);
-	}*/
 
 	@GetMapping("/findModuleForEdit")
 	public ModuleEditDto findModuleForEdit(@RequestParam String moduleId)

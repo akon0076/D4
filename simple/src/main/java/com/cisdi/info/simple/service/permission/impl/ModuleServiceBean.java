@@ -41,77 +41,79 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
     @Override
     public PageResultDTO findModules(PageDTO pageDTO) {
 
-       if(pageDTO.getColumnName()==null||"".equals(pageDTO.getColumnName())||pageDTO.getContent()==null||"".equals(pageDTO.getContent())){
-           pageDTO.setStartIndex((pageDTO.getCurrentPage()-1)*pageDTO.getPageSize());
-           List list = new ArrayList(ModuleManager.findAllModules());
-           List  returnList=   list.subList(pageDTO.getStartIndex(),pageDTO.getStartIndex()+pageDTO.getPageSize()>list.size()?list.size():pageDTO.getStartIndex()+pageDTO.getPageSize());
-           PageResultDTO pageResultDTO = new PageResultDTO();
-           pageResultDTO.setTotalCount((long) list.size());
-           pageResultDTO.setDatas(returnList);
-           return pageResultDTO;
-       }
-       else if(pageDTO.getSql().contains("AND")){
-           String methodName = D4Util.getAttributerGetterName(pageDTO.getColumnName());
-           List<Module> list = new ArrayList(ModuleManager.findAllModules());
-           List<Module> returnedList = new ArrayList<>();
-           String [] anditems=pageDTO.getContent().split("\\s+and\\s");
-          for(Module module :list){
-              String  result= D4Util.invokeMethodByString(module,methodName);
-              if(result==null)
-                  result = "";
-              boolean mark=true;
-              for(int i=0;i<anditems.length;i++) {
-                   if(!result.contains(anditems[i])){
-                     mark=false;
-                     break;
-                  }
-              }
-              if (mark) {
-                  returnedList.add(module);
-              }
-         }
-           pageDTO.setStartIndex((pageDTO.getCurrentPage()-1)*pageDTO.getPageSize());
-           PageResultDTO pageResultDTO = new PageResultDTO();
-           pageResultDTO.setTotalCount((long) returnedList.size());
-           pageResultDTO.setDatas(returnedList.subList(pageDTO.getStartIndex(),pageDTO.getStartIndex()+pageDTO.getPageSize()>returnedList.size()?returnedList.size():pageDTO.getStartIndex()+pageDTO.getPageSize()));
-           return pageResultDTO;
-       }else{
-           String methodName = D4Util.getAttributerGetterName(pageDTO.getColumnName());
-           List<Module> list = new ArrayList(ModuleManager.findAllModules());
-           List<Module> returnedList = new ArrayList<>();
-           String [] items=pageDTO.getContent().split("\\s+");//or
-           for(Module module :list){
-               String  result= D4Util.invokeMethodByString(module,methodName);
-               if(result==null)
-                   result = "";
-               boolean mark=false;
-               for(int i=0;i<items.length;i++) {
-                   if(result.contains(items[i])){
-                       mark=true;
-                       break;
-                   }
-               }
-               if (mark) {
-                   returnedList.add(module);
-               }
-           }
-           pageDTO.setStartIndex((pageDTO.getCurrentPage()-1)*pageDTO.getPageSize());
-           PageResultDTO pageResultDTO = new PageResultDTO();
-           pageResultDTO.setTotalCount((long) returnedList.size());
-           pageResultDTO.setDatas(returnedList.subList(pageDTO.getStartIndex(),pageDTO.getStartIndex()+pageDTO.getPageSize()>returnedList.size()?returnedList.size():pageDTO.getStartIndex()+pageDTO.getPageSize()));
-           return pageResultDTO;
-       }
+        if (pageDTO.getColumnName() == null || "".equals(pageDTO.getColumnName()) || pageDTO.getContent() == null || "".equals(pageDTO.getContent())) {
+            pageDTO.setStartIndex((pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize());
+            List list = new ArrayList(ModuleManager.findAllModules());
+            List returnList = list.subList(pageDTO.getStartIndex(), pageDTO.getStartIndex() + pageDTO.getPageSize() > list.size() ? list.size() : pageDTO.getStartIndex() + pageDTO.getPageSize());
+            PageResultDTO pageResultDTO = new PageResultDTO();
+            pageResultDTO.setTotalCount((long) list.size());
+            pageResultDTO.setDatas(returnList);
+            return pageResultDTO;
+        } else if (pageDTO.getSql().contains("AND")) {
+            String methodName = D4Util.getAttributerGetterName(pageDTO.getColumnName());
+            List<Module> list = new ArrayList(ModuleManager.findAllModules());
+            List<Module> returnedList = new ArrayList<>();
+            String[] anditems = pageDTO.getContent().split("\\s+and\\s");
+            for (Module module : list) {
+                String result = D4Util.invokeMethodByString(module, methodName);
+                if (result == null)
+                    result = "";
+                boolean mark = true;
+                for (int i = 0; i < anditems.length; i++) {
+                    if (!result.contains(anditems[i])) {
+                        mark = false;
+                        break;
+                    }
+                }
+                if (mark) {
+                    returnedList.add(module);
+                }
+            }
+            pageDTO.setStartIndex((pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize());
+            PageResultDTO pageResultDTO = new PageResultDTO();
+            pageResultDTO.setTotalCount((long) returnedList.size());
+            pageResultDTO.setDatas(returnedList.subList(pageDTO.getStartIndex(), pageDTO.getStartIndex() + pageDTO.getPageSize() > returnedList.size() ? returnedList.size() : pageDTO.getStartIndex() + pageDTO.getPageSize()));
+            return pageResultDTO;
+        } else {
+            String methodName = D4Util.getAttributerGetterName(pageDTO.getColumnName());
+            List<Module> list = new ArrayList(ModuleManager.findAllModules());
+            List<Module> returnedList = new ArrayList<>();
+            String[] items = pageDTO.getContent().split("\\s+");//or
+            for (Module module : list) {
+                String result = D4Util.invokeMethodByString(module, methodName);
+                if (result == null)
+                    result = "";
+                boolean mark = false;
+                for (int i = 0; i < items.length; i++) {
+                    if (result.contains(items[i])) {
+                        mark = true;
+                        break;
+                    }
+                }
+                if (mark) {
+                    returnedList.add(module);
+                }
+            }
+            pageDTO.setStartIndex((pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize());
+            PageResultDTO pageResultDTO = new PageResultDTO();
+            pageResultDTO.setTotalCount((long) returnedList.size());
+            pageResultDTO.setDatas(returnedList.subList(pageDTO.getStartIndex(), pageDTO.getStartIndex() + pageDTO.getPageSize() > returnedList.size() ? returnedList.size() : pageDTO.getStartIndex() + pageDTO.getPageSize()));
+            return pageResultDTO;
+        }
     }
 
 
     @Override
     public List<Module> findAllModules() {
-        return this.moduleDao.findAllModules();
+        Collection<Module> modules = ModuleManager.findAllModules();
+        List<Module> list = new ArrayList<>();
+        list.addAll(modules);
+        return list;
     }
 
     @Override
     public List<Module> findAllModulesWithIdName() {
-            return new ArrayList<>(ModuleManager.findAllModules());
+        return new ArrayList<>(ModuleManager.findAllModules());
     }
 
     @Override
@@ -123,7 +125,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
     //所有外键的Name都以加载
     @Override
     public Module findModuleWithForeignName(String moduleCode) {
-        Module result=findMoudle(moduleCode);
+        Module result = findMoudle(moduleCode);
         result.setHideAttribute(result.getCode());
         return result;
     }
@@ -135,8 +137,8 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
      * @return
      */
     @Override
-    public void saveModule(Module module)  {
-       ModuleManager.addModule(module);
+    public void saveModule(Module module) {
+        ModuleManager.addModule(module);
     }
 
     /**
@@ -148,34 +150,34 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
     @Override
     public synchronized Module updateModule(Module module) {
 
-        if(module.getParentCode()!=null&&!"".equals(module.getParentCode())&&!module.getCode().contains(module.getParentCode()+"/")){
-            module.setCode(module.getParentCode()+"/"+module.getCode());
+        if (module.getParentCode() != null && !"".equals(module.getParentCode()) && !module.getCode().contains(module.getParentCode() + "/")) {
+            module.setCode(module.getParentCode() + "/" + module.getCode());
         }
         //找到要修改的Module
         Module primaryModule = ModuleManager.findModule(module.getHideAttribute());
         if (primaryModule == null) {
             throw new DDDException("该模板已经被删除,或者已经被更改");
         }
-        for(int i=0;i<primaryModule.getPermissions().size();i++) {
-             primaryModule.getPermissions().get(i).setModuleCode(module.getCode());
+        for (int i = 0; i < primaryModule.getPermissions().size(); i++) {
+            primaryModule.getPermissions().get(i).setModuleCode(module.getCode());
         }
         module.setPermissions(primaryModule.getPermissions());
-       if(ModuleManager.getModulesForEdit().remove(module.getHideAttribute())==null) {
-           throw new DDDException("该模板已经被删除,或者已经被更改");
-       }
+        if (ModuleManager.getModulesForEdit().remove(module.getHideAttribute()) == null) {
+            throw new DDDException("该模板已经被删除,或者已经被更改");
+        }
 
         ModuleManager.getModulesForEdit().put(module.getHideAttribute(), module);
 
         //遍历每个模块,找到当前要修改的子模块进行更改
-        for(Module childModule :ModuleManager.getAllModules()){
-            if (childModule.getParentCode()!=null&&!"".equals(childModule.getParentCode())&&childModule.getParentCode().equals(module.getHideAttribute())) {
+        for (Module childModule : ModuleManager.getAllModules()) {
+            if (childModule.getParentCode() != null && !"".equals(childModule.getParentCode()) && childModule.getParentCode().equals(module.getHideAttribute())) {
                 childModule.setParentCode(module.getCode());
                 childModule.setParentName(module.getName());
             }
         }
         //保存文件
         ModuleManager.saveModules(Config.moduleFile);
-         return null;
+        return null;
     }
 
     /**
@@ -208,19 +210,12 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
 
     @Override
     public ModuleTreeNode constructNewTree(Long operatorId, String modelType) {
-//        PageDTO pageDTO = new PageDTO();
-//        pageDTO.setColumnName(String.valueOf(operatorId));
-//        pageDTO.setContent(modelType);
         List<String> permissionCodes = this.operatorDao.findPermissions(operatorId);
 
         List<ModuleTreeNode> subSystemModules = new ArrayList<ModuleTreeNode>();
         Map<String, ModuleTreeNode> moduleTreeNodes = new HashMap<String, ModuleTreeNode>();
         if ("电脑模块".equals(modelType)) {
             for (String permissionCode : permissionCodes) {
-//                if(permissionCode.equals("pm_spaceRenting_basicManagement_BuildingInformation_Add")){
-//                   System.out.println();
-//                   System.out.println("DDDD");
-//                }
                 String[] permissionCodeParts = StringUtils.split(permissionCode, "_");
                 if (permissionCodeParts != null && permissionCodeParts.length < 3) {
                     continue;
@@ -231,8 +226,8 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
                 }
                 String moduleName = permissionCodeParts[0] + "/" + permissionCodeParts[1];
                 String entityName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2];
-                if(permissionCodeParts.length>=5){
-                    entityName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2]+"/"+permissionCodeParts[3];
+                if (permissionCodeParts.length >= 5) {
+                    entityName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2] + "/" + permissionCodeParts[3];
                 }
                 if (moduleTreeNodes.containsKey(entityName)) continue;
 
@@ -267,9 +262,9 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
                     subSystemModuleTreeNode.addNode(moduleModuleTreeNode);
                     moduleTreeNodes.put(moduleName, moduleModuleTreeNode);
                 }
-                if(permissionCodeParts.length>=5){
-                    moduleName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2];
-                    entityName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2]+"/"+permissionCodeParts[3];
+                if (permissionCodeParts.length >= 5) {
+                    moduleName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2];
+                    entityName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2] + "/" + permissionCodeParts[3];
                     moduleModuleTreeNode1 = moduleTreeNodes.get(moduleName);
                     if (moduleModuleTreeNode1 == null) {
                         Module moduleModule = findMoudle(moduleName);
@@ -290,11 +285,11 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
 
                 if ("否".equals(entityModule.getIsInUse())) continue;
                 ModuleTreeNode entityModuleTreeNode = this.convertModule2TreeNode(entityModule, 3);
-                if(permissionCodeParts.length>=5){
+                if (permissionCodeParts.length >= 5) {
                     entityModuleTreeNode = this.convertModule2TreeNode(entityModule, 4);
                     moduleModuleTreeNode1.addNode(entityModuleTreeNode);
                     moduleTreeNodes.put(entityName, entityModuleTreeNode);
-                }else {
+                } else {
                     moduleModuleTreeNode.addNode(entityModuleTreeNode);
                     moduleTreeNodes.put(entityName, entityModuleTreeNode);
                 }
@@ -387,7 +382,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
             newModule.setChildren(module1.getChildren());
             newModule.setIsInUse(module1.getIsInUse());
 
-            if(module1.getParentCode() != null) {
+            if (module1.getParentCode() != null) {
                 if (!module1.getParentName().equals("")) {
                     String name = module1.getParentName() + "_" + module1.getName();
                     newModule.setName(name);
@@ -395,9 +390,9 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
                     newModule.setName(module1.getName());
                 }
                 this.moduleDao.saveModule(newModule);
-            }else {
+            } else {
                 logger.error("模块：" + module1.getCode() + "，生成出错，父级模块默认不为null，应该是''，请检查代码生成是否正确");
-                throw new DDDException("模块：" + module1.getCode()+ "，生成出错，父级模块默认不为null，应该是''，请检查代码生成是否正确");
+                throw new DDDException("模块：" + module1.getCode() + "，生成出错，父级模块默认不为null，应该是''，请检查代码生成是否正确");
             }
             count++;
         }
@@ -431,7 +426,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
             newModule.setChildren(module1.getChildren());
             newModule.setIsInUse(module1.getIsInUse());
 
-            if( module1.getParentName() != null) {
+            if (module1.getParentName() != null) {
                 if (!module1.getParentName().equals("")) {
                     String name = module1.getParentName() + "_" + module1.getName();
                     newModule.setName(name);
@@ -439,9 +434,9 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
                     newModule.setName(module1.getName());
                 }
                 this.moduleDao.updateModule(newModule);
-            }else {
+            } else {
                 logger.error("模块：" + module1.getCode() + "，生成出错，parentCode默认不为null，应该是''，请检查代码生成是否正确");
-                throw new DDDException("模块：" + module1.getCode()+ "，生成出错，parentCode默认不为null，应该是''，请检查代码生成是否正确");
+                throw new DDDException("模块：" + module1.getCode() + "，生成出错，parentCode默认不为null，应该是''，请检查代码生成是否正确");
             }
             count++;
         }
@@ -466,12 +461,12 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         Map<String, ModuleTreeNode> moduleTreeNodes = new HashMap<String, ModuleTreeNode>();
         for (String permissionCode : permissionCodes) {
             String[] permissionCodeParts = StringUtils.split(permissionCode, "_");
-                String subSystemName = permissionCodeParts[0];
-                String moduleName = permissionCodeParts[0] + "/" + permissionCodeParts[1];
-                String entityName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2];
-                if(permissionCodeParts.length>=5){
-                    entityName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2]+"/"+permissionCodeParts[3];
-                }
+            String subSystemName = permissionCodeParts[0];
+            String moduleName = permissionCodeParts[0] + "/" + permissionCodeParts[1];
+            String entityName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2];
+            if (permissionCodeParts.length >= 5) {
+                entityName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2] + "/" + permissionCodeParts[3];
+            }
             if (moduleTreeNodes.containsKey(entityName)) continue;
 
             ModuleTreeNode subSystemModuleTreeNode = moduleTreeNodes.get(subSystemName);
@@ -491,10 +486,10 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
                 subSystemModuleTreeNode.addNode(moduleModuleTreeNode);
                 moduleTreeNodes.put(moduleName, moduleModuleTreeNode);
             }
-            if(permissionCodeParts.length>=5){
-                moduleName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2];
-                entityName=permissionCodeParts[0] + "/" + permissionCodeParts[1]+"/"+permissionCodeParts[2]+"/"+permissionCodeParts[3];
-                   moduleModuleTreeNode = moduleTreeNodes.get(moduleName);
+            if (permissionCodeParts.length >= 5) {
+                moduleName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2];
+                entityName = permissionCodeParts[0] + "/" + permissionCodeParts[1] + "/" + permissionCodeParts[2] + "/" + permissionCodeParts[3];
+                moduleModuleTreeNode = moduleTreeNodes.get(moduleName);
                 if (moduleModuleTreeNode == null) {
                     Module moduleModule = findMoudle(moduleName);
                     if ("否".equals(moduleModule.getIsInUse())) continue;
@@ -506,10 +501,11 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
 
             Module entityModule = findMoudle(entityName);
             if ("否".equals(entityModule.getIsInUse())) continue;
-            if(permissionCodeParts.length>=5){}
+            if (permissionCodeParts.length >= 5) {
+            }
             ModuleTreeNode entityModuleTreeNode = this.convertModule2TreeNode(entityModule, 3);
-            if(permissionCodeParts.length>=5){
-             entityModuleTreeNode = this.convertModule2TreeNode(entityModule, 4);
+            if (permissionCodeParts.length >= 5) {
+                entityModuleTreeNode = this.convertModule2TreeNode(entityModule, 4);
             }
             entityModuleTreeNode.setRouteData("/wisdomCateringMain" + entityModuleTreeNode.getRouteData());
             moduleModuleTreeNode.addNode(entityModuleTreeNode);
@@ -568,12 +564,12 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         return treeNode;
     }
 
-    private void sort(ModuleTreeNode node){
-        if(node.getNodes().size()==0){
+    private void sort(ModuleTreeNode node) {
+        if (node.getNodes().size() == 0) {
             return;
         }
         node.getNodes().sort(Comparator.comparing(ModuleTreeNode::getDisplayIndex));
-        for(int i=0;i<node.getNodes().size();i++){
+        for (int i = 0; i < node.getNodes().size(); i++) {
             sort(node.getNodes().get(i));
         }
     }

@@ -189,6 +189,7 @@
         "moduleCode": "simple/permission/Module",
         "urls": [
           "/simple/permission/Module/findModules",
+          "/simple/permission/Module/findAllModules",
           "/simple/permission/Module/findModuleForView"
         ]
       }
