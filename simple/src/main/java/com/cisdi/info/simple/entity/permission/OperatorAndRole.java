@@ -1,15 +1,14 @@
 package com.cisdi.info.simple.entity.permission;
 
-import com.cisdi.info.simple.entity.base.*;
-import javax.persistence.*;
-import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
-
-import java.util.Date;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.entity.organization.Organization;
-import com.cisdi.info.simple.entity.permission.Operator;
-import com.cisdi.info.simple.entity.permission.Role;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.io.Serializable;
 
 @DEntity(label="操作员角色",comment="",moduleLabel="授权")
 @Entity(name="simple_operator_and_role")
