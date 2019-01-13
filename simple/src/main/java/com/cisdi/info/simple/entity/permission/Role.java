@@ -4,8 +4,10 @@ import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import java.io.Serializable;
 
 @DEntity(label="角色",comment="",moduleLabel="授权")
@@ -39,5 +41,5 @@ public class Role extends BaseEntity implements Serializable{
 	}
 
 
-	
+
 }

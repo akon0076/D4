@@ -2,9 +2,11 @@ package com.cisdi.info.simple.entity.system;
 
 import com.cisdi.info.simple.entity.base.*;
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.StringUtils;
@@ -175,5 +177,5 @@ public class CodeTable extends BaseEntity implements Serializable{
 
 		return Objects.hash(fullname);
 	}
-	
+
 }

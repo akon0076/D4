@@ -1,10 +1,14 @@
 package com.cisdi.info.simple.entity.systemConfig;
 
 import com.cisdi.info.simple.entity.base.BaseEntity;
-import javax.persistence.*;
+
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 
 @DEntity(label="系统参数",comment="",moduleLabel="系统参数")
@@ -48,7 +52,4 @@ public class SystemConfig extends BaseEntity implements Serializable{
 	public void setSystemConfigDescription(String systemConfigDescription) {
 		this.systemConfigDescription = systemConfigDescription;
 	}
-
-
-	
 }

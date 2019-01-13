@@ -1,6 +1,6 @@
 package com.cisdi.info.simple.entity.permission;
 
-import com.cisdi.info.simple.entity.base.*;
+
 
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
@@ -9,10 +9,12 @@ import com.cisdi.info.simple.annotation.DEntity;
 import java.util.Date;
 import java.util.List;
 
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.entity.organization.Organization;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 
 @DEntity(label="操作员",comment="",moduleLabel="授权")
 @Entity(name="simple_operator")
@@ -93,5 +95,5 @@ public class Operator extends BaseEntity implements Serializable{
 
 
 
-	
+
 }

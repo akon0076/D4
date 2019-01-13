@@ -2,9 +2,11 @@ package com.cisdi.info.simple.entity.regist;
 
 import com.cisdi.info.simple.entity.base.*;
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
+
 
 
 @DEntity(label="商家注册审核",comment="",moduleLabel="商家注册审核")

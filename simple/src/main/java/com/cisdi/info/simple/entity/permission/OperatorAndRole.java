@@ -2,11 +2,14 @@ package com.cisdi.info.simple.entity.permission;
 
 import com.cisdi.info.simple.entity.base.*;
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
 
 import java.util.Date;
+
+
 import com.cisdi.info.simple.entity.organization.Organization;
 import com.cisdi.info.simple.entity.permission.Operator;
 import com.cisdi.info.simple.entity.permission.Role;
@@ -123,5 +126,5 @@ public class OperatorAndRole extends BaseEntity implements Serializable{
 	}
 
 
-	
+
 }

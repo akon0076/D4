@@ -2,6 +2,7 @@ package com.cisdi.info.simple.entity.qingTui;
 
 import com.cisdi.info.simple.entity.base.*;
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
@@ -182,5 +183,5 @@ public class EmpOpenId extends BaseEntity implements Serializable{
 	}
 
 
-	
+
 }
