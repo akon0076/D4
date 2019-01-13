@@ -1,13 +1,17 @@
 package com.cisdi.info.simple.entity.organization;
 
 import com.cisdi.info.simple.entity.base.BaseEntity;
-import javax.persistence.*;
-import javax.persistence.Entity;
+
+
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
 
 
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.List;
 
 @DEntity(label="部门",comment="",moduleLabel="部门")
@@ -123,5 +127,5 @@ public class Department extends BaseEntity implements Serializable{
 	}
 
 
-	
+
 }

@@ -1,12 +1,12 @@
 package com.cisdi.info.simple.entity.report;
 
-import com.cisdi.info.simple.annotation.DColumn;
-import com.cisdi.info.simple.annotation.DEntity;
-import com.cisdi.info.simple.entity.base.BaseEntity;
-
-import javax.persistence.Column;
+import com.cisdi.info.simple.entity.base.*;
+import javax.persistence.*;
 import javax.persistence.Entity;
 import java.io.Serializable;
+import com.cisdi.info.simple.annotation.DColumn;
+import com.cisdi.info.simple.annotation.DEntity;
+
 
 
 @DEntity(label="模板文件管理",comment="",moduleLabel="报表管理")
@@ -124,5 +124,5 @@ public class ModelFile extends BaseEntity implements Serializable{
 	}
 
 
-	
+
 }
