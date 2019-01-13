@@ -2,7 +2,6 @@ package com.cisdi.info.simple.service.permission;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import com.cisdi.info.simple.dto.permission.ModuleListDto;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
 
@@ -13,6 +12,8 @@ public interface ModuleService {
     public PageResultDTO findModules(PageDTO pageDTO);
 
     public List<Module> findAllModules();
+
+    public ModuleTreeNode findAllTreeNode(String modelType);
 
     public List<Module> findAllModulesWithIdName();
 

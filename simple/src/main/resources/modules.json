@@ -190,6 +190,7 @@
         "urls": [
           "/simple/permission/Module/findModules",
           "/simple/permission/Module/findAllModules",
+          "/simple/permission/Module/findAllTreeNode",
           "/simple/permission/Module/findModuleForView"
         ]
       }
@@ -1030,7 +1031,6 @@
           "/simple/organization/Employee/saveEmployee",
           "/simple/organization/Department/findDepartmentsWithIdNameByName",
           "/simple/organization/Organization/findOrganizationsWithIdNameByName"
-
         ]
       }
     ]
