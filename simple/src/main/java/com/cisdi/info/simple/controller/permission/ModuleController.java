@@ -6,6 +6,7 @@ import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.permission.ModuleEditDto;
 import com.cisdi.info.simple.entity.permission.Module;
+import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
 import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.system.CodeTableService;
 import org.apache.logging.log4j.LogManager;
@@ -103,6 +104,11 @@ public class ModuleController {
 	public List<Module> findAllModules()
 	{
 		return this.moduleService.findAllModules();
+	}
+
+	@GetMapping("/findAllTreeNode")
+	public ModuleTreeNode findAllTreeNode(@RequestParam String modelType){
+		return this.moduleService.findAllTreeNode(modelType);
 	}
 
 	@GetMapping("/findModule")
