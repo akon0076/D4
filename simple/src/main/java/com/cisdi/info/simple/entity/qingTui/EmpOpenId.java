@@ -1,14 +1,16 @@
 package com.cisdi.info.simple.entity.qingTui;
 
-import com.cisdi.info.simple.entity.base.*;
-import javax.persistence.*;
-import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
-
+import com.cisdi.info.simple.entity.base.BaseEntity;
+import com.cisdi.info.simple.entity.member.Member;
 import com.cisdi.info.simple.entity.organization.Employee;
 import com.cisdi.info.simple.entity.permission.Operator;
-import com.cisdi.info.simple.entity.member.Member;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.io.Serializable;
 
 @DEntity(label="人员与应用",comment="",moduleLabel="人员与应用")
 @Entity(name="simple_emp_open_id")

@@ -1,14 +1,15 @@
 package com.cisdi.info.simple.entity.regist;
 
-import com.cisdi.info.simple.entity.base.*;
-import javax.persistence.*;
-import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
-
-import java.util.Date;
-import com.cisdi.info.simple.entity.organization.Organization;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.entity.organization.Employee;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.Date;
 
 @DEntity(label="人员注册",comment="",moduleLabel="注册管理")
 @Entity(name="simple_employe_regist")
