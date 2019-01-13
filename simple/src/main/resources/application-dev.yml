@@ -31,7 +31,7 @@ spring:
     static-locations: file:D://D4/DDDFile/
 
 logging:
-  file: d:/DDDLog/ddd.log #日志文件输出目录
+  file: d:/D4/DDDLog/ddd.log #日志文件输出目录
   level:
     com.cisdi.info: debug #日志Level设定
 

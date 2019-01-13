@@ -61,6 +61,9 @@ public class ModuleManager {
     }
 
     public static boolean hasPermission(String url, List<Long> roleIds) {
+        if (urlRoles == null || urlRoles.size() == 0) {
+            initialize();
+        }
         for (Long roleId : roleIds) {
             if (hasPermission(url, roleId)) {
                 return true;
