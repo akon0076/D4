@@ -4,20 +4,12 @@ import com.cisdi.info.simple.entity.base.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
-import com.cisdi.info.simple.annotation.DEntity;
-
 import java.util.ArrayList;
-import java.util.Date;
-
-import com.cisdi.info.simple.entity.base.Entity;
-import com.cisdi.info.simple.entity.organization.Organization;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/*@DEntity(label = "模块", comment = "", moduleLabel = "授权")
-@Entity(name="simple_module")*/
 public class Module extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
