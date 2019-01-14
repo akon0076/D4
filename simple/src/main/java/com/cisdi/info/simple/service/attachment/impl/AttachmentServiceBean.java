@@ -423,9 +423,9 @@ public class AttachmentServiceBean extends BaseService implements AttachmentServ
 				while ((len=fileInputStream.read(buffer))>0){
 					zipOutputStream.write(buffer,0,len);
 				}
+                zipOutputStream.closeEntry();
 			}
 			try{
-				zipOutputStream.closeEntry();
 				zipOutputStream.close();
 				fileInputStream.close();
 				this.downloadAttachment("/"+zipFile.getName(),compressFileName);
