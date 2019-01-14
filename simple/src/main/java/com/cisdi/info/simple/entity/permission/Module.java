@@ -1,6 +1,6 @@
 package com.cisdi.info.simple.entity.permission;
 
-import com.cisdi.info.simple.entity.base.*;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import javax.persistence.*;
 import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;

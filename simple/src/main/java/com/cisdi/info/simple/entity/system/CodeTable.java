@@ -1,6 +1,6 @@
 package com.cisdi.info.simple.entity.system;
 
-import com.cisdi.info.simple.entity.base.*;
+import com.cisdi.info.simple.entity.base.BaseEntity;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.io.Serializable;
