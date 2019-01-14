@@ -51,7 +51,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	[
 	{
 	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Add",
-	"name1": "新增{entityClass.label}",
+	"name1": "新增${entityClass.label}",
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.新增",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
@@ -72,7 +72,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	},
 	{
 	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Edit",
-	"name1": "编辑{entityClass.label}",
+	"name1": "编辑${entityClass.label}",
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.编辑",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
@@ -93,7 +93,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	},
 	{
 	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_Delete",
-	"name1": "删除{entityClass.label}",
+	"name1": "删除${entityClass.label}",
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.删除",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
@@ -102,7 +102,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	},
 	{
 	"code": "${entityClass.subSystemName}_${entityClass.moduleName}_${EntityNameUp}_View",
-	"name1": "查看{entityClass.label}",
+	"name1": "查看${entityClass.label}",
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.查看",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
