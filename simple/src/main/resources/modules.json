@@ -1034,5 +1034,73 @@
         ]
       }
     ]
+  },
+  "simple/clue": {
+    "code": "simple/clue",
+    "name1": "基础信息",
+    "url": "/simple/clue",
+    "route": "/simple/clue",
+    "iconClass": "",
+    "displayIndex": 0,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/clue/BasicMessage": {
+    "code": "simple/clue/BasicMessage",
+    "name1": "基础信息",
+    "url": "/simple/clue/BasicMessage",
+    "route": "/simple/clue/BasicMessage",
+    "iconClass": "",
+    "displayIndex": 0,
+    "parentCode": "simple/clue",
+    "parentName": "线索管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_clue_BasicMessage_Add",
+        "name1": "新增_基础信息",
+        "fullName": "simple.线索管理.基础信息.新增",
+        "moduleCode": "simple/clue/BasicMessage",
+        "urls": [
+          "/simple/clue/BasicMessage/createBasicMessage",
+          "/simple/clue/BasicMessage/saveBasicMessage"
+        ]
+      },
+      {
+        "code": "simple_clue_BasicMessage_Edit",
+        "name1": "编辑_基础信息",
+        "fullName": "simple.线索管理.基础信息.编辑",
+        "moduleCode": "simple/clue/BasicMessage",
+        "urls": [
+          "/simple/clue/BasicMessage/findBasicMessageForEdit",
+          "/simple/clue/BasicMessage/updateBasicMessage"
+        ]
+      },
+      {
+        "code": "simple_clue_BasicMessage_Delete",
+        "name1": "删除_基础信息",
+        "fullName": "simple.线索管理.基础信息.删除",
+        "moduleCode": "simple/clue/BasicMessage",
+        "urls": [
+          "/simple/clue/BasicMessage/deleteBasicMessage"
+        ]
+      },
+      {
+        "code": "simple_clue_BasicMessage_View",
+        "name1": "查看_基础信息",
+        "fullName": "simple.线索管理.基础信息.查看",
+        "moduleCode": "simple/clue/BasicMessage",
+        "urls": [
+          "/simple/clue/BasicMessage/findBasicMessages",
+          "/simple/clue/BasicMessage/findBasicMessageForView"
+        ]
+      }
+    ]
   }
 }

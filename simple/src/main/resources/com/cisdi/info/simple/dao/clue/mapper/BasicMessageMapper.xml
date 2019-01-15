@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.clue.BasicMessageDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findBasicMessages" resultType="com.cisdi.info.simple.entity.clue.BasicMessage" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.clue_key  ,
+        t0.clue_id  ,
+        t0.clue_level  ,
+        t0.clue_source  ,
+        t0.activity_name  ,
+        t0.subord_branch  ,
+        t0.clue_attache  ,
+        t0.charge_leaders  ,
+        t0.dock_require  ,
+        t0.comment  ,
+        t0.state  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime  
+        from simple_basic_message t0
+        where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllBasicMessages" resultType="com.cisdi.info.simple.entity.clue.BasicMessage" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.clue_key  ,
+            t0.clue_id  ,
+            t0.clue_level  ,
+            t0.clue_source  ,
+            t0.activity_name  ,
+            t0.subord_branch  ,
+            t0.clue_attache  ,
+            t0.charge_leaders  ,
+            t0.dock_require  ,
+            t0.comment  ,
+            t0.state  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+        from simple_basic_message t0
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findBasicMessagesWithIdNameByName" resultType="com.cisdi.info.simple.entity.clue.BasicMessage" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_basic_message t0
+        where t0.name like  '%${basicMessageName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllBasicMessagesWithIdName" resultType="com.cisdi.info.simple.entity.clue.BasicMessage" >
+        select
+        t0.EId,t0.Name
+        from simple_basic_message t0
+        ORDER BY t0.Name
+    </select>
+    
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findBasicMessagesWithIdNameById" resultType="com.cisdi.info.simple.entity.clue.BasicMessage" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_basic_message t0
+        where eid = #{basicMessageId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findBasicMessageTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_basic_message as t0  where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findBasicMessage" resultType="com.cisdi.info.simple.entity.clue.BasicMessage" parameterType="java.lang.Long">
+        select * from simple_basic_message where eid = #{basicMessageId}
+    </select>
+
+    <!-- 根据ID查询指定的实体(包含外键) -->
+    <select id="findBasicMessageWithForeignName" resultType="com.cisdi.info.simple.entity.clue.BasicMessage" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.clue_key  ,
+            t0.clue_id  ,
+            t0.clue_level  ,
+            t0.clue_source  ,
+            t0.activity_name  ,
+            t0.subord_branch  ,
+            t0.clue_attache  ,
+            t0.charge_leaders  ,
+            t0.dock_require  ,
+            t0.comment  ,
+            t0.state  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+        from simple_basic_message t0
+        where t0.eid = #{basicMessageId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveBasicMessage" parameterType="com.cisdi.info.simple.entity.clue.BasicMessage">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_basic_message
+        (
+                name ,
+                clue_key ,
+                clue_id ,
+                clue_level ,
+                clue_source ,
+                activity_name ,
+                subord_branch ,
+                clue_attache ,
+                charge_leaders ,
+                dock_require ,
+                comment ,
+                state ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime 
+        )
+        values
+        (
+                #{name} ,
+                #{clueKey} ,
+                #{clueId} ,
+                #{clueLevel} ,
+                #{clueSource} ,
+                #{activityName} ,
+                #{subordBranch} ,
+                #{clueAttache} ,
+                #{chargeLeaders} ,
+                #{dockRequire} ,
+                #{comment} ,
+                #{state} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime} 
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateBasicMessage" parameterType="com.cisdi.info.simple.entity.clue.BasicMessage" >
+        update simple_basic_message set
+                name = #{name} ,
+                clue_key = #{clueKey} ,
+                clue_id = #{clueId} ,
+                clue_level = #{clueLevel} ,
+                clue_source = #{clueSource} ,
+                activity_name = #{activityName} ,
+                subord_branch = #{subordBranch} ,
+                clue_attache = #{clueAttache} ,
+                charge_leaders = #{chargeLeaders} ,
+                dock_require = #{dockRequire} ,
+                comment = #{comment} ,
+                state = #{state} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime} 
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteBasicMessage"  parameterType="java.lang.Long">
+        delete from simple_basic_message where eid = #{basicMessageId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+</mapper>
