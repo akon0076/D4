@@ -8,7 +8,6 @@ import com.cisdi.info.simple.entity.permission.RoleAndPermission;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -99,14 +98,9 @@ public class ModuleManager {
      */
     public static void loadModules(String file) {
         if (modules != null) return;
-
         Gson gson = new Gson();
         String json = null;
-        try {
-            json = FileUtils.readFileToString(new File(file), "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        json = FileLockUtils.readFileToString(new File(file), "UTF-8");
         modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
         }.getType());
     }
@@ -335,11 +329,7 @@ public class ModuleManager {
         try {
         Gson gson = createGson();
         String json = gson.toJson(getModules());
-        try {
-            FileUtils.writeStringToFile(new File(file), json, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileLockUtils.writeStringToFile(new File(file), json, "UTF-8");
     }
         finally {
         writeLock.writeLock().unlock();
@@ -353,11 +343,7 @@ public class ModuleManager {
     public static void refresh() {
         Gson gson = new Gson();
         String json = null;
-        try {
-            json = FileUtils.readFileToString(new File(Config.moduleFile), "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        json = FileLockUtils.readFileToString(new File(Config.moduleFile), "UTF-8");
         modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
         }.getType());
     }
