@@ -261,7 +261,50 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
           sort(rootModuleTreeNode);
           return rootModuleTreeNode;
       }else if("移动模块".equals(modelType)){
+          List<String> moduleCodes = this.operatorDao.findAllModuleCodesByOperatorId(operatorId);
+          ModuleTreeNode allModuleTreeNode=new ModuleTreeNode();
+          Map<String, ModuleTreeNode> treeNodeMap = new HashMap<>();
+          Set<ModuleTreeNode> topTreeNode = new HashSet<>();
+          for(int i=0;i<moduleCodes.size();i++) {
+              String[] codeString = StringUtils.split(moduleCodes.get(i), "/");
+              String tempString = "";
+              for(int j=0;j<codeString.length;j++) {
+                  if(j==0){
+                      tempString = codeString[j];
+                  }
+                  else{
+                      tempString+="/"+codeString[j];
 
+                  }
+                  if (treeNodeMap.get(tempString)!=null)
+                      continue;
+                  Module module = ModuleManager.findModuleByCode(tempString);
+                  if(!"移动模块".equals(module.getModuleType()))
+                      continue;
+                  if("否".equals(module.getIsInUse()))
+                      continue;
+                  if(module==null)
+                      throw new DDDException("找不到编码为"+tempString+"的模块");
+                  Module parentNode = this.findFirstCanBeUse(module);
+                  ModuleTreeNode moduleTreeNodeChild=this.convertModule2TreeNode(module,1);
+                  treeNodeMap.put(tempString,moduleTreeNodeChild);
+                  if(parentNode!=null){
+                      ModuleTreeNode moduleTreeNodeParent = treeNodeMap.get(parentNode.getCode());
+                      moduleTreeNodeChild.setLevel((Integer.parseInt(moduleTreeNodeParent.getLevel())+1)+"");
+                      treeNodeMap.get(parentNode.getCode()).getNodes().add(moduleTreeNodeChild);
+                  }
+                  else{
+                      topTreeNode.add(moduleTreeNodeChild);
+                  }
+              }
+          }
+          ModuleTreeNode rootModuleTreeNode = new ModuleTreeNode();
+          rootModuleTreeNode.setId("root");
+          rootModuleTreeNode.setName("root");
+          rootModuleTreeNode.setText("根节点");
+          rootModuleTreeNode.getNodes().addAll(topTreeNode);
+          sort(rootModuleTreeNode);
+          return rootModuleTreeNode;
       }
         return null;
     }

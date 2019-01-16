@@ -16,7 +16,7 @@ public class FileLockUtils {
             OutputStreamWriter writer=new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)),Charset.forName(encoding));
              writer.write(data);
              writer.flush();
-            writer.close();
+             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -24,7 +24,7 @@ public class FileLockUtils {
         }
     }
 
-    public static String readFileToString(final File file, String encoding) {
+    public static String readFileToString(final File file, final String encoding) {
           lock.readLock().lock();
           try {
               InputStreamReader reader = new InputStreamReader(new BufferedInputStream(new FileInputStream(file)),Charset.forName(encoding));
