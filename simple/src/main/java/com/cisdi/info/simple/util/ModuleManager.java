@@ -134,12 +134,21 @@ public class ModuleManager {
      * @param newModule
      */
     public static void addModule(String code, Module newModule) {
-        refresh();
-        getModules().put(code, newModule);
-        saveModules(Config.moduleFile);
+        writeLock.writeLock().lock();
+        try{
+            refresh();
+            getModules().put(code, newModule);
+            saveModules(Config.moduleFile);
+        }
+        finally {
+            writeLock.writeLock().unlock();
+        }
+
     }
 
     public static void addModuleFromJson(String moduleJson) {
+        writeLock.writeLock().lock();
+        try{
         Gson gson = new Gson();
         Map<String, Module> newModules = gson.fromJson(moduleJson, new TypeToken<Map<String, Module>>() {
         }.getType());
@@ -148,6 +157,10 @@ public class ModuleManager {
             addModule(module);
         }
         saveModules(Config.moduleFile);
+        }
+        finally {
+            writeLock.writeLock().unlock();
+        }
     }
 
     public static void addModule(Module module) {
@@ -318,6 +331,8 @@ public class ModuleManager {
 
 
     public static void saveModules(String file) {
+        writeLock.writeLock().lock();
+        try {
         Gson gson = createGson();
         String json = gson.toJson(getModules());
         try {
@@ -325,6 +340,10 @@ public class ModuleManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+        finally {
+        writeLock.writeLock().unlock();
+    }
     }
 
     public static Collection<Module> getAllModules() {
