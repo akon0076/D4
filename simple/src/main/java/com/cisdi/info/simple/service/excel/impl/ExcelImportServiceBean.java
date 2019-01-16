@@ -2,16 +2,15 @@ package com.cisdi.info.simple.service.excel.impl;
 
 import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.service.excel.ExcelImportService;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DecimalFormat;
+import java.util.*;
 
 /**
  * @author:chengbg
@@ -25,9 +24,7 @@ public class ExcelImportServiceBean implements ExcelImportService {
      * 返回map集合对应整个excel表格数据
      *
      * @param file excel文件
-
      * @return List<Map>
-     *
      * @throws Exception
      */
     public List<Map<String, Object>> excelImport(MultipartFile file) throws Exception {
@@ -82,8 +79,16 @@ public class ExcelImportServiceBean implements ExcelImportService {
                         map.put(hearder, booleanCellValue);
                         break;
                     case NUMERIC:
-                        Double numericCellValue = cell.getNumericCellValue();
-                        map.put(hearder, numericCellValue.toString());
+                        if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                            Date date = cell.getDateCellValue();
+                            String dateFormatValue = DateFormatUtils.format(date, "yyyy-MM-dd");
+                            map.put(hearder, dateFormatValue);
+                        } else {
+                            Double numericCellValue = cell.getNumericCellValue();
+                            DecimalFormat df = new DecimalFormat("0");
+                            String numericFormatValue = df.format(numericCellValue);
+                            map.put(hearder, numericFormatValue);
+                        }
                         break;
                     case FORMULA:
                         String cellFormula = cell.getCellFormula();

@@ -4,7 +4,7 @@ simple:
   uiPath: ${workspapce}\\D4_pc_ui
   codeTablesFile: ${serverPath}\\src\\main\\resources\\codetables.json
   moduleFile: ${serverPath}\\src\\main\\resources\\modules.json
-  velocityTemplate: ${serverPath}\\src\\main\\resources
+  velocityTemplate: ${workspapce}\\D4\\generator\\src\\main\\resources
   exceptionLogPath: D:\\D4\\DDDException
   uploadFileAddress: D:\\D4\\spring_files
   staticFilePath: D:\\D4\\DDDFile\\
