@@ -25,7 +25,6 @@ public class FileLockUtils {
     }
 
     public static String readFileToString(final File file, final String encoding) {
-          lock.readLock().lock();
           try {
               InputStreamReader reader = new InputStreamReader(new BufferedInputStream(new FileInputStream(file)),Charset.forName(encoding));
               char[] buffer = new char[1024];
@@ -40,8 +39,6 @@ public class FileLockUtils {
               e.printStackTrace();
           } catch (IOException e) {
               e.printStackTrace();
-          } finally {
-              lock.readLock().unlock();
           }
         return null;
     }
