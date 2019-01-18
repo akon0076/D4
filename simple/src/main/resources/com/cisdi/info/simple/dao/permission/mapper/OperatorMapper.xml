@@ -142,10 +142,10 @@
     </select>
 
     <select id="findOperatorByUserNameAndPassWord" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
-        SELECT *  FROM simple_operator where code=#{userName} and pass_word=#{password} and type!='商家'
+        SELECT *  FROM simple_operator where code=#{userName} and pass_word=#{password}
     </select>
     <select id="findOperatorByEmailAndPassWord" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
-        SELECT *  FROM simple_operator where email=#{userName} and pass_word=#{password} and type!='商家'
+        SELECT *  FROM simple_operator where email=#{userName} and pass_word=#{password}
     </select>
     <select id="findPermissionsByOperatorId" resultType="java.lang.String" parameterType="java.lang.Long">
         SELECT code  from simple_permission where eid in
@@ -188,7 +188,7 @@ LEFT JOIN simple_module t4 ON t4.`code` = t3.module_code
 
     </select>
            <select id="findOperatorByUserNameAndPassWordAndMember" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
-       SELECT *  FROM simple_operator where code=#{userName} and pass_word=#{password} and type='商家'
+       SELECT *  FROM simple_operator where code=#{userName} and pass_word=#{password}
     </select>
     <select id="findAllModuleCodesByOperatorId"  resultType="java.lang.String" parameterType="java.lang.Long">
         select DISTINCT t0.module_code

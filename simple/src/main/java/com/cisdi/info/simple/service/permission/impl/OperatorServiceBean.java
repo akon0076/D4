@@ -34,7 +34,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Service
@@ -371,7 +370,13 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             employee = new Employee();
             employee.setEId(id);
             employee.setCode(SuperUserCode);
-            employee.setName("超级用户");
+            employee.setName("超级管理员");
+            employee.setCreateDatetime(new Date());
+            employee.setCreateId(id);
+            employee.setUpdateDatetime(new Date());
+            employee.setUpdateId(id);
+            employee.setOrganizationId(id);
+            employee.setSex("男");
             employee.setRemark("这是一个用于开发的超级用户，实际使用时请删除");
             this.employeeDao.saveEmployee(employee);
         }
@@ -379,13 +384,17 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         if (superOperator == null) {
             superOperator = new Operator();
             superOperator.setCode(SuperUserCode);
-            superOperator.setName("超级用户");
+            superOperator.setName("超级管理员");
             //对密码进行加密
             String password = DigestUtils.md5DigestAsHex(SuperUserCode.getBytes());
-
             superOperator.setPassWord(password);
             superOperator.setType("虚拟用户");
             superOperator.setPersonId(employee.getEId());
+            superOperator.setCreateDatetime(new Date());
+            superOperator.setUpdateDatetime(new Date());
+            superOperator.setCreateId(id);
+            superOperator.setUpdateId(id);
+            superOperator.setStatus("在用");
             this.operatorDao.saveOperator(superOperator);
         }
         Organization organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
@@ -395,6 +404,10 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             organization.setName("逆向CDIO实验室");
             organization.setCode("000");
             organization.setBusinessLicenseCode("000");
+            organization.setCreateDatetime(new Date());
+            organization.setUpdateDatetime(new Date());
+            organization.setCreateId(id);
+            organization.setUpdateId(id);
             organization.setRemark("这是一个用于开发的组织，实际使用时请删除");
             this.organizationDao.saveOrganization(organization);
         }
