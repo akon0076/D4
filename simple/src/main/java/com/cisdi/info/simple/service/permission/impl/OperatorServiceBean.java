@@ -205,7 +205,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     }
 
     public Map<String, Object> getOrganizations(LoginDTO loginDTO) {
-
+        //TODO
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         Map<String, Object> result = new HashMap<String, Object>();
