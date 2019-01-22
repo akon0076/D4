@@ -139,7 +139,68 @@ public class ModuleManager {
         }
 
     }
+//一个专门为代码生成,加入module.json的方法
+    public static void addModuleFromJsonCodeGenerate(String moduleJson) {
+        writeLock.writeLock().lock();
+        try{
+            Gson gson = new Gson();
+            Map<String, Module> newModules = gson.fromJson(moduleJson, new TypeToken<Map<String, Module>>() {
+            }.getType());
 
+            for (Module module : newModules.values()) {
+                addModuleCodeGenerate(module);
+            }
+        }
+        finally {
+            writeLock.writeLock().unlock();
+        }
+    }
+    //一个专门为代码生成,加入module.json的方法
+    public static void addModuleCodeGenerate(Module module) {
+        writeLock.writeLock().lock();
+        try {
+
+                if (ModuleManager.findModule(module.getCode()) != null) {
+                    throw new DDDException(module.getCode() + "代码生成时:"+module.getCode()+" 编码重复,请删除生成的实体,重新命名实体");
+                }
+            if (ModuleManager.findModule(module.getParentCode()) != null) {
+                ModuleManager.addModule(module.getCode(), module);
+            }
+            else{
+                generateAllParentModule(module);
+                addModule(module.getCode(),module);
+            }
+            }
+            finally {
+            writeLock.writeLock().unlock();
+        }
+        }
+         //为代码生成所有的上级模块
+    public static  void generateAllParentModule(Module module){
+        String parentCode = module.getParentCode();
+        //如果当前模块的父模块能在内存中找到,说明当前模块存在父级
+        if (ModuleManager.findModule(parentCode) != null) {
+               return;
+        }
+        else{
+            //创建他的上级模块
+            Module parentModule = new Module();
+            parentModule.setCode(module.getParentCode());
+            parentModule.setName(module.getParentName() + "管理");
+            parentModule.setUrl("");
+            parentModule.setRoute("");
+            parentModule.setIconClass("");
+            parentModule.setDisplayIndex((long) 1);
+            String ppcode=parentModule.getCode().substring(0,parentModule.getCode().indexOf('/'));
+            parentModule.setParentCode(ppcode);
+            parentModule.setParentName(ppcode);
+            parentModule.setModuleType("电脑模块");
+            parentModule.setIsInUse("是");
+            parentModule.setRouteParamsObj("");
+            ModuleManager.addModule(parentModule.getCode(), parentModule);
+            generateAllParentModule(parentModule);
+        }
+    }
     public static void addModuleFromJson(String moduleJson) {
         writeLock.writeLock().lock();
         try{
