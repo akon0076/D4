@@ -238,6 +238,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
                 this.validateLogonService.updateCountsByIp(request.getRemoteAddr(),Integer.valueOf(operator.getPersonId()+""),0);//登录成功更新验证
                 result.put("isLogin", true);
                 result.put("organizations", organizations);
+                result.put("count", 0);
             } else {
                 this.validateLogonService.updateCountsByIp(request.getRemoteAddr(),-1,++counts);
                 result.put("isLogin", false);

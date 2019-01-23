@@ -191,14 +191,27 @@ public class ModuleManager {
             parentModule.setRoute("");
             parentModule.setIconClass("");
             parentModule.setDisplayIndex((long) 1);
-            String ppcode=parentModule.getCode().substring(0,parentModule.getCode().indexOf('/'));
-            parentModule.setParentCode(ppcode);
-            parentModule.setParentName(ppcode);
-            parentModule.setModuleType("电脑模块");
-            parentModule.setIsInUse("是");
-            parentModule.setRouteParamsObj("");
-            ModuleManager.addModule(parentModule.getCode(), parentModule);
-            generateAllParentModule(parentModule);
+            int index=parentModule.getCode().indexOf('/');
+            if (index < 0) {//顶级模块
+                parentModule.setParentCode("");
+                parentModule.setParentName("");
+                parentModule.setModuleType("电脑模块");
+                parentModule.setIsInUse("是");
+                parentModule.setRouteParamsObj("");
+                ModuleManager.addModule(parentModule.getCode(), parentModule);
+                return;
+            }
+            else{
+                String ppcode=parentModule.getCode().substring(0,index);
+                parentModule.setParentCode(ppcode);
+                parentModule.setParentName(ppcode);
+                parentModule.setModuleType("电脑模块");
+                parentModule.setIsInUse("是");
+                parentModule.setRouteParamsObj("");
+                ModuleManager.addModule(parentModule.getCode(), parentModule);
+                generateAllParentModule(parentModule);
+            }
+
         }
     }
     public static void addModuleFromJson(String moduleJson) {
