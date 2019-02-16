@@ -17,11 +17,13 @@ import com.cisdi.info.simple.entity.permission.LoginUser;
 import com.cisdi.info.simple.entity.permission.Operator;
 import com.cisdi.info.simple.entity.permission.OperatorAndRole;
 import com.cisdi.info.simple.entity.permission.Role;
+import com.cisdi.info.simple.entity.verification.ValidateLogon;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.member.MemberService;
 import com.cisdi.info.simple.service.organization.EmployeeService;
 import com.cisdi.info.simple.service.permission.OperatorService;
 import com.cisdi.info.simple.service.permission.RoleService;
+import com.cisdi.info.simple.service.verification.ValidateLogonService;
 import com.cisdi.info.simple.util.CaptchaHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +36,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Service
@@ -42,7 +43,8 @@ import java.util.*;
 public class OperatorServiceBean extends BaseService implements OperatorService {
 
     private static Logger logger = LogManager.getLogger();
-
+    @Autowired
+    private ValidateLogonService validateLogonService;
     @Autowired
     private EmployeeService employeeService;
 
@@ -205,73 +207,48 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     }
 
     public Map<String, Object> getOrganizations(LoginDTO loginDTO) {
-
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         Map<String, Object> result = new HashMap<String, Object>();
 
-         Integer verctifyCount= (Integer) request.getSession().getAttribute(request.getSession().getId()+"");
-         if(verctifyCount==null||verctifyCount<2){
-             result.put("hasVertify",false);
-             Operator operator = new Operator();
-             String[] username = loginDTO.getUserName().split("@");
-             if (username.length > 1) {//邮箱登录
-                 operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
-             } else {//用户名登录
-                 operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
-             }
-             if (operator != null) {
-                 List<Organization> organizations = this.getOrganization(operator);
-                 result.put("isLogin", true);
-                 result.put("organizations", organizations);
-             } else {
-                 result.put("isLogin", false);
-             }
-         }else{
-             result.put("hasVertify",true);
-                 Operator operator = new Operator();
-                 String[] username = loginDTO.getUserName().split("@");
-                 if (username.length > 1) {//邮箱登录
-                     operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
-                 } else {//用户名登录
-                     operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
-                 }
-                 result.put("captcha", true);
-                 if (operator != null) {
-                     if(verctifyCount<=2){
-                         List<Organization> organizations = this.getOrganization(operator);
-                         result.put("isLogin", true);
-                         result.put("organizations", organizations);
-                         result.put("hasVertify",false);
-                     }
-                     else{
-                         boolean captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
-                         if(captcha){
-                             List<Organization> organizations = this.getOrganization(operator);
-                             result.put("isLogin", true);
-                             result.put("organizations", organizations);
-                         }
-                         else{
-                             result.put("isLogin", false);
-                             result.put("captcha", false);
-                         }
-                     }
-                 } else {
-                     result.put("isLogin", false);
-                 }
-         }
-
-        if(result.get("isLogin")==null||!(boolean)result.get("isLogin")){
-            if (request.getSession().getAttribute(request.getSession().getId() + "") == null) {
-                request.getSession().setAttribute(request.getSession().getId()+"",1);
-            }
-            else{
-                int count=(int)request.getSession().getAttribute(request.getSession().getId()+"");
-                request.getSession().setAttribute(request.getSession().getId()+"",++count);
-            }
+        Integer counts=this.validateLogonService.getCounts(request.getRemoteAddr());
+        boolean captcha=true;//为true表示无验证时验证正确了
+        if (counts == null) {//如果得空则将该IP地址增加进去
+            this.validateLogonService.addRecord(request.getRemoteAddr(), -1, 0);
+            counts=0;
         }
-        else if((boolean)result.get("isLogin")){
-            request.getSession().setAttribute(request.getSession().getId()+"",0);
+        else{
+            //如果当前的次数大于等于3,说明此次登录需要验证
+            if(counts>=3){
+                captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
+            }
+
+        }
+        if (captcha) {
+            Operator operator = new Operator();
+            String[] username = loginDTO.getUserName().split("@");
+            if (username.length > 1) {//邮箱登录
+                operator = this.operatorDao.findOperatorByEmailAndPassWord(loginDTO);
+            } else {//用户名登录
+                operator = this.operatorDao.findOperatorByUserNameAndPassWord(loginDTO);
+            }
+            result.put("captcha", true);
+            if (operator != null) {
+                List<Organization> organizations = this.getOrganization(operator);
+                this.validateLogonService.updateCountsByIp(request.getRemoteAddr(),Integer.valueOf(operator.getPersonId()+""),0);//登录成功更新验证
+                result.put("isLogin", true);
+                result.put("organizations", organizations);
+                result.put("count", 0);
+            } else {
+                this.validateLogonService.updateCountsByIp(request.getRemoteAddr(),-1,++counts);
+                result.put("isLogin", false);
+                result.put("count", counts);
+            }
+
+        } else {
+            this.validateLogonService.updateCountsByIp(request.getRemoteAddr(),-1,++counts);
+            result.put("captcha", false);
+            result.put("count", counts);
         }
         return result;
     }
@@ -371,7 +348,13 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             employee = new Employee();
             employee.setEId(id);
             employee.setCode(SuperUserCode);
-            employee.setName("超级用户");
+            employee.setName("超级管理员");
+            employee.setCreateDatetime(new Date());
+            employee.setCreateId(id);
+            employee.setUpdateDatetime(new Date());
+            employee.setUpdateId(id);
+            employee.setOrganizationId(id);
+            employee.setSex("男");
             employee.setRemark("这是一个用于开发的超级用户，实际使用时请删除");
             this.employeeDao.saveEmployee(employee);
         }
@@ -379,13 +362,17 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         if (superOperator == null) {
             superOperator = new Operator();
             superOperator.setCode(SuperUserCode);
-            superOperator.setName("超级用户");
+            superOperator.setName("超级管理员");
             //对密码进行加密
             String password = DigestUtils.md5DigestAsHex(SuperUserCode.getBytes());
-
             superOperator.setPassWord(password);
             superOperator.setType("虚拟用户");
             superOperator.setPersonId(employee.getEId());
+            superOperator.setCreateDatetime(new Date());
+            superOperator.setUpdateDatetime(new Date());
+            superOperator.setCreateId(id);
+            superOperator.setUpdateId(id);
+            superOperator.setStatus("在用");
             this.operatorDao.saveOperator(superOperator);
         }
         Organization organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
@@ -395,6 +382,10 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             organization.setName("逆向CDIO实验室");
             organization.setCode("000");
             organization.setBusinessLicenseCode("000");
+            organization.setCreateDatetime(new Date());
+            organization.setUpdateDatetime(new Date());
+            organization.setCreateId(id);
+            organization.setUpdateId(id);
             organization.setRemark("这是一个用于开发的组织，实际使用时请删除");
             this.organizationDao.saveOrganization(organization);
         }

@@ -8,7 +8,6 @@ import com.cisdi.info.simple.entity.permission.RoleAndPermission;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -99,14 +98,9 @@ public class ModuleManager {
      */
     public static void loadModules(String file) {
         if (modules != null) return;
-
         Gson gson = new Gson();
         String json = null;
-        try {
-            json = FileUtils.readFileToString(new File(file), "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        json = FileLockUtils.readFileToString(new File(file), "UTF-8");
         modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
         }.getType());
     }
@@ -134,12 +128,95 @@ public class ModuleManager {
      * @param newModule
      */
     public static void addModule(String code, Module newModule) {
-        refresh();
-        getModules().put(code, newModule);
-        saveModules(Config.moduleFile);
-    }
+        writeLock.writeLock().lock();
+        try{
+            refresh();
+            getModules().put(code, newModule);
+            saveModules(Config.moduleFile);
+        }
+        finally {
+            writeLock.writeLock().unlock();
+        }
 
+    }
+//一个专门为代码生成,加入module.json的方法
+    public static void addModuleFromJsonCodeGenerate(String moduleJson) {
+        writeLock.writeLock().lock();
+        try{
+            Gson gson = new Gson();
+            Map<String, Module> newModules = gson.fromJson(moduleJson, new TypeToken<Map<String, Module>>() {
+            }.getType());
+
+            for (Module module : newModules.values()) {
+                addModuleCodeGenerate(module);
+            }
+        }
+        finally {
+            writeLock.writeLock().unlock();
+        }
+    }
+    //一个专门为代码生成,加入module.json的方法
+    public static void addModuleCodeGenerate(Module module) {
+        writeLock.writeLock().lock();
+        try {
+
+                if (ModuleManager.findModule(module.getCode()) != null) {
+                    throw new DDDException(module.getCode() + "代码生成时:"+module.getCode()+" 编码重复,请删除生成的实体,重新命名实体");
+                }
+            if (ModuleManager.findModule(module.getParentCode()) != null) {
+                ModuleManager.addModule(module.getCode(), module);
+            }
+            else{
+                generateAllParentModule(module);
+                addModule(module.getCode(),module);
+            }
+            }
+            finally {
+            writeLock.writeLock().unlock();
+        }
+        }
+         //为代码生成所有的上级模块
+    public static  void generateAllParentModule(Module module){
+        String parentCode = module.getParentCode();
+        //如果当前模块的父模块能在内存中找到,说明当前模块存在父级
+        if (ModuleManager.findModule(parentCode) != null) {
+               return;
+        }
+        else{
+            //创建他的上级模块
+            Module parentModule = new Module();
+            parentModule.setCode(module.getParentCode());
+            parentModule.setName(module.getParentName() + "管理");
+            parentModule.setUrl("");
+            parentModule.setRoute("");
+            parentModule.setIconClass("");
+            parentModule.setDisplayIndex((long) 1);
+            int index=parentModule.getCode().indexOf('/');
+            if (index < 0) {//顶级模块
+                parentModule.setParentCode("");
+                parentModule.setParentName("");
+                parentModule.setModuleType("电脑模块");
+                parentModule.setIsInUse("是");
+                parentModule.setRouteParamsObj("");
+                ModuleManager.addModule(parentModule.getCode(), parentModule);
+                return;
+            }
+            else{
+                String ppcode=parentModule.getCode().substring(0,index);
+                parentModule.setParentCode(ppcode);
+                parentModule.setParentName(ppcode);
+                parentModule.setModuleType("电脑模块");
+                parentModule.setIsInUse("是");
+                parentModule.setRouteParamsObj("");
+                ModuleManager.addModule(parentModule.getCode(), parentModule);
+                generateAllParentModule(parentModule);
+            }
+
+        }
+    }
     public static void addModuleFromJson(String moduleJson) {
+        writeLock.writeLock().lock();
+        try{
         Gson gson = new Gson();
         Map<String, Module> newModules = gson.fromJson(moduleJson, new TypeToken<Map<String, Module>>() {
         }.getType());
@@ -148,6 +225,10 @@ public class ModuleManager {
             addModule(module);
         }
         saveModules(Config.moduleFile);
+        }
+        finally {
+            writeLock.writeLock().unlock();
+        }
     }
 
     public static void addModule(Module module) {
@@ -318,13 +399,15 @@ public class ModuleManager {
 
 
     public static void saveModules(String file) {
+        writeLock.writeLock().lock();
+        try {
         Gson gson = createGson();
         String json = gson.toJson(getModules());
-        try {
-            FileUtils.writeStringToFile(new File(file), json, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileLockUtils.writeStringToFile(new File(file), json, "UTF-8");
+    }
+        finally {
+        writeLock.writeLock().unlock();
+    }
     }
 
     public static Collection<Module> getAllModules() {
@@ -334,11 +417,7 @@ public class ModuleManager {
     public static void refresh() {
         Gson gson = new Gson();
         String json = null;
-        try {
-            json = FileUtils.readFileToString(new File(Config.moduleFile), "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        json = FileLockUtils.readFileToString(new File(Config.moduleFile), "UTF-8");
         modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
         }.getType());
     }

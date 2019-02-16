@@ -2,6 +2,7 @@ package com.cisdi.info.simple.service.organization.impl;
 
 import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.dao.organization.EmployeeDao;
+import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.entity.base.BaseEntity;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,8 @@ public class EmployeeServiceBean extends BaseService implements EmployeeService 
     private EmployeeDao employeeDao;
     @Autowired
     private OperatorService operatorService;
+    @Autowired
+    private OperatorDao operatorDao;
 
     public PageResultDTO findEmployees(PageDTO pageDTO) {
         pageDTO.setStartIndex((pageDTO.getCurrentPage() - 1) * pageDTO.getPageSize());
@@ -58,31 +62,46 @@ public class EmployeeServiceBean extends BaseService implements EmployeeService 
         return this.employeeDao.findEmployeesWithIdNameById(employeeId);
     }
 
-	public Employee findEmployee(Long employeeId)
-	{
-		return this.employeeDao.findEmployee(employeeId);
-	}
+    public Employee findEmployee(Long employeeId) {
+        return this.employeeDao.findEmployee(employeeId);
+    }
 
     //所有外键的Name都以加载
     public Employee findEmployeeWithForeignName(Long employeeId) {
         return this.employeeDao.findEmployeeWithForeignName(employeeId);
     }
 
+    /**
+     * 新增操作员
+     * @param employee
+     * @return
+     */
     public Employee saveEmployee(Employee employee) {
         //TODO:请在此校验参数的合法性
         this.setSavePulicColumns(employee);
         Integer rows = this.employeeDao.saveEmployee(employee);
         if (rows != 1) {
-            String error = "新增保存职员出错，数据库应该返回1,但返回了 " + rows;
-            throw new DDDException(error);
+            throw new DDDException("新增保存职员出错");
         }
-        Operator operator = new Operator();
-        operator.setCode(employee.getCode());
-        operator.setPassWord(employee.getPassWord());
-        operator.setStatus("在用");
-        operator.setPersonId(employee.getEId());
-        operator.setName(employee.getName());
-        operatorService.saveOperator(operator);
+        Operator operatorByCode = operatorDao.findOperatorByCode(employee.getCode());
+        //如果对于的操作员不存在，则默认自动增加
+        if (operatorByCode == null) {
+            Operator operator = new Operator();
+            operator.setCode(employee.getCode());
+            //对密码进行加密
+            String password = DigestUtils.md5DigestAsHex(employee.getPassWord().getBytes());
+            operator.setPassWord(password);
+            operator.setStatus("在用");
+            operator.setType("职员");
+            operator.setPersonId(employee.getEId());
+            operator.setName(employee.getName());
+            //设置公共自动
+            this.setSavePulicColumns(operator);
+            operatorService.saveOperator(operator);
+        } else {
+            operatorByCode.setPersonId(employee.getEId());
+            operatorDao.updateOperator(operatorByCode);
+        }
         return employee;
     }
 
