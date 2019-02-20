@@ -407,20 +407,6 @@
       }
     ]
   },
-  "simple/systemConfig": {
-    "code": "simple/systemConfig",
-    "name1": "系统参数",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-xitongcanshu ",
-    "displayIndex": 4,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/systemConfig/SystemConfig": {
     "code": "simple/systemConfig/SystemConfig",
     "name1": "系统参数",
@@ -1034,5 +1020,19 @@
         ]
       }
     ]
+  },
+  "simple/systemConfig": {
+    "code": "simple/systemConfig",
+    "name1": "系统参数",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-xitongcanshu ",
+    "displayIndex": 4,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
   }
 }

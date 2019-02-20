@@ -546,6 +546,11 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         return rootModuleTreeNode;
     }
 
+    @Override
+    public Module findModuleForDisplay(String moduleCode) {
+        return ModuleManager.findModule(moduleCode);
+    }
+
     private Module findMoudle(String code) {
         Module module = ModuleManager.findModule(code);
         if (module == null) {
