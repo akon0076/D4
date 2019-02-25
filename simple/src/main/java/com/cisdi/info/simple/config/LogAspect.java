@@ -1,4 +1,3 @@
-/*
 package com.cisdi.info.simple.config;
 
 import com.cisdi.info.simple.entity.permission.LoginUser;
@@ -18,35 +17,30 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-*/
 /**
  * @author:chengbg
  * @date:2018/9/7
- *//*
-
+ */
 @Aspect
 @Component
 public class LogAspect {
 
     private final static Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
-    */
-/**
-     * 定义切面，拦截所有controller方法
-     *//*
-
-    @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
-    public void controllerLog() {
+    /**
+     * 定义切面，拦截所有Service方法
+     */
+    @Pointcut("@within(org.springframework.stereotype.Service)")
+    public void serviceLog() {
     }
 
-    */
-/**
-     * 前置处理，在调用controller方法前，用于日志记录
+
+    /**
+     * 前置处理，在调用Service方法前，用于日志记录
      *
      * @param joinPoint
-     *//*
-
-    @Before("controllerLog()")
+     */
+    @Before("serviceLog()")
     public void doBeforeController(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
@@ -59,11 +53,11 @@ public class LogAspect {
         logger.debug("请求方法类型 = {}", request.getMethod());
         logger.debug("来源ip地址 = {}", request.getRemoteAddr());
         logger.debug("调用方法 = {}", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        logger.debug("请求参数 = {}", joinPoint.getArgs());
+        logger.debug("请求参数 = {}", joinPoint.getArgs().toString());
         logger.debug("-----------------------------------------------------------------------------------------------------");
     }
 
-    @Around(value = "controllerLog()")
+    @Around(value = "serviceLog()")
     public Object doAfterController(ProceedingJoinPoint joinPoint) {
         try {
             long start = System.currentTimeMillis();
@@ -79,4 +73,3 @@ public class LogAspect {
     }
 
 }
-*/
