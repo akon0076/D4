@@ -10,7 +10,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/d4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
 #    url: jdbc:mysql://192.168.20.55:3306/d4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
     username: root
-    password: abcd575351
+    password: root
   jpa:
     show-sql: true
     hibernate:

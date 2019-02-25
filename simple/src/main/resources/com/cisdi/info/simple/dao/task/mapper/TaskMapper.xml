@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.task.TaskDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findTasks" resultType="com.cisdi.info.simple.entity.task.Task" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.task_id  ,
+            t0.task_expression  ,
+            so.name as task_publisher  ,
+            t0.task_create_time  ,
+            t0.task_complete_time  ,
+            t0.task_status  ,
+            t0.task_class  ,
+            t0.task_variable  ,
+            t0.task_config_id  ,
+            t0.task_group  ,
+            t0.task_name  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_task t0
+            LEFT JOIN simple_operator as so ON so.eid = t0.task_publisher
+        where  ${sql}
+           ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllTasks" resultType="com.cisdi.info.simple.entity.task.Task" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.task_id  ,
+            t0.task_expression  ,
+            t0.task_publisher  ,
+            t0.task_create_time  ,
+            t0.task_complete_time  ,
+            t0.task_status  ,
+            t0.task_class  ,
+            t0.task_variable  ,
+            t0.task_config_id  ,
+            t0.task_group  ,
+            t0.task_name  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_task t0
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findTasksWithIdNameByName" resultType="com.cisdi.info.simple.entity.task.Task" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_task t0
+        where t0.name like  '%${taskName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllTasksWithIdName" resultType="com.cisdi.info.simple.entity.task.Task" >
+        select
+        t0.EId,t0.Name
+        from simple_task t0
+        ORDER BY t0.Name
+    </select>
+
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findTasksWithIdNameById" resultType="com.cisdi.info.simple.entity.task.Task" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_task t0
+        where eid = #{taskId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findTaskTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_task as t0  where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findTask" resultType="com.cisdi.info.simple.entity.task.Task" parameterType="java.lang.Long">
+        select * from simple_task where eid = #{taskId}
+    </select>
+
+    <!-- 根据ID查询指定的实体(包含外键) -->
+    <select id="findTaskWithForeignName" resultType="com.cisdi.info.simple.entity.task.Task" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.task_id  ,
+            t0.task_expression  ,
+            t0.task_publisher  ,
+            t0.task_create_time  ,
+            t0.task_complete_time  ,
+            t0.task_status  ,
+            t0.task_class  ,
+            t0.task_variable  ,
+            t0.task_config_id  ,
+            t0.task_group  ,
+            t0.task_name  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_task t0
+        where t0.eid = #{taskId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveTask" parameterType="com.cisdi.info.simple.entity.task.Task">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_task
+        (
+                name ,
+                task_id ,
+                task_expression ,
+                task_publisher ,
+                task_create_time ,
+                task_complete_time ,
+                task_status ,
+                task_class ,
+                task_variable ,
+                task_config_id ,
+                task_group ,
+                task_name ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime
+        )
+        values
+        (
+                #{name} ,
+                #{taskId} ,
+                #{taskExpression} ,
+                #{taskPublisher} ,
+                #{taskCreateTime} ,
+                #{taskCompleteTime} ,
+                #{taskStatus} ,
+                #{taskClass} ,
+                #{taskVariable} ,
+                #{taskConfigId} ,
+                #{taskGroup} ,
+                #{taskName} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime}
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateTask" parameterType="com.cisdi.info.simple.entity.task.Task" >
+        update simple_task set
+                name = #{name} ,
+                task_id = #{taskId} ,
+                task_expression = #{taskExpression} ,
+                task_publisher = #{taskPublisher} ,
+                task_create_time = #{taskCreateTime} ,
+                task_complete_time = #{taskCompleteTime} ,
+                task_status = #{taskStatus} ,
+                task_class = #{taskClass} ,
+                task_variable = #{taskVariable} ,
+                task_config_id = #{taskConfigId} ,
+                task_group = #{taskGroup} ,
+                task_name = #{taskName} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteTask"  parameterType="java.lang.Long">
+        delete from simple_task where eid = #{taskId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+    <update id="updateStatus">
+        update simple_task
+        set
+        task_status = #{taskStatus,jdbcType=VARCHAR}
+        where eid = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="finishTheJobWork">
+        update simple_task
+        set
+        task_status = #{taskStatus,jdbcType=VARCHAR},
+        task_complete_time = #{taskCompleteTime,jdbcType=TIMESTAMP}
+        where eid = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="getTaskById" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+        SELECT
+        st.eid,
+        stc.task_name as quarzName,
+        stc.task_type,
+        st.task_create_time,
+        st.task_status,
+        st.task_class as schedulerClass,
+        st.task_variable,
+        st.task_publisher,
+        st.task_expression as cron,
+        st.task_group as quarzGroup
+        FROM
+        `simple_task` AS st
+        LEFT JOIN simple_task_config AS stc ON st.task_config_id = stc.eid
+        WHERE st.eid = #{id,jdbcType=INTEGER}
+    </select>
+</mapper>

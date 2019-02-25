@@ -14,6 +14,31 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/d4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
     username: root
     password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    platform: mysql
+    schema: classpath:/config/quartz.sql
+    initialization-mode: always
+  quartz:
+      #相关属性配置
+      properties:
+        org:
+          quartz:
+            scheduler:
+              instanceName: clusteredScheduler
+              instanceId: AUTO
+            jobStore:
+              class: org.quartz.impl.jdbcjobstore.JobStoreTX
+              driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+              tablePrefix: qrtz_
+              isClustered: false
+              clusterCheckinInterval: 10000
+              useProperties: true
+            threadPool:
+              class: org.quartz.simpl.SimpleThreadPool
+              threadCount: 10
+              threadPriority: 5
+              threadsInheritContextClassLoaderOfInitializingThread: true
+      job-store-type: jdbc
   jpa:
     show-sql: true
     hibernate:

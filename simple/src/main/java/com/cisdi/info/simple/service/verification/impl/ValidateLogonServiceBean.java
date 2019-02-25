@@ -1,7 +1,7 @@
 package com.cisdi.info.simple.service.verification.impl;
 
 import com.cisdi.info.simple.dao.verification.ValidateLogonDao;
-import com.cisdi.info.simple.entity.verification.ValidateLogon;
+//import com.cisdi.info.simple.entity.verification.ValidateLogon;
 import com.cisdi.info.simple.service.verification.ValidateLogonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

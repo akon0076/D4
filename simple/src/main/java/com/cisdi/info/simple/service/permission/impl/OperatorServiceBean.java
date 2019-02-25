@@ -17,7 +17,7 @@ import com.cisdi.info.simple.entity.permission.LoginUser;
 import com.cisdi.info.simple.entity.permission.Operator;
 import com.cisdi.info.simple.entity.permission.OperatorAndRole;
 import com.cisdi.info.simple.entity.permission.Role;
-import com.cisdi.info.simple.entity.verification.ValidateLogon;
+//import com.cisdi.info.simple.entity.verification.ValidateLogon;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.member.MemberService;
 import com.cisdi.info.simple.service.organization.EmployeeService;
