@@ -11,7 +11,7 @@
 #set($editDtoPackageName="${entityClass.packages.replace('entity', 'dto')}")
 
 package ${packageName};
-
+import com.cisdi.info.simple.service.system.CodeTableService;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

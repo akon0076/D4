@@ -17,9 +17,9 @@ repositories {
     maven {
         url 'http://maven.aliyun.com/nexus/content/groups/public/'
     }
-    maven {
+/*    maven {
          url 'http://192.168.20.83:8081/nexus/content/groups/gogogo/'
-     }
+     }*/
     /* maven {
         url 'http://10.73.1.87:8088/nexus/content/groups/public/'
     }*/
@@ -49,8 +49,5 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile("mysql:mysql-connector-java:5.1.30")
-    compile("org.springframework.boot:spring-boot-starter-data-redis:2.0.4.RELEASE")
-    compile ("org.springframework.session:spring-session-data-redis:2.0.5.RELEASE")
-
-    compile project(":Simple") 
+    compile project(":Simple")
 }

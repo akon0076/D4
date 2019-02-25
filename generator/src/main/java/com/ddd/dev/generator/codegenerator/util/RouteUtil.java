@@ -10,6 +10,8 @@ import org.springframework.beans.factory.wiring.ClassNameBeanWiringInfoResolver;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.jar.JarEntry;
 
@@ -27,6 +29,8 @@ public class RouteUtil {
             executeMergeRoutes(routes);
         } catch (IOException e) {
             throw new DDDException("合并路由出错，原因是："+e.getMessage(),e);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
     public static Map<File,List<File>> listRoutes(String rootPath)
@@ -57,7 +61,7 @@ public class RouteUtil {
 //        System.out.println(routes);
         return routes;
     }
-    private static void executeMergeRoutes(Map<File,List<File>> routes) throws IOException {
+    private static void executeMergeRoutes(Map<File,List<File>> routes) throws IOException, URISyntaxException {
         for (File subSystemFile : routes.keySet())
         {
             String route = FileUtils.readFileToString(makeRouteFile(subSystemFile), "UTF-8");
@@ -69,7 +73,8 @@ public class RouteUtil {
             for(File file : routes.get(subSystemFile))
             {
                 String routeName = StringUtils.removeEnd(file.getName(),".js");
-                String importLine =  "./"+file.getParentFile().getName()+ "/"+routeName ;
+                //相对化路径
+                String importLine= "./"+new URI(subSystemFile.getAbsolutePath().replaceAll("\\\\","/")).relativize(new URI(file.getAbsolutePath().replaceAll("\\\\","/"))).getPath();
                 if(! StringUtils.contains(route, importLine))
                 {
                     importLine = "import "+routeName+" from '"+importLine+"'\n";

@@ -94,6 +94,10 @@ public class ModuleController {
 
 	@Autowired private ModuleService moduleService;
 	@Autowired private CodeTableService codeTableService;
+	@GetMapping("/findModuleForView")
+	public Module findModules(@RequestParam String moduleId){
+		return this.moduleService.findModuleForDisplay(moduleId);
+	}
 
 	@PostMapping("/findModules")
 	public PageResultDTO findModules(@RequestBody PageDTO pageDTO){

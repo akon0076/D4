@@ -108,7 +108,7 @@ public class BaseCodeGenerator {
 		{
 			throw  new DDDException(String.format("在文件 %s 没找到 module 定义的JSON", controllerFile));
 		}
-		ModuleManager.addModuleFromJson(moduleJson);
+		ModuleManager.addModuleFromJsonCodeGenerate(moduleJson);
 	}
 
 //	private void createModule(EntityClass entityClass)

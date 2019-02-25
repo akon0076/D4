@@ -60,6 +60,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 return true;
 
             }
+
             HttpSession session = request.getSession();
             String uri = request.getRequestURI();
             LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");
@@ -70,10 +71,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 return true;
             }
             if (loginUser != null) {
+
                 boolean hasPermission = ModuleManager.hasPermission(uri, loginUser.getUserRoles());
                 if (hasPermission) {
                     return true;
                 }
+
             }
             logger.error(String.format("非法请求 %s,可能是恶意攻击，请报告管理员", uri));
             response.setStatus(401);

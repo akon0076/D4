@@ -1034,5 +1034,136 @@
         ]
       }
     ]
+  },
+  "simple/task": {
+    "code": "simple/task",
+    "name1": "定时任务管理",
+    "url": "",
+    "route": "",
+    "iconClass": "",
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "simple",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/task/Task": {
+    "code": "simple/task/Task",
+    "name1": "定时任务",
+    "url": "/simple/task/Task",
+    "route": "/simple/task/Task",
+    "iconClass": "",
+    "displayIndex": 1,
+    "parentCode": "simple/task",
+    "parentName": "定时任务管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_task_Task_Add",
+        "name1": "新增定时任务",
+        "fullName": "simple.定时任务管理.定时任务.新增",
+        "moduleCode": "simple/task/Task",
+        "urls": [
+          "/simple/task/Task/createTask",
+          "/simple/task/Task/saveTask",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName",
+          "/simple/task/Task/startSchedulerJob",
+          "/simple/task/Task/pauseSchedulerJob",
+          "/simple/task/Task/resumeSchedulerJob",
+          "/simple/task/Task/getJobInfo",
+          "/simple/task/Task/deleteJob",
+          "/simple/task/Task/modifyJob",
+          "/simple/task/Task/getTaskConfigList"
+        ]
+      },
+      {
+        "code": "simple_task_Task_Edit",
+        "name1": "编辑定时任务",
+        "fullName": "simple.定时任务管理.定时任务.编辑",
+        "moduleCode": "simple/task/Task",
+        "urls": [
+          "/simple/task/Task/findTaskForEdit",
+          "/simple/task/Task/updateTask",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+        ]
+      },
+      {
+        "code": "simple_task_Task_Delete",
+        "name1": "删除定时任务",
+        "fullName": "simple.定时任务管理.定时任务.删除",
+        "moduleCode": "simple/task/Task",
+        "urls": [
+          "/simple/task/Task/deleteTask"
+        ]
+      },
+      {
+        "code": "simple_task_Task_View",
+        "name1": "查看定时任务",
+        "fullName": "simple.定时任务管理.定时任务.查看",
+        "moduleCode": "simple/task/Task",
+        "urls": [
+          "/simple/task/Task/findTasks",
+          "/simple/task/Task/findTaskForView"
+        ]
+      }
+    ]
+  },
+  "simple/task/TaskConfig": {
+    "code": "simple/task/TaskConfig",
+    "name1": "定时任务配置",
+    "url": "/simple/task/TaskConfig",
+    "route": "/simple/task/TaskConfig",
+    "iconClass": "",
+    "displayIndex": 1,
+    "parentCode": "simple/task",
+    "parentName": "定时任务",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_task_TaskConfig_Add",
+        "name1": "新增定时任务",
+        "fullName": "simple.定时任务配置管理.定时任务.新增",
+        "moduleCode": "simple/task/TaskConfig",
+        "urls": [
+          "/simple/task/TaskConfig/createTaskConfig",
+          "/simple/task/TaskConfig/saveTaskConfig"
+        ]
+      },
+      {
+        "code": "simple_task_TaskConfig_Edit",
+        "name1": "编辑定时任务",
+        "fullName": "simple.定时任务配置管理.定时任务.编辑",
+        "moduleCode": "simple/task/TaskConfig",
+        "urls": [
+          "/simple/task/TaskConfig/findTaskConfigForEdit",
+          "/simple/task/TaskConfig/updateTaskConfig"
+        ]
+      },
+      {
+        "code": "simple_task_TaskConfig_Delete",
+        "name1": "删除定时任务",
+        "fullName": "simple.定时任务配置管理.定时任务.删除",
+        "moduleCode": "simple/task/TaskConfig",
+        "urls": [
+          "/simple/task/TaskConfig/deleteTaskConfig"
+        ]
+      },
+      {
+        "code": "simple_task_TaskConfig_View",
+        "name1": "查看定时任务",
+        "fullName": "simple.定时任务配置管理.定时任务.查看",
+        "moduleCode": "simple/task/TaskConfig",
+        "urls": [
+          "/simple/task/TaskConfig/findTaskConfigs",
+          "/simple/task/TaskConfig/findTaskConfigForView"
+        ]
+      }
+    ]
   }
 }

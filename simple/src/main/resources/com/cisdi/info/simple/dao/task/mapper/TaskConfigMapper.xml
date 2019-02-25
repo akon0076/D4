@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.task.TaskConfigDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findTaskConfigs" resultType="com.cisdi.info.simple.entity.task.TaskConfig" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.task_name  ,
+        t0.task_type  ,
+        t0.create_time  ,
+        t0.is_need_variable  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime  
+        from simple_task_config t0
+        where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllTaskConfigs" resultType="com.cisdi.info.simple.entity.task.TaskConfig" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.task_name  ,
+            t0.task_type  ,
+            t0.create_time  ,
+            t0.is_need_variable  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+        from simple_task_config t0
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findTaskConfigsWithIdNameByName" resultType="com.cisdi.info.simple.entity.task.TaskConfig" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_task_config t0
+        where t0.name like  '%${taskConfigName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllTaskConfigsWithIdName" resultType="com.cisdi.info.simple.entity.task.TaskConfig" >
+        select
+        t0.EId,t0.Name
+        from simple_task_config t0
+        ORDER BY t0.Name
+    </select>
+    
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findTaskConfigsWithIdNameById" resultType="com.cisdi.info.simple.entity.task.TaskConfig" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_task_config t0
+        where eid = #{taskConfigId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findTaskConfigTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_task_config as t0  where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findTaskConfig" resultType="com.cisdi.info.simple.entity.task.TaskConfig" parameterType="java.lang.Long">
+        select * from simple_task_config where eid = #{taskConfigId}
+    </select>
+
+    <!-- 根据ID查询指定的实体(包含外键) -->
+    <select id="findTaskConfigWithForeignName" resultType="com.cisdi.info.simple.entity.task.TaskConfig" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.task_name  ,
+            t0.task_type  ,
+            t0.create_time  ,
+            t0.is_need_variable  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+        from simple_task_config t0
+        where t0.eid = #{taskConfigId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveTaskConfig" parameterType="com.cisdi.info.simple.entity.task.TaskConfig">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_task_config
+        (
+                name ,
+                task_name ,
+                task_type ,
+                create_time ,
+                is_need_variable ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime 
+        )
+        values
+        (
+                #{name} ,
+                #{taskName} ,
+                #{taskType} ,
+                #{createTime} ,
+                #{isNeedVariable} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime} 
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateTaskConfig" parameterType="com.cisdi.info.simple.entity.task.TaskConfig" >
+        update simple_task_config set
+                name = #{name} ,
+                task_name = #{taskName} ,
+                task_type = #{taskType} ,
+                create_time = #{createTime} ,
+                is_need_variable = #{isNeedVariable} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime} 
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteTaskConfig"  parameterType="java.lang.Long">
+        delete from simple_task_config where eid = #{taskConfigId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+</mapper>
