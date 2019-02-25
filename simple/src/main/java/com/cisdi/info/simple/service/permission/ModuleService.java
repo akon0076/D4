@@ -47,4 +47,5 @@ public interface ModuleService {
     Integer moduleAccount();
 
     public ModuleTreeNode wisdomCateringConstructNewTree(Long operatorId, String modelType);
+    public Module  findModuleForDisplay(String moduleCode);
 }

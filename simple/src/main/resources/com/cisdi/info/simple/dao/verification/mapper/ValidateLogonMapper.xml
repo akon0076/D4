@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.verification.ValidateLogonDao">
+    <select id="getCounts" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT t0.count from simple_validate_logon t0 where ip_address=#{ipAddress}
+    </select>
+    <insert id="addRecord" parameterType="java.util.HashMap" >
+        insert into simple_validate_logon(ip_address,operator_id,count)  values (#{ipAddress},#{operatorId},#{count})
+    </insert>
+    <update id="updateCountsByIp" parameterType="java.util.HashMap">
+        update simple_validate_logon t0 set t0.operator_id=#{operatorId},t0.count=#{count}
+    </update>
+</mapper>
