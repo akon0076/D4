@@ -67,7 +67,7 @@ public class EntityGenerator extends JavaGenerator {
 //		replacement.put("{packageName}", generationParameter.getPackageName());
 //		replacement.put("{className}", generationParameter.getEntityNameUp());
 //
-//		String tablePrefix = config.getShortCode()+"_";
+//		String tablePrefix = sql.getShortCode()+"_";
 //		replacement.put("{EntityAnnotation}", "label=\""+generationParameter.getGa().getEntityClass().getLabel()+"\",name=\""+tablePrefix+generationParameter.getEntityNameLow()+"\"");
 
 //	}

@@ -1,7 +1,5 @@
 server:
   port: 8080
-
-
 spring:
   application:
     name: cisdi-info-ms-cms_ample
@@ -16,7 +14,7 @@ spring:
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
     platform: mysql
-    schema: classpath:/config/quartz.sql
+    schema: classpath:/sql/quartz.sql
     initialization-mode: always
   quartz:
       #相关属性配置

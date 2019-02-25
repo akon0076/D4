@@ -43,14 +43,14 @@ public class BaseCodeGenerator {
 	@Autowired
 	private OperatorService operatorService;
 	public BaseCodeGenerator() {
-		
+
 	}
-	
+
 	public Map<String,String> generateBaseCode(String className){
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("successMsg", "");
 		result.put("errorMsg", "");
-		
+
 		if(className==null||"".equals(className)){
 			result.put("errorMsg", "请输入完整类名");
 			return result;
@@ -129,7 +129,7 @@ public class BaseCodeGenerator {
 //			System.err.println("模板不存在："+file.getAbsolutePath());
 //			return null;
 //		}
-//		Template template = velocityEngine.getTemplate(absoluteTemplatePath, config.CHARSET_UTF8);
+//		Template template = velocityEngine.getTemplate(absoluteTemplatePath, sql.CHARSET_UTF8);
 //		VelocityContext velocityContext = new VelocityContext(replaceMap);
 //		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 //		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream);
@@ -174,7 +174,7 @@ public class BaseCodeGenerator {
 //			e.printStackTrace();
 //		}
 //	}
-	
+
 
 
 }

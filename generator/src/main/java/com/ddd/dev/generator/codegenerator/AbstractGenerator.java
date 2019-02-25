@@ -22,7 +22,7 @@ public abstract class AbstractGenerator implements IGenerator{
     private String lastOutputFile ;
 
     public AbstractGenerator() {
-        this.velocityContext.put("config", new Config());
+        this.velocityContext.put("sql", new Config());
         this.velocityContext.put("stringUtils", new StringUtils());
         this.velocityContext.put("d4Util", new D4Util());
     }
@@ -45,11 +45,11 @@ public abstract class AbstractGenerator implements IGenerator{
     public abstract  String getTemplateFile();
 
     public  void generate(VelocityContext velocityContext,String templateFile) throws Exception {
-//        velocityContext.put("serverPath", config.serverPath);
-//        velocityContext.put("uiPath", config.uiPath);
-//        velocityContext.put("applicationName", config.applicationName);
-//        velocityContext.put("sbuSystem", config.sbuSystem);
-//        velocityContext.put("config", )
+//        velocityContext.put("serverPath", sql.serverPath);
+//        velocityContext.put("uiPath", sql.uiPath);
+//        velocityContext.put("applicationName", sql.applicationName);
+//        velocityContext.put("sbuSystem", sql.sbuSystem);
+//        velocityContext.put("sql", )
 //
         VelocityEngine velocityEngine = new VelocityEngine();
         Properties p = new Properties();

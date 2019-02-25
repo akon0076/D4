@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 public class GenerationParameter {
 //
 //	@Autowired
-//	private Config config;
+//	private Config sql;
 //
 //
 //
-//	public String serverPath = config.getServerPath();
-//	public String uiPath = config.getUiPath();
+//	public String serverPath = sql.getServerPath();
+//	public String uiPath = sql.getUiPath();
 //
 //
 //	public GenerationAttribute ga;
@@ -28,11 +28,11 @@ public class GenerationParameter {
 //
 //
 //	public Config getConfig() {
-//		return config;
+//		return sql;
 //	}
 //
-//	public void setConfig(Config config) {
-//		this.config = config;
+//	public void setConfig(Config sql) {
+//		this.sql = sql;
 //	}
 //
 //
