@@ -1127,7 +1127,7 @@
     "permissions": [
       {
         "code": "simple_task_TaskConfig_Add",
-        "name1": "新增定时任务",
+        "name1": "新增定时任务配置",
         "fullName": "simple.定时任务配置管理.定时任务.新增",
         "moduleCode": "simple/task/TaskConfig",
         "urls": [
@@ -1137,7 +1137,7 @@
       },
       {
         "code": "simple_task_TaskConfig_Edit",
-        "name1": "编辑定时任务",
+        "name1": "编辑定时任务配置",
         "fullName": "simple.定时任务配置管理.定时任务.编辑",
         "moduleCode": "simple/task/TaskConfig",
         "urls": [
@@ -1147,7 +1147,7 @@
       },
       {
         "code": "simple_task_TaskConfig_Delete",
-        "name1": "删除定时任务",
+        "name1": "删除定时任务配置",
         "fullName": "simple.定时任务配置管理.定时任务.删除",
         "moduleCode": "simple/task/TaskConfig",
         "urls": [
@@ -1156,7 +1156,7 @@
       },
       {
         "code": "simple_task_TaskConfig_View",
-        "name1": "查看定时任务",
+        "name1": "查看定时任务配置",
         "fullName": "simple.定时任务配置管理.定时任务.查看",
         "moduleCode": "simple/task/TaskConfig",
         "urls": [
