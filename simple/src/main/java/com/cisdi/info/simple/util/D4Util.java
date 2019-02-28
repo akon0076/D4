@@ -40,14 +40,14 @@ public class D4Util {
     }
 
     //通过传入的对象和字符串调用该对象的方法,并返回结果
-    public static <T> T invokeMethodByString(Object obj, String method) {
+    public static String invokeMethodByString(Object obj, String method) {
         if(obj==null){
             throw new IllegalArgumentException();
         }
         Class clazz=obj.getClass();
         try {
             Method method1= clazz.getMethod(method,null);
-               return  (T) method1.invoke(obj, null);
+               return   method1.invoke(obj, null)+"";
         } catch (NoSuchMethodException e) {
             throw new DDDException(clazz.getCanonicalName()+" 无此构造方法:"+method);
         } catch (IllegalAccessException e) {

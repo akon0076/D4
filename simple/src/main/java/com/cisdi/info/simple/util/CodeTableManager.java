@@ -4,15 +4,26 @@ import com.cisdi.info.simple.entity.system.CodeTable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.apache.commons.io.FileUtils;
+import org.aspectj.apache.bcel.classfile.Code;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class CodeTableManager {
     private static Map<String,List<CodeTable>> codeTables;
 
+    public static List<CodeTable> findAllCodeTables(){
+        List returnedList = new ArrayList();
+        Collection<List<CodeTable>> list=codeTables.values();
+        Iterator iterator=list.iterator();
+        while (iterator.hasNext()) {
+            List eachList = (List) iterator.next();
+            for(int i=0;i<eachList.size();i++) {
+                returnedList.add(eachList.get(i));
+            }
+        }
+        return returnedList;
+    }
     public static  List<CodeTable> findCodeTablesByType(String type)
     {
         loadCodeTables();
@@ -26,14 +37,9 @@ public class CodeTableManager {
     public static void loadCodeTables(String file)
     {
         if(codeTables != null) return ;
-
         Gson gson = new Gson();
         String json = null;
-        try {
-            json = FileUtils.readFileToString(new File(file), "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        json = FileLockUtils.readFileToString(new File(file), "UTF-8");
         codeTables = gson.fromJson(json, new TypeToken<Map<String,List<CodeTable>>>() {}.getType());
     }
     public static Map<String,List<CodeTable>> getCodeTables()
@@ -41,7 +47,31 @@ public class CodeTableManager {
         loadCodeTables();
         return codeTables;
     }
+   public static void updateCodeTable(CodeTable newCodeTables){
+       loadCodeTables();
+       String type = newCodeTables.getCodeType();
+       if(getCodeTables().containsKey(type))
+       {
+           List<CodeTable> list = findCodeTablesByType(type);
+           for(int i=0;i<list.size();i++) {
+               if (newCodeTables.getFullname().equals(list.get(i).getFullname())) {
+                   list.remove(i);
+                   break;
+               }
+           }
+           newCodeTables.setFullname(newCodeTables.getCodeType()+"."+newCodeTables.getName());
+           list.add(newCodeTables);
+       }
+       else
+       {
+           List<CodeTable> list = new ArrayList<>();
+           list.add(newCodeTables);
+           newCodeTables.setFullname(newCodeTables.getCodeType()+"."+newCodeTables.getName());
+           getCodeTables().put(type, list);
+       }
+       saveCodeTables(Config.codeTablesFile);
 
+   }
     public static  void addCodeTables(String type, List<CodeTable> newCodeTables)
     {
         loadCodeTables();
@@ -61,12 +91,19 @@ public class CodeTableManager {
         }
         saveCodeTables(Config.codeTablesFile);
     }
-    public static  void removeCodeTables(String type,String name)
+    public static  void removeCodeTables(String type,String codeTableId)
     {
 
         if(getCodeTables().containsKey(type))
         {
-            getCodeTables().get(type).remove(name);
+          List<CodeTable> list=  getCodeTables().get(type);
+            for (int i=0;i<list.size();i++) {
+                if (codeTableId.equals(list.get(i).getFullname())){
+                    list.remove(i);
+                    break;
+                }
+
+            }
         }
         saveCodeTables(Config.codeTablesFile);
     }
@@ -80,11 +117,7 @@ public class CodeTableManager {
     {
        Gson gson = createGson();
         String json = gson.toJson(getCodeTables());
-        try {
-            FileUtils.writeStringToFile(new File(file), json, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileLockUtils.writeStringToFile(new File(file), json, "UTF-8");
 
     }
     private static Gson createGson()
@@ -97,25 +130,10 @@ public class CodeTableManager {
             .setPrettyPrinting() //对结果进行格式化，增加换行
             .disableHtmlEscaping().create(); //防止特殊字符出现乱码
     }
-    public static  void main(String[] args)
-    {
-//        codeTables = new HashMap<String, List<CodeTable>>();
-//        codeTables.put("ddd", new ArrayList<CodeTable>());
-//
-//        codeTables.get("ddd").add(new CodeTable("ddd","ddd1"));
-//        codeTables.get("ddd").add(new CodeTable("ddd","ddd2"));
-//        codeTables.get("ddd").add(new CodeTable("ddd","ddd3"));
-//        CodeTable codeTable =new CodeTable("ddd","ddd4");
-//        codeTables.get("ddd").add(codeTable);
-//        new CodeTable("aaa1",codeTable);
-//        new CodeTable("aaa2",codeTable);
-//        codeTable =new CodeTable("aaa3",codeTable);
-//        new CodeTable("ccc1",codeTable);
-//        new CodeTable("ccc2",codeTable);
-//
-//        saveCodeTables("F:\\IDEA\\workspace\\xc-project\\src\\main\\resources\\codetables.json");
-//        loadCodeTables("F:\\IDEA\\workspace\\xc-project\\src\\main\\resources\\codetables.json");
-//
-//        System.out.println(codeTables.toString());
+
+    public static void main(String[] args) {
+        loadCodeTables("E:\\SpringBoot\\workplace\\D4\\simple\\src\\main\\resources\\codetables.json");
+        List list = new ArrayList(  findAllCodeTables() );
+
     }
 }

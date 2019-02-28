@@ -92,7 +92,7 @@
     "iconClass": "iconfont icon-caozuoyuan",
     "displayIndex": 0,
     "parentCode": "simple/permission",
-    "parentName": "授权",
+    "parentName": "授权管理",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
@@ -146,7 +146,7 @@
     "iconClass": "iconfont icon-mokuai",
     "displayIndex": 0,
     "parentCode": "simple/permission",
-    "parentName": "授权",
+    "parentName": "授权管理",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
@@ -204,7 +204,7 @@
     "iconClass": "iconfont icon-quanxiandianguanli",
     "displayIndex": 0,
     "parentCode": "simple/permission",
-    "parentName": "授权",
+    "parentName": "授权管理",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
@@ -274,7 +274,7 @@
     "iconClass": "iconfont icon-jiaosecopy",
     "displayIndex": 0,
     "parentCode": "simple/permission",
-    "parentName": "授权",
+    "parentName": "授权管理",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
@@ -334,20 +334,6 @@
       }
     ]
   },
-  "simple/attachment": {
-    "code": "simple/attachment",
-    "name1": "附件",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-fujian",
-    "displayIndex": 5,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/attachment/Attachment": {
     "code": "simple/attachment/Attachment",
     "name1": "附件",
@@ -356,7 +342,7 @@
     "iconClass": "iconfont icon-fujian",
     "displayIndex": 0,
     "parentCode": "simple/attachment",
-    "parentName": "附件",
+    "parentName": "附件管理",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
@@ -406,20 +392,6 @@
         ]
       }
     ]
-  },
-  "simple/systemConfig": {
-    "code": "simple/systemConfig",
-    "name1": "系统参数",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-xitongcanshu ",
-    "displayIndex": 4,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
   },
   "simple/systemConfig/SystemConfig": {
     "code": "simple/systemConfig/SystemConfig",
@@ -527,81 +499,6 @@
         "urls": [
           "/simple/organization/Department/findDepartments",
           "/simple/organization/Department/findDepartmentForView"
-        ]
-      }
-    ]
-  },
-  "simple/qingTui": {
-    "code": "simple/qingTui",
-    "name1": "人员与应用",
-    "url": "",
-    "route": "",
-    "iconClass": "",
-    "displayIndex": 0,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "否",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/qingTui/EmpOpenId": {
-    "code": "simple/qingTui/EmpOpenId",
-    "name1": "人员与应用",
-    "url": "/simple/qingTui/EmpOpenId",
-    "route": "/simple/qingTui/EmpOpenId",
-    "iconClass": "",
-    "displayIndex": 0,
-    "parentCode": "simple/qingTui",
-    "parentName": "人员与应用",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_qingTui_EmpOpenId_Add",
-        "name1": "新增人员与应用",
-        "fullName": "simple.人员与应用.人员与应用.新增",
-        "moduleCode": "simple/qingTui/EmpOpenId",
-        "urls": [
-          "/simple/qingTui/EmpOpenId/createEmpOpenId",
-          "/simple/qingTui/EmpOpenId/saveEmpOpenId",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/member/Member/findMembersWithIdNameByName",
-          "/simple/qingTui/EmpOpenId/bindingQingtui"
-        ]
-      },
-      {
-        "code": "simple_qingTui_EmpOpenId_Edit",
-        "name1": "编辑人员与应用",
-        "fullName": "simple.人员与应用.人员与应用.编辑",
-        "moduleCode": "simple/qingTui/EmpOpenId",
-        "urls": [
-          "/simple/qingTui/EmpOpenId/findEmpOpenIdForEdit",
-          "/simple/qingTui/EmpOpenId/updateEmpOpenId",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/member/Member/findMembersWithIdNameByName"
-        ]
-      },
-      {
-        "code": "simple_qingTui_EmpOpenId_Delete",
-        "name1": "删除人员与应用",
-        "fullName": "simple.人员与应用.人员与应用.删除",
-        "moduleCode": "simple/qingTui/EmpOpenId",
-        "urls": [
-          "/simple/qingTui/EmpOpenId/deleteEmpOpenId"
-        ]
-      },
-      {
-        "code": "simple_qingTui_EmpOpenId_View",
-        "name1": "查看人员与应用",
-        "fullName": "simple.人员与应用.人员与应用.查看",
-        "moduleCode": "simple/qingTui/EmpOpenId",
-        "urls": [
-          "/simple/qingTui/EmpOpenId/findEmpOpenIds",
-          "/simple/qingTui/EmpOpenId/findEmpOpenIdForView"
         ]
       }
     ]
@@ -726,7 +623,7 @@
     "iconClass": "",
     "displayIndex": 0,
     "parentCode": "simple/regist",
-    "parentName": "商家注册审核",
+    "parentName": "注册审核",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
@@ -771,34 +668,6 @@
         ]
       }
     ]
-  },
-  "simple/regist": {
-    "code": "simple/regist",
-    "name1": "注册审核",
-    "url": "",
-    "route": "",
-    "iconClass": "",
-    "displayIndex": 10,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/report": {
-    "code": "simple/report",
-    "name1": "报表管理",
-    "url": "",
-    "route": "",
-    "iconClass": "",
-    "displayIndex": 1,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
   },
   "simple/report/ModelFile": {
     "code": "simple/report/ModelFile",
@@ -878,48 +747,6 @@
         ]
       }
     ]
-  },
-  "simple/system": {
-    "code": "simple/system",
-    "name1": "系统管理",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-icon-test",
-    "displayIndex": 6,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/organization": {
-    "code": "simple/organization",
-    "name1": "组织机构",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-zuzhi",
-    "displayIndex": 2,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/permission": {
-    "code": "simple/permission",
-    "name1": "授权",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-iot-sq ",
-    "displayIndex": 1,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
   },
   "simple/system/CodeTable": {
     "code": "simple/system/CodeTable",
@@ -1035,20 +862,6 @@
       }
     ]
   },
-  "simple/task": {
-    "code": "simple/task",
-    "name1": "定时任务管理",
-    "url": "",
-    "route": "",
-    "iconClass": "",
-    "displayIndex": 1,
-    "parentCode": "simple",
-    "parentName": "simple",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/task/Task": {
     "code": "simple/task/Task",
     "name1": "定时任务",
@@ -1057,7 +870,7 @@
     "iconClass": "",
     "displayIndex": 1,
     "parentCode": "simple/task",
-    "parentName": "定时任务管理",
+    "parentName": "定时任务",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
@@ -1165,5 +978,192 @@
         ]
       }
     ]
+  },
+  "simple/report": {
+    "code": "simple/report",
+    "name1": "报表管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-baobiaoguanli",
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/system": {
+    "code": "simple/system",
+    "name1": "系统管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-xitongguanli1",
+    "displayIndex": 6,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/permission": {
+    "code": "simple/permission",
+    "name1": "授权管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-iot-sq ",
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/attachment": {
+    "code": "simple/attachment",
+    "name1": "附件管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-fujian",
+    "displayIndex": 5,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/task": {
+    "code": "simple/task",
+    "name1": "定时任务",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-navicon-dsrwpz",
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "simple",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/qingTui/EmpOpenId": {
+    "code": "simple/qingTui/EmpOpenId",
+    "name1": "人员与应用",
+    "url": "/simple/qingTui/EmpOpenId",
+    "route": "/simple/qingTui/EmpOpenId",
+    "iconClass": "",
+    "displayIndex": 2,
+    "parentCode": "simple/qingTui",
+    "parentName": "人员应用",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_qingTui_EmpOpenId_Add",
+        "name1": "新增人员与应用",
+        "fullName": "simple.人员与应用.人员与应用.新增",
+        "moduleCode": "simple/qingTui/EmpOpenId",
+        "urls": [
+          "/simple/qingTui/EmpOpenId/createEmpOpenId",
+          "/simple/qingTui/EmpOpenId/saveEmpOpenId",
+          "/simple/organization/Employee/findEmployeesWithIdNameByName",
+          "/simple/permission/Operator/findOperatorsWithIdNameByName",
+          "/simple/member/Member/findMembersWithIdNameByName",
+          "/simple/qingTui/EmpOpenId/bindingQingtui"
+        ]
+      },
+      {
+        "code": "simple_qingTui_EmpOpenId_Edit",
+        "name1": "编辑人员与应用",
+        "fullName": "simple.人员与应用.人员与应用.编辑",
+        "moduleCode": "simple/qingTui/EmpOpenId",
+        "urls": [
+          "/simple/qingTui/EmpOpenId/findEmpOpenIdForEdit",
+          "/simple/qingTui/EmpOpenId/updateEmpOpenId",
+          "/simple/organization/Employee/findEmployeesWithIdNameByName",
+          "/simple/permission/Operator/findOperatorsWithIdNameByName",
+          "/simple/member/Member/findMembersWithIdNameByName"
+        ]
+      },
+      {
+        "code": "simple_qingTui_EmpOpenId_Delete",
+        "name1": "删除人员与应用",
+        "fullName": "simple.人员与应用.人员与应用.删除",
+        "moduleCode": "simple/qingTui/EmpOpenId",
+        "urls": [
+          "/simple/qingTui/EmpOpenId/deleteEmpOpenId"
+        ]
+      },
+      {
+        "code": "simple_qingTui_EmpOpenId_View",
+        "name1": "查看人员与应用",
+        "fullName": "simple.人员与应用.人员与应用.查看",
+        "moduleCode": "simple/qingTui/EmpOpenId",
+        "urls": [
+          "/simple/qingTui/EmpOpenId/findEmpOpenIds",
+          "/simple/qingTui/EmpOpenId/findEmpOpenIdForView"
+        ]
+      }
+    ]
+  },
+  "simple/qingTui": {
+    "code": "simple/qingTui",
+    "name1": "人员应用",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-renyuan",
+    "displayIndex": 3,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/systemConfig": {
+    "code": "simple/systemConfig",
+    "name1": "系统参数",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-xitongcanshu ",
+    "displayIndex": 4,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/regist": {
+    "code": "simple/regist",
+    "name1": "注册审核",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-ruzhuchenggongdapx",
+    "displayIndex": 10,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/organization": {
+    "code": "simple/organization",
+    "name1": "组织机构",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-zuzhi",
+    "displayIndex": 2,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
   }
 }

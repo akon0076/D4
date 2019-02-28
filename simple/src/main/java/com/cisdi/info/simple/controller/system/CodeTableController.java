@@ -7,6 +7,7 @@ import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.system.CodeTableEditDto;
 import com.cisdi.info.simple.entity.system.CodeTable;
 import com.cisdi.info.simple.service.system.CodeTableService;
+import com.cisdi.info.simple.util.CodeTableManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,18 +104,18 @@ public class CodeTableController {
 	}
 
 	@GetMapping("/findCodeTableForView")
-	public CodeTable findCodeTableForView(@RequestParam Long codeTableId)
+	public CodeTable findCodeTableForView(@RequestParam String codeTableId)
 	{
 		return this.codeTableService.findCodeTableWithForeignName(codeTableId);
 	}
 
 	@GetMapping("/findCodeTableForEdit")
-	public CodeTableEditDto findCodeTableForEdit(@RequestParam Long codeTableId)
+	public CodeTableEditDto findCodeTableForEdit(@RequestParam String codeTableId)
 	{
 		CodeTableEditDto codeTableEditDto = new CodeTableEditDto();
 		codeTableEditDto.setCodeTable(this.codeTableService.findCodeTableWithForeignName(codeTableId));
 
-		this.prepareCodeTableEditDto(codeTableEditDto);
+		//this.prepareCodeTableEditDto(codeTableEditDto);
 
 		return codeTableEditDto;
 	}
@@ -149,7 +150,7 @@ public class CodeTableController {
 	}
 
 	@GetMapping("/deleteCodeTable")
-	public void deleteCodeTable(@RequestParam Long codeTableId)
+	public void deleteCodeTable(@RequestParam String codeTableId)
 	{
 		this.codeTableService.deleteCodeTable(codeTableId);
 	}
@@ -162,7 +163,7 @@ public class CodeTableController {
 	@GetMapping("/findCodeTablesWithIdNameByName")
 	public List<CodeTable> findCodeTablesWithIdNameByName(String codeTableName)
 	{
-		return null;//this.codeTableService.findCodeTablesWithIdNameByName(codeTableName);
+		return CodeTableManager.findAllCodeTables();//this.codeTableService.findCodeTablesWithIdNameByName(codeTableName);
 	}
 }
 
