@@ -1,7 +1,5 @@
 server:
   port: 8080
-
-
 spring:
   application:
     name: cisdi-info-ms-cms_ample
@@ -13,10 +11,10 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/d4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
     username: root
-    password: root
+    password: abcd575351
     type: com.alibaba.druid.pool.DruidDataSource
     platform: mysql
-    schema: classpath:/config/quartz.sql
+    schema: classpath:/sql/quartz.sql
     initialization-mode: always
   quartz:
       #相关属性配置

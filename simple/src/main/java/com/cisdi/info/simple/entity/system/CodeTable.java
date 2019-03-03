@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @DEntity(label="码表",comment="",moduleLabel="系统管理")
-@Entity(name="simple_code_table")
-public class CodeTable extends BaseEntity implements Serializable{
+public class CodeTable extends BaseEntity implements Serializable,Comparable{
 	private static final long serialVersionUID = 1L;
 
 	@Expose
@@ -125,6 +124,8 @@ public class CodeTable extends BaseEntity implements Serializable{
 	}
 
 	public Integer getDisplayOrder() {
+    	if(this.displayOrder==null||this.displayOrder==0)
+    		this.displayOrder=999;
 		return this.displayOrder;
 	}
 
@@ -174,8 +175,17 @@ public class CodeTable extends BaseEntity implements Serializable{
 
 	@Override
 	public int hashCode() {
-
 		return Objects.hash(fullname);
 	}
 
+	@Override
+	public int compareTo(Object o) {
+		CodeTable other = (CodeTable)o;
+		if(this.getDisplayOrder()>other.getDisplayOrder())
+			return   1;
+		else if (this.getDisplayOrder() < other.getDisplayOrder())
+			return -1;
+		else
+			return 0;
+	}
 }

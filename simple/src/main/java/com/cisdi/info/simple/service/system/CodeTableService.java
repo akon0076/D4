@@ -17,13 +17,13 @@ public List<CodeTable> findAllCodeTablesWithIdName();
 public CodeTable findCodeTable(Long codeTableId);
 
 //所有外键的Name都以加载
-public CodeTable findCodeTableWithForeignName(Long codeTableId);
+public CodeTable findCodeTableWithForeignName(String codeTableId);
 
 public CodeTable saveCodeTable(CodeTable codeTable);
 
 public CodeTable updateCodeTable(CodeTable codeTable);
 
-public void deleteCodeTable(Long codeTableId);
+public void deleteCodeTable(String codeTableId);
 
 public List<CodeTable> findCodeTablesByCodeType(String codeType);
 }

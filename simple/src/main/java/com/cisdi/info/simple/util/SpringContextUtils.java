@@ -31,6 +31,7 @@ public class SpringContextUtils implements ApplicationContextAware {
         getBean(Config.class);
         new EntityManager();
         ModuleManager.initialize();
+        CodeTableManager.loadCodeTables();
 
     }
 

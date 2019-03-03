@@ -1,24 +1,13 @@
 {
   "Gender": [
     {
-      "name1": "未知",
-      "fullname": "Gender.未知",
-      "codeType": "Gender",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": null,
-      "children": [],
-      "hasChildren": null
-    },
-    {
       "name1": "男",
       "fullname": "Gender.男",
       "codeType": "Gender",
       "parentFullname": null,
       "parentId": null,
       "parentName": null,
-      "displayOrder": 0,
+      "displayOrder": 2,
       "children": null,
       "hasChildren": null
     },
@@ -29,23 +18,23 @@
       "parentFullname": null,
       "parentId": null,
       "parentName": null,
-      "displayOrder": null,
+      "displayOrder": 1,
+      "children": null,
+      "hasChildren": null
+    },
+    {
+      "name1": "未知",
+      "fullname": "Gender.未知",
+      "codeType": "Gender",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": 3,
       "children": [],
       "hasChildren": null
     }
   ],
   "模块类型": [
-    {
-      "name1": "移动模块",
-      "fullname": "模块类型.移动模块",
-      "codeType": "模块类型",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": null,
-      "children": [],
-      "hasChildren": null
-    },
     {
       "name1": "电脑模块",
       "fullname": "模块类型.电脑模块",
@@ -53,23 +42,23 @@
       "parentFullname": null,
       "parentId": null,
       "parentName": null,
-      "displayOrder": null,
+      "displayOrder": 1,
+      "children": [],
+      "hasChildren": null
+    },
+    {
+      "name1": "移动模块",
+      "fullname": "模块类型.移动模块",
+      "codeType": "模块类型",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": 2,
       "children": [],
       "hasChildren": null
     }
   ],
   "逻辑": [
-    {
-      "name1": "否",
-      "fullname": "逻辑.否",
-      "codeType": "逻辑",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": null,
-      "children": [],
-      "hasChildren": null
-    },
     {
       "name1": "是",
       "fullname": "逻辑.是",
@@ -77,423 +66,18 @@
       "parentFullname": null,
       "parentId": null,
       "parentName": null,
-      "displayOrder": null,
-      "children": [],
-      "hasChildren": null
-    }
-  ],
-  "OperatorStatus": [
-    {
-      "name1": "在用",
-      "fullname": "OperatorStatus.在用",
-      "codeType": "OperatorStatus",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": null,
+      "displayOrder": 1,
       "children": [],
       "hasChildren": null
     },
     {
-      "name1": "停用",
-      "fullname": "OperatorStatus.停用",
-      "codeType": "OperatorStatus",
+      "name1": "否",
+      "fullname": "逻辑.否",
+      "codeType": "逻辑",
       "parentFullname": null,
       "parentId": null,
       "parentName": null,
-      "displayOrder": null,
-      "children": [],
-      "hasChildren": null
-    }
-  ],
-  "OperatorType": [
-    {
-      "name1": "职员",
-      "fullname": "OperatorType.职员",
-      "codeType": "OperatorType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    }
-  ],
-  "Spec": [
-    {
-      "name1": "省部级",
-      "fullname": "Spec.省部级",
-      "codeType": "Spec",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "国家级",
-      "fullname": "Spec.国家级",
-      "codeType": "Spec",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "厅局级",
-      "fullname": "Spec.厅局级",
-      "codeType": "Spec",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "处级及处级以下",
-      "fullname": "Spec.处级及处级以下",
-      "codeType": "Spec",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    }
-  ],
-  "MeetingType": [
-    {
-      "name1": "主题会",
-      "fullname": "MeetingType.主题会",
-      "codeType": "MeetingType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "普通会议",
-      "fullname": "MeetingType.普通会议",
-      "codeType": "MeetingType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "联席会",
-      "fullname": "MeetingType.联席会",
-      "codeType": "MeetingType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    }
-  ],
-  "Type": [
-    {
-      "name1": "自然人投资",
-      "fullname": "Type.自然人投资",
-      "codeType": "Type",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "控股",
-      "fullname": "Type.控股",
-      "codeType": "Type",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "非上市",
-      "fullname": "Type.非上市",
-      "codeType": "Type",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "股份有限公司",
-      "fullname": "Type.股份有限公司",
-      "codeType": "Type",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    }
-  ],
-  "RegisterStatus": [
-    {
-      "name1": "迁入",
-      "fullname": "RegisterStatus.迁入",
-      "codeType": "RegisterStatus",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "停业",
-      "fullname": "RegisterStatus.停业",
-      "codeType": "RegisterStatus",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "吊销",
-      "fullname": "RegisterStatus.吊销",
-      "codeType": "RegisterStatus",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "注销",
-      "fullname": "RegisterStatus.注销",
-      "codeType": "RegisterStatus",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "存续",
-      "fullname": "RegisterStatus.存续",
-      "codeType": "RegisterStatus",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "迁出",
-      "fullname": "RegisterStatus.迁出",
-      "codeType": "RegisterStatus",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    }
-  ],
-  "AgencyType": [
-    {
-      "name1": "入驻机构",
-      "fullname": "AgencyType.入驻机构",
-      "codeType": "AgencyType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "短租机构",
-      "fullname": "AgencyType.短租机构",
-      "codeType": "AgencyType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "商业配套",
-      "fullname": "AgencyType.商业配套",
-      "codeType": "AgencyType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "用人单位",
-      "fullname": "AgencyType.用人单位",
-      "codeType": "AgencyType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "学院管理方",
-      "fullname": "AgencyType.学院管理方",
-      "codeType": "AgencyType",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    }
-  ],
-  "Industry": [
-    {
-      "name1": "住宿和餐饮业",
-      "fullname": "Industry.住宿和餐饮业",
-      "codeType": "Industry",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "批发和零售业",
-      "fullname": "Industry.批发和零售业",
-      "codeType": "Industry",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "金融业",
-      "fullname": "Industry.金融业",
-      "codeType": "Industry",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "租赁和商务服务业",
-      "fullname": "Industry.租赁和商务服务业",
-      "codeType": "Industry",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "教育",
-      "fullname": "Industry.教育",
-      "codeType": "Industry",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "信息传输、软件和信息技术服务业",
-      "fullname": "Industry.信息传输、软件和信息技术服务业",
-      "codeType": "Industry",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    }
-  ],
-  "BusinessPattern": [
-    {
-      "name1": "连锁加盟",
-      "fullname": "BusinessPattern.连锁加盟",
-      "codeType": "BusinessPattern",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "直营经营",
-      "fullname": "BusinessPattern.直营经营",
-      "codeType": "BusinessPattern",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "特许经营",
-      "fullname": "BusinessPattern.特许经营",
-      "codeType": "BusinessPattern",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 0,
-      "children": null,
-      "hasChildren": null
-    }
-  ],
-  "审核": [
-    {
-      "name1": "不通过",
-      "fullname": "审核.不通过",
-      "codeType": "审核",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": null,
-      "children": [],
-      "hasChildren": null
-    },
-    {
-      "name1": "通过",
-      "fullname": "审核.通过",
-      "codeType": "审核",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": null,
+      "displayOrder": 2,
       "children": [],
       "hasChildren": null
     }
