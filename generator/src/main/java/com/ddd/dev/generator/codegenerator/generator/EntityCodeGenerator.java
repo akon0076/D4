@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.entity.system.CodeTable;
 import com.cisdi.info.simple.util.CodeTableManager;
 import com.cisdi.info.simple.util.D4Util;

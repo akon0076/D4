@@ -1,6 +1,7 @@
 package com.cisdi.info.simple.util;
 
 import com.cisdi.info.simple.DDDException;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.dao.permission.RoleAndPermissionDao;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.Permission;
@@ -12,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 

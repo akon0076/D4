@@ -1,4 +1,4 @@
-package com.cisdi.info.simple.util;
+package com.cisdi.info.simple.config;
 
 
 import com.cisdi.info.simple.DDDException;

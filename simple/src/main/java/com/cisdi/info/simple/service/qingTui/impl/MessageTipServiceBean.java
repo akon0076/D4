@@ -14,7 +14,7 @@ import com.cisdi.info.simple.entity.member.Member;
 import com.cisdi.info.simple.entity.organization.Employee;
 import com.cisdi.info.simple.entity.qingTui.EmpOpenId;
 import com.cisdi.info.simple.service.organization.EmployeeService;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.util.MessageAndEmp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

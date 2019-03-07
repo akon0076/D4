@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.service.permission.OperatorService;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.util.ModuleManager;
 import com.cisdi.info.simple.util.SpringContextUtils;
 import com.ddd.dev.generator.codegenerator.java.controller.ControllerGenerator;

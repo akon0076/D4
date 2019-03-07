@@ -6,7 +6,7 @@ import com.cisdi.info.simple.dto.word.WordList;
 import com.cisdi.info.simple.dto.word.WordTable;
 import com.cisdi.info.simple.dto.word.WordText;
 import com.cisdi.info.simple.service.word.WordTemplateService;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.config.Configure;
 import com.deepoove.poi.data.NumbericRenderData;

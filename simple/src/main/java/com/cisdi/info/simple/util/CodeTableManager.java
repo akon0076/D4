@@ -1,10 +1,10 @@
 package com.cisdi.info.simple.util;
 
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.entity.system.CodeTable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.aspectj.apache.bcel.classfile.Code;
 
 import java.io.File;
 import java.util.*;

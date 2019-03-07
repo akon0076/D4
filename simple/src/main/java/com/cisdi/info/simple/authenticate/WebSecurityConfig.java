@@ -5,7 +5,7 @@ package com.cisdi.info.simple.authenticate;
  */
 
 import com.cisdi.info.simple.entity.permission.LoginUser;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.util.ModuleManager;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;

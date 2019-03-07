@@ -10,6 +10,7 @@ import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
+import com.cisdi.info.simple.entity.log.Log;
 import com.cisdi.info.simple.entity.member.Member;
 import com.cisdi.info.simple.entity.organization.Employee;
 import com.cisdi.info.simple.entity.organization.Organization;
@@ -17,8 +18,8 @@ import com.cisdi.info.simple.entity.permission.LoginUser;
 import com.cisdi.info.simple.entity.permission.Operator;
 import com.cisdi.info.simple.entity.permission.OperatorAndRole;
 import com.cisdi.info.simple.entity.permission.Role;
-//import com.cisdi.info.simple.entity.verification.ValidateLogon;
 import com.cisdi.info.simple.service.base.BaseService;
+import com.cisdi.info.simple.service.log.LogService;
 import com.cisdi.info.simple.service.member.MemberService;
 import com.cisdi.info.simple.service.organization.EmployeeService;
 import com.cisdi.info.simple.service.permission.OperatorService;
@@ -36,7 +37,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
+
+//import com.cisdi.info.simple.entity.verification.ValidateLogon;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
@@ -73,6 +77,8 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     private CaptchaHelper captchaHelper;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private LogService logService;
 
 
     public PageResultDTO findOperators(PageDTO pageDTO) {
@@ -146,6 +152,7 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             } else {
                 restult.put("isLogin", false);
             }
+            saveLog(request);
             return restult;
         } catch (Exception e) {
             e.printStackTrace();
@@ -206,20 +213,25 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         return null;
     }
 
+    /**
+     * 用于登录时选择组织单位
+     *
+     * @param loginDTO
+     * @return
+     */
     public Map<String, Object> getOrganizations(LoginDTO loginDTO) {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         Map<String, Object> result = new HashMap<String, Object>();
 
-        Integer counts=this.validateLogonService.getCounts(request.getRemoteAddr());
-        boolean captcha=true;//为true表示无验证时验证正确了
+        Integer counts = this.validateLogonService.getCounts(request.getRemoteAddr());
+        boolean captcha = true;//为true表示无验证时验证正确了
         if (counts == null) {//如果得空则将该IP地址增加进去
             this.validateLogonService.addRecord(request.getRemoteAddr(), -1, 0);
-            counts=0;
-        }
-        else{
+            counts = 0;
+        } else {
             //如果当前的次数大于等于3,说明此次登录需要验证
-            if(counts>=3){
+            if (counts >= 3) {
                 captcha = this.captchaHelper.validate(request, loginDTO.getCaptcha());
             }
 
@@ -235,18 +247,18 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             result.put("captcha", true);
             if (operator != null) {
                 List<Organization> organizations = this.getOrganization(operator);
-                this.validateLogonService.updateCountsByIp(request.getRemoteAddr(),Integer.valueOf(operator.getPersonId()+""),0);//登录成功更新验证
+                this.validateLogonService.updateCountsByIp(request.getRemoteAddr(), Integer.valueOf(operator.getPersonId() + ""), 0);//登录成功更新验证
                 result.put("isLogin", true);
                 result.put("organizations", organizations);
                 result.put("count", 0);
             } else {
-                this.validateLogonService.updateCountsByIp(request.getRemoteAddr(),-1,++counts);
+                this.validateLogonService.updateCountsByIp(request.getRemoteAddr(), -1, ++counts);
                 result.put("isLogin", false);
                 result.put("count", counts);
             }
 
         } else {
-            this.validateLogonService.updateCountsByIp(request.getRemoteAddr(),-1,++counts);
+            this.validateLogonService.updateCountsByIp(request.getRemoteAddr(), -1, ++counts);
             result.put("captcha", false);
             result.put("count", counts);
         }
@@ -282,6 +294,12 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         return null;
     }
 
+    /**
+     * 获取登录人员的组织信息列表
+     *
+     * @param loginOperator
+     * @return
+     */
     public List<Organization> getOrganization(Operator loginOperator) {
         Set<Long> organizations = new HashSet<>();
         if (loginOperator != null) {
@@ -405,5 +423,32 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     @Override
     public List<String> findAllModuleCodesByOperatorId(Long operatorId) {
         return operatorDao.findAllModuleCodesByOperatorId(operatorId);
+    }
+
+    /**
+     * 记录登录日志
+     *
+     * @param request
+     */
+    public void saveLog(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");
+        String userName = loginUser.getUserName();
+        String ip = request.getRemoteAddr();
+        String url = request.getRequestURI();
+        if (loginUser != null) {
+            Operator operator = loginUser.getLoginOperator();
+            Log log = new Log();
+            log.setIpAddress(ip);
+            log.setUrl(url);
+            log.setLogDate(new Date());
+            log.setOperator(operator);
+            log.setOperationType("登录");
+            log.setModule("登录");
+            log.setOperationContent(userName + "登录系统");
+            log.setOperatorId(operator.getEId());
+            log.setLogType("登录日志");
+            logService.saveLog(log);
+        }
     }
 }

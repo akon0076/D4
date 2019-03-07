@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdi.info.simple.dao.log.LogDao">
+    <!-- 根据分页参数查询数据集合 -->
+    <select id="findLogs" resultType="com.cisdi.info.simple.entity.log.Log" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select
+        t0.eid  ,
+        t0.name  ,
+        t0.operator_id  ,
+        t0.ip_address  ,
+        t0.log_type  ,
+        t0.entity  ,
+        t0.operation_type  ,
+        t0.log_date  ,
+        t0.operation_content  ,
+        t0.url  ,
+        t0.module  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime  
+        ,t3.name as operator_name
+
+        from simple_log t0
+            LEFT JOIN simple_operator t3 on t0.operator_id =t3.EId
+        where  ${sql}
+        ORDER BY t0.create_datetime
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询所有数据集合 -->
+    <select id="findAllLogs" resultType="com.cisdi.info.simple.entity.log.Log" >
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.operator_id  ,
+            t0.ip_address  ,
+            t0.log_type  ,
+            t0.entity  ,
+            t0.operation_type  ,
+            t0.log_date  ,
+            t0.operation_content  ,
+            t0.url  ,
+            t0.module  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t3.name as operator_name
+
+        from simple_log t0
+            LEFT JOIN simple_operator t3 on t0.operator_id =t3.EId
+        ORDER BY t0.create_datetime
+    </select>
+
+    <!-- 根据名称查询数据集合,只提取ID 和 Name -->
+    <select id="findLogsWithIdNameByName" resultType="com.cisdi.info.simple.entity.log.Log" parameterType="java.lang.String">
+        select
+            t0.EId,t0.Name
+        from simple_log t0
+        where t0.name like  '%${logName}%'
+        ORDER BY t0.Name
+    </select>
+
+
+    <!-- 查询所有数据集合,只提取ID 和 Name -->
+    <select id="findAllLogsWithIdName" resultType="com.cisdi.info.simple.entity.log.Log" >
+        select
+        t0.EId,t0.Name
+        from simple_log t0
+        ORDER BY t0.Name
+    </select>
+    
+    <!-- 查询指定的实体,只提取ID 和 Name -->
+    <select id="findLogsWithIdNameById" resultType="com.cisdi.info.simple.entity.log.Log" parameterType="java.lang.Long">
+        select
+        t0.EId,t0.Name
+        from simple_log t0
+        where eid = #{logId}
+    </select>
+
+
+
+    <!-- 根据分页参数查询数据集合总条数 -->
+    <select id="findLogTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+        select count(EId) as totalCount from simple_log as t0  where ${sql}
+    </select>
+
+    <!--  根据Id查询 -->
+    <select id="findLog" resultType="com.cisdi.info.simple.entity.log.Log" parameterType="java.lang.Long">
+        select * from simple_log where eid = #{logId}
+    </select>
+
+    <!-- 根据ID查询指定的实体(包含外键) -->
+    <select id="findLogWithForeignName" resultType="com.cisdi.info.simple.entity.log.Log" parameterType="java.lang.Long">
+        select
+            t0.eid  ,
+            t0.name  ,
+            t0.operator_id  ,
+            t0.ip_address  ,
+            t0.log_type  ,
+            t0.entity  ,
+            t0.operation_type  ,
+            t0.log_date  ,
+            t0.operation_content  ,
+            t0.url  ,
+            t0.module  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime  
+            ,t3.name as operator_name
+
+        from simple_log t0
+            LEFT JOIN simple_operator t3 on t0.operator_id =t3.EId
+        where t0.eid = #{logId}
+    </select>
+
+
+    <!--  保存 -->
+    <insert id="saveLog" parameterType="com.cisdi.info.simple.entity.log.Log">
+        <selectKey keyProperty="EId" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into simple_log
+        (
+                name ,
+                operator_id ,
+                ip_address ,
+                log_type ,
+                entity ,
+                operation_type ,
+                log_date ,
+                operation_content ,
+                url ,
+                module ,
+                remark ,
+                create_id ,
+                create_datetime ,
+                update_id ,
+                update_datetime 
+        )
+        values
+        (
+                #{name} ,
+                #{operatorId} ,
+                #{ipAddress} ,
+                #{logType} ,
+                #{entity} ,
+                #{operationType} ,
+                #{logDate} ,
+                #{operationContent} ,
+                #{url} ,
+                #{module} ,
+                #{remark} ,
+                #{createId} ,
+                #{createDatetime} ,
+                #{updateId} ,
+                #{updateDatetime} 
+        )
+    </insert>
+
+    <!--  编辑 -->
+    <update id="updateLog" parameterType="com.cisdi.info.simple.entity.log.Log" >
+        update simple_log set
+                name = #{name} ,
+                operator_id = #{operatorId} ,
+                ip_address = #{ipAddress} ,
+                log_type = #{logType} ,
+                entity = #{entity} ,
+                operation_type = #{operationType} ,
+                log_date = #{logDate} ,
+                operation_content = #{operationContent} ,
+                url = #{url} ,
+                module = #{module} ,
+                remark = #{remark} ,
+                create_id = #{createId} ,
+                create_datetime = #{createDatetime} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime} 
+        where eid=#{EId}
+    </update>
+
+
+    <!--  根据Id删除 -->
+    <delete id="deleteLog"  parameterType="java.lang.Long">
+        delete from simple_log where eid = #{logId}
+    </delete>
+
+    <!--  根据code查询 -->
+    <select id="findEmployeeByCode" resultType="com.cisdi.info.simple.entity.organization.Employee" parameterType="java.lang.String">
+        select * from simple_employee where code = #{code}
+    </select>
+
+</mapper>
