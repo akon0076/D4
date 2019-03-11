@@ -22,7 +22,7 @@ public abstract class AbstractGenerator implements IGenerator{
     private String lastOutputFile ;
 
     public AbstractGenerator() {
-        this.velocityContext.put("sql", new Config());
+        this.velocityContext.put("config", new Config());
         this.velocityContext.put("stringUtils", new StringUtils());
         this.velocityContext.put("d4Util", new D4Util());
     }

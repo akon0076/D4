@@ -1007,20 +1007,6 @@
     "routeParamsObj": "",
     "permissions": []
   },
-  "simple/permission": {
-    "code": "simple/permission",
-    "name1": "授权管理",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-iot-sq ",
-    "displayIndex": 1,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/attachment": {
     "code": "simple/attachment",
     "name1": "附件管理",
@@ -1159,6 +1145,20 @@
     "route": "",
     "iconClass": "iconfont icon-zuzhi",
     "displayIndex": 2,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/permission": {
+    "code": "simple/permission",
+    "name1": "授权管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-iot-sq ",
+    "displayIndex": 1,
     "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",

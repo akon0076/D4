@@ -1,6 +1,17 @@
 {
   "Gender": [
     {
+      "name1": "未知",
+      "fullname": "Gender.未知",
+      "codeType": "Gender",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": 3,
+      "children": [],
+      "hasChildren": null
+    },
+    {
       "name1": "男",
       "fullname": "Gender.男",
       "codeType": "Gender",
@@ -20,17 +31,6 @@
       "parentName": null,
       "displayOrder": 1,
       "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "未知",
-      "fullname": "Gender.未知",
-      "codeType": "Gender",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 3,
-      "children": [],
       "hasChildren": null
     }
   ],
