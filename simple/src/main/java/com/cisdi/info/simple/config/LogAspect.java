@@ -21,11 +21,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author:chengbg
@@ -64,6 +68,10 @@ public class LogAspect {
         String url = request.getRequestURI();
         String methodType = request.getMethod();
         Object[] args = joinPoint.getArgs();
+        //序列化时过滤掉request,response,MultipartFile
+        List<Object> logArgs = Arrays.stream(args)
+                .filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)&& !(arg instanceof MultipartFile)))
+                .collect(Collectors.toList());
         if (loginUser != null && !Config.whiteURLs.contains(url)) {
             String userName = loginUser.getUserName();
             Operator operator = loginUser.getLoginOperator();
@@ -91,7 +99,7 @@ public class LogAspect {
                                 log.setOperationType(operationType);
                                 log.setModule(moduleName);
                                 log.setEntity(entity);
-                                log.setOperationContent(userName + operationContent + "，内容：" + JSON.toJSON(args));
+                                log.setOperationContent(userName + operationContent + "，内容：" + JSON.toJSON(logArgs));
                                 log.setOperatorId(operator.getEId());
                                 log.setLogType("用户日志");
                                 logService.saveLog(log);
@@ -109,7 +117,7 @@ public class LogAspect {
         logger.debug("请求方法类型 = {}", methodType);
         logger.debug("来源ip地址 = {}", ip);
         logger.debug("调用方法 = {}", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        logger.debug("请求参数 = {}", JSON.toJSON(args));
+        logger.debug("请求参数 = {}", JSON.toJSON(logArgs));
         logger.debug("-----------------------------------------------------------------------------------------------------");
     }
 
