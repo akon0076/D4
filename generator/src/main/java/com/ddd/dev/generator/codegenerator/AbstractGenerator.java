@@ -1,7 +1,7 @@
 package com.ddd.dev.generator.codegenerator;
 
 import com.cisdi.info.simple.DDDException;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.util.D4Util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

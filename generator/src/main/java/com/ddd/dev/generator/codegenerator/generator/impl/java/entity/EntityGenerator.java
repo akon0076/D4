@@ -1,7 +1,7 @@
 package com.ddd.dev.generator.codegenerator.generator.impl.java.entity;
 
 import com.cisdi.info.simple.DDDException;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.util.D4Util;
 import com.cisdi.info.simple.util.EntityManager;
 import com.ddd.dev.generator.codegenerator.entity.FieldAttribute;

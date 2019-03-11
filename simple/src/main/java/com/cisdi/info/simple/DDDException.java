@@ -1,6 +1,6 @@
 package com.cisdi.info.simple;
 
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.util.DateUtil;
 
 import java.io.File;

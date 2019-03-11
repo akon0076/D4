@@ -1,7 +1,7 @@
 package com.ddd.dev.generator.service.impl;
 
 import com.cisdi.info.simple.DDDException;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.ddd.dev.generator.codegenerator.BaseCodeGenerator;
 import com.ddd.dev.generator.codegenerator.generator.EntityCodeGenerator;
 import com.ddd.dev.generator.service.GeneratorService;

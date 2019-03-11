@@ -1,5 +1,5 @@
 simple:
-  workspapce: D:\\SpringBoot\\workspace
+  workspapce: E:\\SpringBoot\\workplace
   serverPath: ${workspapce}\\D4\\simple
   uiPath: ${workspapce}\\D4_pc_ui
   codeTablesFile: ${serverPath}\\src\\main\\resources\\codetables.json

@@ -11,7 +11,7 @@ import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.permission.PermissionService;
 import com.cisdi.info.simple.service.permission.RoleAndPermissionService;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.util.D4Util;
 import com.cisdi.info.simple.util.ModuleManager;
 import org.apache.commons.lang3.StringUtils;

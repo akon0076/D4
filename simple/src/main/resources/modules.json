@@ -47,8 +47,7 @@
         "moduleCode": "simple/organization/Organization",
         "urls": [
           "/simple/organization/Organization/createOrganization",
-          "/simple/organization/Organization/saveOrganization",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+          "/simple/organization/Organization/saveOrganization"
         ]
       },
       {
@@ -57,9 +56,7 @@
         "fullName": "simple.组织机构.单位.编辑",
         "moduleCode": "simple/organization/Organization",
         "urls": [
-          "/simple/organization/Organization/findOrganizationForEdit",
-          "/simple/organization/Organization/updateOrganization",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+          "/simple/organization/Organization/updateOrganization"
         ]
       },
       {
@@ -78,8 +75,10 @@
         "moduleCode": "simple/organization/Organization",
         "urls": [
           "/simple/organization/Organization/findOrganizations",
+          "/simple/organization/Organization/findOrganizationForEdit",
+          "/simple/organization/Organization/findOrganizationForView",
           "/simple/organization/Organization/findAllOrganizations",
-          "/simple/organization/Organization/findOrganizationForView"
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
         ]
       }
     ]
@@ -113,7 +112,6 @@
         "fullName": "simple.授权.操作员.编辑",
         "moduleCode": "simple/permission/Operator",
         "urls": [
-          "/simple/permission/Operator/findOperatorForEdit",
           "/simple/permission/Operator/updateOperator"
         ]
       },
@@ -132,6 +130,7 @@
         "fullName": "simple.授权.操作员.查看",
         "moduleCode": "simple/permission/Operator",
         "urls": [
+          "/simple/permission/Operator/findOperatorForEdit",
           "/simple/permission/Operator/findOperators",
           "/simple/permission/Operator/findOperatorForView"
         ]
@@ -158,8 +157,7 @@
         "moduleCode": "simple/permission/Module",
         "urls": [
           "/simple/permission/Module/createModule",
-          "/simple/permission/Module/saveModule",
-          "/simple/permission/Module/findModulesWithIdNameByName"
+          "/simple/permission/Module/saveModule"
         ]
       },
       {
@@ -168,9 +166,7 @@
         "fullName": "simple.授权.模块.编辑",
         "moduleCode": "simple/permission/Module",
         "urls": [
-          "/simple/permission/Module/findModuleForEdit",
-          "/simple/permission/Module/updateModule",
-          "/simple/permission/Module/findModulesWithIdNameByName"
+          "/simple/permission/Module/updateModule"
         ]
       },
       {
@@ -188,10 +184,12 @@
         "fullName": "simple.授权.模块.查看",
         "moduleCode": "simple/permission/Module",
         "urls": [
-          "/simple/permission/Module/findModules",
+          "/simple/permission/Module/findModuleForView",
           "/simple/permission/Module/findAllModules",
-          "/simple/permission/Module/findAllTreeNode",
-          "/simple/permission/Module/findModuleForView"
+          "/simple/permission/Module/findModulesWithIdNameByName",
+          "/simple/permission/Module/findModules",
+          "/simple/permission/Module/findModuleForEdit",
+          "/simple/permission/Module/findAllTreeNode"
         ]
       }
     ]
@@ -220,10 +218,7 @@
           "/simple/permission/RoleAndPermission/createRoleAndPermission",
           "/simple/permission/RoleAndPermission/saveRoleAndPermission",
           "/simple/permission/OperatorAndRole/createOperatorAndRole",
-          "/simple/permission/OperatorAndRole/saveOperatorAndRole",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/permission/Role/findRolesWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+          "/simple/permission/OperatorAndRole/saveOperatorAndRole"
         ]
       },
       {
@@ -232,9 +227,7 @@
         "fullName": "simple.授权.权限点.编辑",
         "moduleCode": "simple/permission/Permission",
         "urls": [
-          "/simple/permission/Permission/findPermissionForEdit",
           "/simple/permission/Permission/updatePermission",
-          "/simple/permission/RoleAndPermission/findRoleAndPermissionForEdit",
           "/simple/permission/RoleAndPermission/updateRoleAndPermission"
         ]
       },
@@ -254,13 +247,18 @@
         "fullName": "simple.授权.权限点.查看",
         "moduleCode": "simple/permission/Permission",
         "urls": [
-          "/simple/permission/Permission/findPermissions",
           "/simple/permission/Permission/findAllPermissions",
-          "/simple/permission/RoleAndPermission/findRoleAndPermissionByRoleId",
-          "/simple/permission/Permission/findPermissionForView",
-          "/simple/permission/RoleAndPermission/findRoleAndPermissions",
           "/simple/permission/RoleAndPermission/findRoleAndPermissionForView",
+          "/simple/permission/RoleAndPermission/findRoleAndPermissionByRoleId",
+          "/simple/permission/Permission/findPermissions",
+          "/simple/permission/Permission/findPermissionForView",
+          "/simple/permission/Permission/findPermissionForEdit",
+          "/simple/permission/RoleAndPermission/findRoleAndPermissionForEdit",
+          "/simple/permission/Role/findRolesWithIdNameByName",
+          "/simple/permission/RoleAndPermission/findRoleAndPermissions",
           "/simple/permission/OperatorAndRole/findOperatorAndRoles",
+          "/simple/permission/Operator/findOperatorsWithIdNameByName",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName",
           "/simple/permission/OperatorAndRole/findOperatorAndRoleForView"
         ]
       }
@@ -288,10 +286,7 @@
           "/simple/permission/Role/createRole",
           "/simple/permission/Role/saveRole",
           "/simple/permission/OperatorAndRole/createOperatorAndRole",
-          "/simple/permission/OperatorAndRole/saveOperatorAndRole",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/permission/Role/findRolesWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+          "/simple/permission/OperatorAndRole/saveOperatorAndRole"
         ]
       },
       {
@@ -300,13 +295,8 @@
         "fullName": "simple.授权.角色.编辑",
         "moduleCode": "simple/permission/Role",
         "urls": [
-          "/simple/permission/Role/findRoleForEdit",
           "/simple/permission/Role/updateRole",
-          "/simple/permission/OperatorAndRole/findOperatorAndRoleForEdit",
-          "/simple/permission/OperatorAndRole/updateOperatorAndRole",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/permission/Role/findRolesWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+          "/simple/permission/OperatorAndRole/updateOperatorAndRole"
         ]
       },
       {
@@ -325,11 +315,16 @@
         "fullName": "simple.授权.角色.查看",
         "moduleCode": "simple/permission/Role",
         "urls": [
-          "/simple/permission/Role/findRoles",
-          "/simple/permission/Role/findAllRoles",
           "/simple/permission/OperatorAndRole/findOperatorAndRoleByOperatorId",
+          "/simple/permission/Role/findRolesWithIdNameByName",
+          "/simple/permission/Role/findRoleForView",
+          "/simple/permission/Role/findAllRoles",
+          "/simple/permission/Role/findRoles",
+          "/simple/permission/Role/findRoleForEdit",
+          "/simple/permission/OperatorAndRole/findOperatorAndRoleForEdit",
+          "/simple/permission/Operator/findOperatorsWithIdNameByName",
           "/simple/permission/OperatorAndRole/findOperatorAndRoleByOperatorIdAndOrganizationId",
-          "/simple/permission/Role/findRoleForView"
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
         ]
       }
     ]
@@ -354,8 +349,7 @@
         "moduleCode": "simple/attachment/Attachment",
         "urls": [
           "/simple/attachment/Attachment/createAttachment",
-          "/simple/attachment/Attachment/saveAttachment",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName"
+          "/simple/attachment/Attachment/saveAttachment"
         ]
       },
       {
@@ -364,9 +358,7 @@
         "fullName": "simple.附件.附件.编辑",
         "moduleCode": "simple/attachment/Attachment",
         "urls": [
-          "/simple/attachment/Attachment/findAttachmentForEdit",
-          "/simple/attachment/Attachment/updateAttachment",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName"
+          "/simple/attachment/Attachment/updateAttachment"
         ]
       },
       {
@@ -385,10 +377,12 @@
         "fullName": "simple.附件.附件.查看",
         "moduleCode": "simple/attachment/Attachment",
         "urls": [
-          "/simple/attachment/Attachment/download",
-          "/simple/attachment/Attachment/findAttachments",
           "/simple/attachment/Attachment/findAttachmentForView",
-          "/simple/attachment/Attachment/findAllUploadedFilesByIdAndName"
+          "/simple/attachment/Attachment/findAllUploadedFilesByIdAndName",
+          "/simple/attachment/Attachment/findAttachmentForEdit",
+          "/simple/organization/Employee/findEmployeesWithIdNameByName",
+          "/simple/attachment/Attachment/download",
+          "/simple/attachment/Attachment/findAttachments"
         ]
       }
     ]
@@ -422,7 +416,6 @@
         "fullName": "simple.系统参数.系统参数.编辑",
         "moduleCode": "simple/systemConfig/SystemConfig",
         "urls": [
-          "/simple/systemConfig/SystemConfig/findSystemConfigForEdit",
           "/simple/systemConfig/SystemConfig/updateSystemConfig"
         ]
       },
@@ -441,6 +434,7 @@
         "fullName": "simple.系统参数.系统参数.查看",
         "moduleCode": "simple/systemConfig/SystemConfig",
         "urls": [
+          "/simple/systemConfig/SystemConfig/findSystemConfigForEdit",
           "/simple/systemConfig/SystemConfig/findSystemConfigs",
           "/simple/systemConfig/SystemConfig/findSystemConfigForView"
         ]
@@ -467,8 +461,7 @@
         "moduleCode": "simple/organization/Department",
         "urls": [
           "/simple/organization/Department/createDepartment",
-          "/simple/organization/Department/saveDepartment",
-          "/simple/organization/Department/findDepartmentsWithIdNameByName"
+          "/simple/organization/Department/saveDepartment"
         ]
       },
       {
@@ -477,9 +470,7 @@
         "fullName": "simple.部门.部门.编辑",
         "moduleCode": "simple/organization/Department",
         "urls": [
-          "/simple/organization/Department/findDepartmentForEdit",
-          "/simple/organization/Department/updateDepartment",
-          "/simple/organization/Department/findDepartmentsWithIdNameByName"
+          "/simple/organization/Department/updateDepartment"
         ]
       },
       {
@@ -498,7 +489,9 @@
         "moduleCode": "simple/organization/Department",
         "urls": [
           "/simple/organization/Department/findDepartments",
-          "/simple/organization/Department/findDepartmentForView"
+          "/simple/organization/Department/findDepartmentForEdit",
+          "/simple/organization/Department/findDepartmentForView",
+          "/simple/organization/Department/findDepartmentsWithIdNameByName"
         ]
       }
     ]
@@ -523,8 +516,7 @@
         "moduleCode": "simple/regist/EmployeRegist",
         "urls": [
           "/simple/regist/EmployeRegist/createEmployeRegist",
-          "/simple/regist/EmployeRegist/saveEmployeRegist",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName"
+          "/simple/regist/EmployeRegist/saveEmployeRegist"
         ]
       },
       {
@@ -533,9 +525,7 @@
         "fullName": "simple.注册审核.人员注册审核.编辑",
         "moduleCode": "simple/regist/EmployeRegist",
         "urls": [
-          "/simple/regist/EmployeRegist/findEmployeRegistForEdit",
-          "/simple/regist/EmployeRegist/updateEmployeRegist",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName"
+          "/simple/regist/EmployeRegist/updateEmployeRegist"
         ]
       },
       {
@@ -554,7 +544,9 @@
         "moduleCode": "simple/regist/EmployeRegist",
         "urls": [
           "/simple/regist/EmployeRegist/findEmployeRegists",
-          "/simple/regist/EmployeRegist/findEmployeRegistForView"
+          "/simple/regist/EmployeRegist/findEmployeRegistForView",
+          "/simple/organization/Employee/findEmployeesWithIdNameByName",
+          "/simple/regist/EmployeRegist/findEmployeRegistForEdit"
         ]
       }
     ]
@@ -579,8 +571,7 @@
         "moduleCode": "simple/regist/OrganizationRegist",
         "urls": [
           "/simple/regist/OrganizationRegist/createOrganizationRegist",
-          "/simple/regist/OrganizationRegist/saveOrganizationRegist",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName"
+          "/simple/regist/OrganizationRegist/saveOrganizationRegist"
         ]
       },
       {
@@ -589,9 +580,7 @@
         "fullName": "simple.注册审核.单位注册审核.编辑",
         "moduleCode": "simple/regist/OrganizationRegist",
         "urls": [
-          "/simple/regist/OrganizationRegist/findOrganizationRegistForEdit",
-          "/simple/regist/OrganizationRegist/updateOrganizationRegist",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName"
+          "/simple/regist/OrganizationRegist/updateOrganizationRegist"
         ]
       },
       {
@@ -609,6 +598,8 @@
         "fullName": "simple.注册审核.单位注册审核.查看",
         "moduleCode": "simple/regist/OrganizationRegist",
         "urls": [
+          "/simple/organization/Employee/findEmployeesWithIdNameByName",
+          "/simple/regist/OrganizationRegist/findOrganizationRegistForEdit",
           "/simple/regist/OrganizationRegist/findOrganizationRegists",
           "/simple/regist/OrganizationRegist/findOrganizationRegistForView"
         ]
@@ -644,7 +635,6 @@
         "fullName": "simple.商家注册审核.商家注册审核.编辑",
         "moduleCode": "simple/regist/MemberRegist",
         "urls": [
-          "/simple/regist/MemberRegist/findMemberRegistForEdit",
           "/simple/regist/MemberRegist/updateMemberRegist"
         ]
       },
@@ -663,8 +653,9 @@
         "fullName": "simple.商家注册审核.商家注册审核.查看",
         "moduleCode": "simple/regist/MemberRegist",
         "urls": [
+          "/simple/regist/MemberRegist/findMemberRegistForView",
           "/simple/regist/MemberRegist/findMemberRegists",
-          "/simple/regist/MemberRegist/findMemberRegistForView"
+          "/simple/regist/MemberRegist/findMemberRegistForEdit"
         ]
       }
     ]
@@ -698,7 +689,6 @@
         "fullName": "simple.报表管理.模板文件管理.编辑",
         "moduleCode": "simple/report/ModelFile",
         "urls": [
-          "/simple/report/ModelFile/findModelFileForEdit",
           "/simple/report/ModelFile/updateModelFile"
         ]
       },
@@ -717,6 +707,7 @@
         "fullName": "simple.报表管理.模板文件管理.查看",
         "moduleCode": "simple/report/ModelFile",
         "urls": [
+          "/simple/report/ModelFile/findModelFileForEdit",
           "/simple/report/ModelFile/findModelFiles",
           "/simple/report/ModelFile/findModelFileForView"
         ]
@@ -767,9 +758,7 @@
         "fullName": "simple.系统管理.码表.编辑",
         "moduleCode": "simple/system/CodeTable",
         "urls": [
-          "/simple/system/CodeTable/findCodeTableForEdit",
-          "/simple/system/CodeTable/updateCodeTable",
-          "/simple/system/CodeTable/findCodeTablesWithIdNameByName"
+          "/simple/system/CodeTable/updateCodeTable"
         ]
       },
       {
@@ -787,8 +776,10 @@
         "fullName": "simple.系统管理.码表.查看",
         "moduleCode": "simple/system/CodeTable",
         "urls": [
+          "/simple/system/CodeTable/findCodeTableForEdit",
+          "/simple/system/CodeTable/findCodeTableForView",
           "/simple/system/CodeTable/findCodeTables",
-          "/simple/system/CodeTable/findCodeTableForView"
+          "/simple/system/CodeTable/findCodeTablesWithIdNameByName"
         ]
       },
       {
@@ -798,8 +789,7 @@
         "moduleCode": "simple/system/CodeTable",
         "urls": [
           "/simple/system/CodeTable/createCodeTable",
-          "/simple/system/CodeTable/saveCodeTable",
-          "/simple/system/CodeTable/findCodeTablesWithIdNameByName"
+          "/simple/system/CodeTable/saveCodeTable"
         ]
       }
     ]
@@ -823,10 +813,7 @@
         "fullName": "simple.组织机构.职员.编辑",
         "moduleCode": "simple/organization/Employee",
         "urls": [
-          "/simple/organization/Employee/findEmployeeForEdit",
-          "/simple/organization/Employee/updateEmployee",
-          "/simple/organization/Department/findDepartmentsWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+          "/simple/organization/Employee/updateEmployee"
         ]
       },
       {
@@ -845,7 +832,10 @@
         "moduleCode": "simple/organization/Employee",
         "urls": [
           "/simple/organization/Employee/findEmployees",
-          "/simple/organization/Employee/findEmployeeForView"
+          "/simple/organization/Employee/findEmployeeForView",
+          "/simple/organization/Employee/findEmployeeForEdit",
+          "/simple/organization/Department/findDepartmentsWithIdNameByName",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
         ]
       },
       {
@@ -855,9 +845,7 @@
         "moduleCode": "simple/organization/Employee",
         "urls": [
           "/simple/organization/Employee/createEmployee",
-          "/simple/organization/Employee/saveEmployee",
-          "/simple/organization/Department/findDepartmentsWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+          "/simple/organization/Employee/saveEmployee"
         ]
       }
     ]
@@ -883,7 +871,6 @@
         "urls": [
           "/simple/task/Task/createTask",
           "/simple/task/Task/saveTask",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName",
           "/simple/task/Task/startSchedulerJob",
           "/simple/task/Task/pauseSchedulerJob",
           "/simple/task/Task/resumeSchedulerJob",
@@ -899,9 +886,7 @@
         "fullName": "simple.定时任务管理.定时任务.编辑",
         "moduleCode": "simple/task/Task",
         "urls": [
-          "/simple/task/Task/findTaskForEdit",
-          "/simple/task/Task/updateTask",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+          "/simple/task/Task/updateTask"
         ]
       },
       {
@@ -919,8 +904,10 @@
         "fullName": "simple.定时任务管理.定时任务.查看",
         "moduleCode": "simple/task/Task",
         "urls": [
+          "/simple/task/Task/findTaskForEdit",
           "/simple/task/Task/findTasks",
-          "/simple/task/Task/findTaskForView"
+          "/simple/task/Task/findTaskForView",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
         ]
       }
     ]
@@ -941,7 +928,7 @@
       {
         "code": "simple_task_TaskConfig_Add",
         "name1": "新增定时任务配置",
-        "fullName": "simple.定时任务配置管理.定时任务.新增",
+        "fullName": "simple.定时任务配置管理.定时任务配置.新增",
         "moduleCode": "simple/task/TaskConfig",
         "urls": [
           "/simple/task/TaskConfig/createTaskConfig",
@@ -951,17 +938,16 @@
       {
         "code": "simple_task_TaskConfig_Edit",
         "name1": "编辑定时任务配置",
-        "fullName": "simple.定时任务配置管理.定时任务.编辑",
+        "fullName": "simple.定时任务配置管理.定时任务配置.编辑",
         "moduleCode": "simple/task/TaskConfig",
         "urls": [
-          "/simple/task/TaskConfig/findTaskConfigForEdit",
           "/simple/task/TaskConfig/updateTaskConfig"
         ]
       },
       {
         "code": "simple_task_TaskConfig_Delete",
         "name1": "删除定时任务配置",
-        "fullName": "simple.定时任务配置管理.定时任务.删除",
+        "fullName": "simple.定时任务配置管理.定时任务配置.删除",
         "moduleCode": "simple/task/TaskConfig",
         "urls": [
           "/simple/task/TaskConfig/deleteTaskConfig"
@@ -970,11 +956,12 @@
       {
         "code": "simple_task_TaskConfig_View",
         "name1": "查看定时任务配置",
-        "fullName": "simple.定时任务配置管理.定时任务.查看",
+        "fullName": "simple.定时任务配置管理.定时任务配置.查看",
         "moduleCode": "simple/task/TaskConfig",
         "urls": [
+          "/simple/task/TaskConfig/findTaskConfigForView",
           "/simple/task/TaskConfig/findTaskConfigs",
-          "/simple/task/TaskConfig/findTaskConfigForView"
+          "/simple/task/TaskConfig/findTaskConfigForEdit"
         ]
       }
     ]
@@ -1000,6 +987,20 @@
     "route": "",
     "iconClass": "iconfont icon-xitongguanli1",
     "displayIndex": 6,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/permission": {
+    "code": "simple/permission",
+    "name1": "授权管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-iot-sq ",
+    "displayIndex": 1,
     "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
@@ -1056,9 +1057,6 @@
         "urls": [
           "/simple/qingTui/EmpOpenId/createEmpOpenId",
           "/simple/qingTui/EmpOpenId/saveEmpOpenId",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/member/Member/findMembersWithIdNameByName",
           "/simple/qingTui/EmpOpenId/bindingQingtui"
         ]
       },
@@ -1068,11 +1066,7 @@
         "fullName": "simple.人员与应用.人员与应用.编辑",
         "moduleCode": "simple/qingTui/EmpOpenId",
         "urls": [
-          "/simple/qingTui/EmpOpenId/findEmpOpenIdForEdit",
-          "/simple/qingTui/EmpOpenId/updateEmpOpenId",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/member/Member/findMembersWithIdNameByName"
+          "/simple/qingTui/EmpOpenId/updateEmpOpenId"
         ]
       },
       {
@@ -1090,8 +1084,12 @@
         "fullName": "simple.人员与应用.人员与应用.查看",
         "moduleCode": "simple/qingTui/EmpOpenId",
         "urls": [
+          "/simple/member/Member/findMembersWithIdNameByName",
+          "/simple/qingTui/EmpOpenId/findEmpOpenIdForEdit",
           "/simple/qingTui/EmpOpenId/findEmpOpenIds",
-          "/simple/qingTui/EmpOpenId/findEmpOpenIdForView"
+          "/simple/organization/Employee/findEmployeesWithIdNameByName",
+          "/simple/qingTui/EmpOpenId/findEmpOpenIdForView",
+          "/simple/permission/Operator/findOperatorsWithIdNameByName"
         ]
       }
     ]
@@ -1152,18 +1150,73 @@
     "routeParamsObj": "",
     "permissions": []
   },
-  "simple/permission": {
-    "code": "simple/permission",
-    "name1": "授权管理",
+  "simple/log": {
+    "code": "simple/log",
+    "name1": "日志管理",
     "url": "",
     "route": "",
-    "iconClass": "iconfont icon-iot-sq ",
+    "iconClass": "iconfont icon-rizhiguanli",
     "displayIndex": 1,
     "parentCode": "simple",
-    "parentName": "基础管理",
+    "parentName": "simple",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
     "permissions": []
+  },
+  "simple/log/Log": {
+    "code": "simple/log/Log",
+    "name1": "系统日志",
+    "url": "/simple/log/Log",
+    "route": "/simple/log/Log",
+    "iconClass": "",
+    "displayIndex": 10,
+    "parentCode": "simple/log",
+    "parentName": "日志管理",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_log_Log_Add",
+        "name1": "新增日志",
+        "fullName": "simple.日志.系统日志.新增",
+        "moduleCode": "simple/log/Log",
+        "urls": [
+          "/simple/log/Log/createLog",
+          "/simple/log/Log/saveLog"
+        ]
+      },
+      {
+        "code": "simple_log_Log_Edit",
+        "name1": "编辑日志",
+        "fullName": "simple.日志.系统日志.编辑",
+        "moduleCode": "simple/log/Log",
+        "urls": [
+          "/simple/log/Log/updateLog"
+        ]
+      },
+      {
+        "code": "simple_log_Log_Delete",
+        "name1": "删除日志",
+        "fullName": "simple.日志.系统日志.删除",
+        "moduleCode": "simple/log/Log",
+        "urls": [
+          "/simple/log/Log/deleteLog"
+        ]
+      },
+      {
+        "code": "simple_log_Log_View",
+        "name1": "查看日志",
+        "fullName": "simple.日志.系统日志.查看",
+        "moduleCode": "simple/log/Log",
+        "urls": [
+          "/simple/log/Log/findLogForEdit",
+          "/simple/log/Log/findLogForView",
+          "/simple/permission/Operator/findOperatorsWithIdNameByName",
+          "/simple/log/Log/findLogs"
+        ]
+      }
+    ]
   }
 }

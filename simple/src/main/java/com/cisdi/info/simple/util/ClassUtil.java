@@ -1,5 +1,6 @@
 package com.cisdi.info.simple.util;
 
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 

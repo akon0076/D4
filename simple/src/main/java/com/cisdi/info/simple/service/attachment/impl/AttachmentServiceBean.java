@@ -8,7 +8,7 @@ import com.cisdi.info.simple.entity.attachment.Attachment;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.service.attachment.AttachmentService;
 import com.cisdi.info.simple.service.base.BaseService;
-import com.cisdi.info.simple.util.Config;
+import com.cisdi.info.simple.config.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -57,17 +57,6 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	urls:[
 		"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/create${EntityNameUp}",
 		"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/save${EntityNameUp}"
-	#set($foreignUrls=$d4Util.createMap())
-	#foreach($columnInfo in $entityClass.columnInfos)
-		#if($columnInfo.definitionType == "ForeignName")
-			#set($foreignEntity = ${entityManager.getEntityClassByClassName(${columnInfo.foreignEntity})})
-			#set($foreignUrl="/${foreignEntity.subSystemName}/${foreignEntity.moduleName}/${foreignEntity.className}/find${foreignEntity.className}sWithIdNameByName")
-			${d4Util.addMapItem($foreignUrls,$foreignUrl,$foreignUrl)}
-		#end
-	#end
-	#foreach($foreignUrl1 in $foreignUrls.values())
-		,"${foreignUrl1}"
-	#end
 	]
 	},
 	{
@@ -76,19 +65,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.编辑",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
-		"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}ForEdit",
 		"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/update${EntityNameUp}"
-#set($foreignUrls=$d4Util.createMap())
-#foreach($columnInfo in $entityClass.columnInfos)
-	#if($columnInfo.definitionType == "ForeignName")
-		#set($foreignEntity = ${entityManager.getEntityClassByClassName(${columnInfo.foreignEntity})})
-		#set($foreignUrl="/${foreignEntity.subSystemName}/${foreignEntity.moduleName}/${foreignEntity.className}/find${foreignEntity.className}sWithIdNameByName")
-		${d4Util.addMapItem($foreignUrls,$foreignUrl,$foreignUrl)}
-	#end
-#end
-#foreach($foreignUrl1 in $foreignUrls.values())
-		,"${foreignUrl1}"
-#end
 	]
 	},
 	{
@@ -106,8 +83,20 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 	"fullName": "${entityClass.subSystemName}.${entityClass.moduleLabel}.${entityClass.label}.查看",
 	"moduleCode": "${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}",
 	urls:[
+	"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}ForEdit",
 	"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}s",
 	"/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}/find${EntityNameUp}ForView"
+#set($foreignUrls=$d4Util.createMap())
+#foreach($columnInfo in $entityClass.columnInfos)
+	#if($columnInfo.definitionType == "ForeignName")
+		#set($foreignEntity = ${entityManager.getEntityClassByClassName(${columnInfo.foreignEntity})})
+		#set($foreignUrl="/${foreignEntity.subSystemName}/${foreignEntity.moduleName}/${foreignEntity.className}/find${foreignEntity.className}sWithIdNameByName")
+		${d4Util.addMapItem($foreignUrls,$foreignUrl,$foreignUrl)}
+	#end
+#end
+#foreach($foreignUrl1 in $foreignUrls.values())
+,"${foreignUrl1}"
+#end
 	]
 	}
 	]
