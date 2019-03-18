@@ -1,18 +1,4 @@
 {
-  "simple": {
-    "code": "simple",
-    "name1": "基础管理",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-icon-test ",
-    "displayIndex": 1,
-    "parentCode": "",
-    "parentName": "",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "mobile": {
     "code": "mobile",
     "name1": "移动管理",
@@ -1198,5 +1184,19 @@
         ]
       }
     ]
+  },
+  "simple": {
+    "code": "simple",
+    "name1": "基础管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-icon-test ",
+    "displayIndex": 1,
+    "parentCode": "",
+    "parentName": "",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
   }
 }

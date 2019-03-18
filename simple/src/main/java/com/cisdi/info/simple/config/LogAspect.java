@@ -70,8 +70,10 @@ public class LogAspect {
         Object[] args = joinPoint.getArgs();
         //序列化时过滤掉request,response,MultipartFile
         List<Object> logArgs = Arrays.stream(args)
-                .filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)&& !(arg instanceof MultipartFile)))
+                .filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse) && !(arg instanceof MultipartFile)))
                 .collect(Collectors.toList());
+        String content = JSON.toJSON(logArgs).toString();
+        content = content.length() > 9999 ? content.substring(0, 9999) : content;
         if (loginUser != null && !Config.whiteURLs.contains(url)) {
             String userName = loginUser.getUserName();
             Operator operator = loginUser.getLoginOperator();
@@ -99,7 +101,7 @@ public class LogAspect {
                                 log.setOperationType(operationType);
                                 log.setModule(moduleName);
                                 log.setEntity(entity);
-                                log.setOperationContent(userName + operationContent + "，内容：" + JSON.toJSON(logArgs));
+                                log.setOperationContent(userName + operationContent + "，内容：" + content);
                                 log.setOperatorId(operator.getEId());
                                 log.setLogType("用户日志");
                                 logService.saveLog(log);
