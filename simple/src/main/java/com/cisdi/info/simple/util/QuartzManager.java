@@ -1,12 +1,18 @@
 package com.cisdi.info.simple.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cisdi.info.simple.dao.task.TaskDao;
+import com.cisdi.info.simple.entity.permission.Module;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author gjt
@@ -31,8 +37,14 @@ public class QuartzManager {
      */
     public void start(Integer id) throws SchedulerException {
         HashMap cronEntity = this.taskDao.getTaskById(id);
+        HashMap taskVariableHashMap = new HashMap();
+        // 如果有参数
+        if(cronEntity.containsKey("task_variable")) {
+            String taskVariable =cronEntity.get("task_variable")!= null ? cronEntity.get("task_variable").toString() : "";
+            taskVariableHashMap= JSON.parseObject(taskVariable, HashMap.class);
+        }
         if(cronEntity!= null){
-            startJob(scheduler,cronEntity.get("quarzName").toString(), cronEntity.get("cron").toString(), cronEntity.get("schedulerClass").toString(), Integer.valueOf(cronEntity.get("eid").toString()));
+            startJob(scheduler,cronEntity.get("quarzName").toString(), cronEntity.get("cron").toString(), cronEntity.get("schedulerClass").toString(), Integer.valueOf(cronEntity.get("eid").toString()),taskVariableHashMap);
         }
     }
 
@@ -99,8 +111,16 @@ public class QuartzManager {
         return false;
     }
 
-
-    private void startJob(Scheduler scheduler,String name,String cron,String className, Integer id) throws SchedulerException {
+    /**
+     * 启动定时任务
+     * @param scheduler
+     * @param name
+     * @param cron
+     * @param className
+     * @param id
+     * @throws SchedulerException
+     */
+    private void startJob(Scheduler scheduler,String name,String cron,String className, Integer id,HashMap taskVariableHashMap) throws SchedulerException {
         // 通过JobBuilder构建JobDetail实例，JobDetail规定只能是实现Job接口的实例
         // JobDetail 是具体Job实例
         Class<Job> jobClass = null;
@@ -112,6 +132,10 @@ public class QuartzManager {
         }
 
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(name, "ddd4").build();
+        if (taskVariableHashMap != null) {
+            // 插入需要传递的参数
+            jobDetail.getJobDataMap().putAll(taskVariableHashMap);
+        }
         // 基于表达式构建触发器
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
         // CronTrigger表达式触发器 继承于Trigger

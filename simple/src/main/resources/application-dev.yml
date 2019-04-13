@@ -9,7 +9,7 @@ spring:
       max-request-size: 100MB
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/d4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1:3306/D4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
@@ -18,35 +18,35 @@ spring:
     initialization-mode: always
   quartz:
       #相关属性配置
-      properties:
-        org:
-          quartz:
-            scheduler:
-              instanceName: clusteredScheduler
-              instanceId: AUTO
-            jobStore:
-              class: org.quartz.impl.jdbcjobstore.JobStoreTX
-              driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-              tablePrefix: qrtz_
-              isClustered: false
-              clusterCheckinInterval: 10000
-              useProperties: true
-            threadPool:
-              class: org.quartz.simpl.SimpleThreadPool
-              threadCount: 10
-              threadPriority: 5
-              threadsInheritContextClassLoaderOfInitializingThread: true
-      job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: clusteredScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: qrtz_
+            isClustered: false
+            clusterCheckinInterval: 10000
+            useProperties: true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    job-store-type: jdbc
   jpa:
     show-sql: true
     hibernate:
-        ddl-auto: update
-        properties:
-                hibernate:
-                    dialect: org.hibernate.dialect.MySQL5InnoDBDialect #指定数据库引擎
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL5InnoDBDialect           #指定数据库引擎
     properties:
-         hibernate:
-                dialect: com.cisdi.info.simple.MySQL5DialectUTF8
+      hibernate:
+        dialect: com.cisdi.info.simple.MySQL5DialectUTF8
 
   mvc:
     static-path-pattern: /file/**
@@ -59,18 +59,18 @@ logging:
     com.cisdi.info: debug #日志Level设定
 
 mybatis:
-    mapper-locations:
-      - classpath*:/com/cisdi/info/sqlMapper/**/*.xml #mybaits mapperxml文件路径，使用了cms后不要修改或者删除
-      - classpath*:/com/cisdi/info/**/dao/**/mapper/*.xml #mybaits mapperxml文件路径
-    configuration:
-        map-underscore-to-camel-case: true
+  mapper-locations:
+  - classpath*:/com/cisdi/info/sqlMapper/**/*.xml     #mybaits mapperxml文件路径，使用了cms后不要修改或者删除
+  - classpath*:/com/cisdi/info/**/dao/**/mapper/*.xml     #mybaits mapperxml文件路径
+  configuration:
+    map-underscore-to-camel-case: true
 cisdi:
   websecurity:
     permitAllantMachers: #此处为数组形式，配置为不受认证处理的url路径Pattern
-      - /static/** #js和css相关文件
-      - /cms/index.html #cms主页
-      - /favicon.ico
-      - /Login/**
+    - /static/**   #js和css相关文件
+    - /cms/index.html   #cms主页
+    - /favicon.ico
+    - /Login/**
     #loginPage: /cms/login #默认跳转登陆页面路径，因为已经前后分离不起效果，如果需要起效将redirectLogin配置为true。
     loginProcessingUrl: /Login/loginSubmit #登陆处理url，需要post形式提交，使用cms后不要更改
     logoutUrl: /cms/logout #退出处理url，需要以post方式提交。使用cms后不要更改
