@@ -1,5 +1,5 @@
 simple:
-  workspapce: E:\\SpringBoot\\workplace
+  workspapce: D:\\SpringBoot\\workspace
   serverPath: ${workspapce}\\D4\\simple
   uiPath: ${workspapce}\\D4_pc_ui
   codeTablesFile: ${serverPath}\\src\\main\\resources\\codetables.json
@@ -8,7 +8,7 @@ simple:
   exceptionLogPath: D:\\D4\\DDDException
   uploadFileAddress: D:\\D4\\spring_files
 
-  applicationName: 框架
+  applicationName: d4Frame
   applicationCode: DDD4
   shortCode: DD
   basePackage: com.cisdi.info
