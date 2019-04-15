@@ -1,6 +1,17 @@
 {
   "Gender": [
     {
+      "name1": "未知",
+      "fullname": "Gender.未知",
+      "codeType": "Gender",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": 3,
+      "children": [],
+      "hasChildren": null
+    },
+    {
       "name1": "男",
       "fullname": "Gender.男",
       "codeType": "Gender",
@@ -20,17 +31,6 @@
       "parentName": null,
       "displayOrder": 1,
       "children": null,
-      "hasChildren": null
-    },
-    {
-      "name1": "未知",
-      "fullname": "Gender.未知",
-      "codeType": "Gender",
-      "parentFullname": null,
-      "parentId": null,
-      "parentName": null,
-      "displayOrder": 3,
-      "children": [],
       "hasChildren": null
     }
   ],
@@ -79,6 +79,43 @@
       "parentName": null,
       "displayOrder": 2,
       "children": [],
+      "hasChildren": null
+    }
+  ],
+  "OperatorStatus": [
+    {
+      "name1": "在用",
+      "fullname": "OperatorStatus.在用",
+      "codeType": "OperatorStatus",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": null,
+      "children": [],
+      "hasChildren": null
+    },
+    {
+      "name1": "停用",
+      "fullname": "OperatorStatus.停用",
+      "codeType": "OperatorStatus",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": null,
+      "children": [],
+      "hasChildren": null
+    }
+  ],
+  "OperatorType": [
+    {
+      "name1": "职员",
+      "fullname": "OperatorType.职员",
+      "codeType": "OperatorType",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": 0,
+      "children": null,
       "hasChildren": null
     }
   ]

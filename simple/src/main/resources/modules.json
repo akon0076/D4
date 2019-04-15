@@ -818,6 +818,7 @@
         "moduleCode": "simple/organization/Employee",
         "urls": [
           "/simple/organization/Employee/findEmployees",
+          "/simple/organization/Employee/findAllEmployees",
           "/simple/organization/Employee/findEmployeeForView",
           "/simple/organization/Employee/findEmployeeForEdit",
           "/simple/organization/Department/findDepartmentsWithIdNameByName",
@@ -1194,6 +1195,20 @@
     "displayIndex": 1,
     "parentCode": "",
     "parentName": "",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/student": {
+    "code": "simple/student",
+    "name1": "学生管理管理",
+    "url": "",
+    "route": "",
+    "iconClass": "",
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "simple",
     "moduleType": "电脑模块",
     "isInUse": "是",
     "routeParamsObj": "",
