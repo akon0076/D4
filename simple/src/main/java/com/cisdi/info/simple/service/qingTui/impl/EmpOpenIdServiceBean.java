@@ -1,36 +1,35 @@
 package com.cisdi.info.simple.service.qingTui.impl;
 
+import com.cisdi.info.simple.DDDException;
+import com.cisdi.info.simple.config.NudgePlusConfig;
 import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dao.qingTui.EmpOpenIdDao;
-
+import com.cisdi.info.simple.dto.base.PageDTO;
+import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
 import com.cisdi.info.simple.dto.qingTui.BindingDto;
 import com.cisdi.info.simple.entity.base.BaseEntity;
-import com.cisdi.info.simple.dto.base.PageDTO;
-import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.entity.member.Member;
 import com.cisdi.info.simple.entity.organization.Employee;
 import com.cisdi.info.simple.entity.permission.Operator;
+import com.cisdi.info.simple.entity.qingTui.EmpOpenId;
+import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.member.MemberService;
 import com.cisdi.info.simple.service.organization.impl.EmployeeServiceBean;
 import com.cisdi.info.simple.service.permission.OperatorService;
+import com.cisdi.info.simple.service.qingTui.EmpOpenIdService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.cisdi.info.simple.entity.qingTui.EmpOpenId;
-import com.cisdi.info.simple.service.base.BaseService;
-import com.cisdi.info.simple.service.qingTui.EmpOpenIdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.cisdi.info.simple.util.NudgePlusConfig;
+import org.springframework.util.DigestUtils;
+
+import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.cisdi.info.simple.DDDException;
-import org.springframework.util.DigestUtils;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Service
 @Transactional

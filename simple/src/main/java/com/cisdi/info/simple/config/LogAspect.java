@@ -21,13 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,10 +70,10 @@ public class LogAspect {
         Object[] args = joinPoint.getArgs();
         //序列化时过滤掉request,response,MultipartFile
         List<Object> logArgs = Arrays.stream(args)
-                .filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse) && !(arg instanceof MultipartFile)))
+                .filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse) && !(arg instanceof LinkedList)))
                 .collect(Collectors.toList());
         String content = JSON.toJSON(logArgs).toString();
-        content = content.length() > 9999 ? content.substring(0, 9999) : content;
+        content = content.length() > 9999 ? content.substring(0, 9998) : content;
         if (loginUser != null && !Config.whiteURLs.contains(url)) {
             String userName = loginUser.getUserName();
             Operator operator = loginUser.getLoginOperator();
