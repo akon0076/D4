@@ -98,7 +98,8 @@
         "fullName": "simple.授权.操作员.编辑",
         "moduleCode": "simple/permission/Operator",
         "urls": [
-          "/simple/permission/Operator/updateOperator"
+          "/simple/permission/Operator/updateOperator",
+          "/simple/permission/Operator/changePassword"
         ]
       },
       {

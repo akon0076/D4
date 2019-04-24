@@ -2,6 +2,7 @@ package com.cisdi.info.simple.dao.permission;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
+import com.cisdi.info.simple.dto.operator.PasswordDto;
 import com.cisdi.info.simple.entity.permission.Operator;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -46,9 +47,12 @@ public interface OperatorDao {
     public Operator findOperatorByCode(String code);
 
     public List<String> findPermissions(Long operatorId);
+
     public List<String> findPermissionsByIdAndType(PageDTO pageDTO);
 
     public Operator findOperatorByEmailAndPassWord(LoginDTO loginDTO);
 
     public List<String> findAllModuleCodesByOperatorId(Long operatorId);
+
+    public int changePassword(PasswordDto passwordDto);
 }

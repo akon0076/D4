@@ -10,6 +10,7 @@ import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
+import com.cisdi.info.simple.dto.operator.PasswordDto;
 import com.cisdi.info.simple.entity.log.Log;
 import com.cisdi.info.simple.entity.member.Member;
 import com.cisdi.info.simple.entity.organization.Employee;
@@ -429,6 +430,17 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     @Override
     public List<String> findAllModuleCodesByOperatorId(Long operatorId) {
         return operatorDao.findAllModuleCodesByOperatorId(operatorId);
+    }
+
+    @Override
+    public boolean changePassword(PasswordDto passwordDto) {
+        String pass = passwordDto.getPass();
+        String password = DigestUtils.md5DigestAsHex(pass.getBytes());
+        passwordDto.setPass(password);
+        passwordDto.setCheckPass(password);
+        passwordDto.setUpdateDatetime(new Date());
+        passwordDto.setUpdateId(this.getCurrentLoginOperator().getEId());
+        return operatorDao.changePassword(passwordDto) > 0;
     }
 
     /**
