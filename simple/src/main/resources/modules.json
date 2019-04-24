@@ -428,170 +428,6 @@
       }
     ]
   },
-  "simple/regist/EmployeRegist": {
-    "code": "simple/regist/EmployeRegist",
-    "name1": "人员注册审核",
-    "url": "/simple/regist/EmployeRegist",
-    "route": "/simple/regist/EmployeRegist",
-    "iconClass": "",
-    "displayIndex": 0,
-    "parentCode": "simple/regist",
-    "parentName": "注册审核",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_regist_EmployeRegist_Add",
-        "name1": "新增人员注册审核",
-        "fullName": "simple.注册审核.人员注册审核.新增",
-        "moduleCode": "simple/regist/EmployeRegist",
-        "urls": [
-          "/simple/regist/EmployeRegist/createEmployeRegist",
-          "/simple/regist/EmployeRegist/saveEmployeRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_EmployeRegist_Edit",
-        "name1": "编辑人员注册审核",
-        "fullName": "simple.注册审核.人员注册审核.编辑",
-        "moduleCode": "simple/regist/EmployeRegist",
-        "urls": [
-          "/simple/regist/EmployeRegist/updateEmployeRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_EmployeRegist_Delete",
-        "name1": "删除人员注册审核",
-        "fullName": "simple.注册审核.人员注册审核.删除",
-        "moduleCode": "simple/regist/EmployeRegist",
-        "urls": [
-          "/simple/regist/EmployeRegist/deleteEmployeRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_EmployeRegist_View",
-        "name1": "查看人员注册审核",
-        "fullName": "simple.注册审核.人员注册审核.查看",
-        "moduleCode": "simple/regist/EmployeRegist",
-        "urls": [
-          "/simple/regist/EmployeRegist/findEmployeRegists",
-          "/simple/regist/EmployeRegist/findEmployeRegistForView",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName",
-          "/simple/regist/EmployeRegist/findEmployeRegistForEdit"
-        ]
-      }
-    ]
-  },
-  "simple/regist/OrganizationRegist": {
-    "code": "simple/regist/OrganizationRegist",
-    "name1": "单位注册审核",
-    "url": "/simple/regist/OrganizationRegist",
-    "route": "/simple/regist/OrganizationRegist",
-    "iconClass": "",
-    "displayIndex": 0,
-    "parentCode": "simple/regist",
-    "parentName": "注册审核",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_regist_OrganizationRegist_Add",
-        "name1": "新增单位注册审核",
-        "fullName": "simple.注册审核.单位注册审核.新增",
-        "moduleCode": "simple/regist/OrganizationRegist",
-        "urls": [
-          "/simple/regist/OrganizationRegist/createOrganizationRegist",
-          "/simple/regist/OrganizationRegist/saveOrganizationRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_OrganizationRegist_Edit",
-        "name1": "编辑单位注册审核",
-        "fullName": "simple.注册审核.单位注册审核.编辑",
-        "moduleCode": "simple/regist/OrganizationRegist",
-        "urls": [
-          "/simple/regist/OrganizationRegist/updateOrganizationRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_OrganizationRegist_Delete",
-        "name1": "删除单位注册审核",
-        "fullName": "simple.注册审核.单位注册审核.删除",
-        "moduleCode": "simple/regist/OrganizationRegist",
-        "urls": [
-          "/simple/regist/OrganizationRegist/deleteOrganizationRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_OrganizationRegist_View",
-        "name1": "查看单位注册审核",
-        "fullName": "simple.注册审核.单位注册审核.查看",
-        "moduleCode": "simple/regist/OrganizationRegist",
-        "urls": [
-          "/simple/organization/Employee/findEmployeesWithIdNameByName",
-          "/simple/regist/OrganizationRegist/findOrganizationRegistForEdit",
-          "/simple/regist/OrganizationRegist/findOrganizationRegists",
-          "/simple/regist/OrganizationRegist/findOrganizationRegistForView"
-        ]
-      }
-    ]
-  },
-  "simple/regist/MemberRegist": {
-    "code": "simple/regist/MemberRegist",
-    "name1": "商家注册审核",
-    "url": "/simple/regist/MemberRegist",
-    "route": "/simple/regist/MemberRegist",
-    "iconClass": "",
-    "displayIndex": 0,
-    "parentCode": "simple/regist",
-    "parentName": "注册审核",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_regist_MemberRegist_Add",
-        "name1": "新增商家注册审核",
-        "fullName": "simple.商家注册审核.商家注册审核.新增",
-        "moduleCode": "simple/regist/MemberRegist",
-        "urls": [
-          "/simple/regist/MemberRegist/createMemberRegist",
-          "/simple/regist/MemberRegist/saveMemberRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_MemberRegist_Edit",
-        "name1": "编辑商家注册审核",
-        "fullName": "simple.商家注册审核.商家注册审核.编辑",
-        "moduleCode": "simple/regist/MemberRegist",
-        "urls": [
-          "/simple/regist/MemberRegist/updateMemberRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_MemberRegist_Delete",
-        "name1": "删除商家注册审核",
-        "fullName": "simple.商家注册审核.商家注册审核.删除",
-        "moduleCode": "simple/regist/MemberRegist",
-        "urls": [
-          "/simple/regist/MemberRegist/deleteMemberRegist"
-        ]
-      },
-      {
-        "code": "simple_regist_MemberRegist_View",
-        "name1": "查看商家注册审核",
-        "fullName": "simple.商家注册审核.商家注册审核.查看",
-        "moduleCode": "simple/regist/MemberRegist",
-        "urls": [
-          "/simple/regist/MemberRegist/findMemberRegistForView",
-          "/simple/regist/MemberRegist/findMemberRegists",
-          "/simple/regist/MemberRegist/findMemberRegistForEdit"
-        ]
-      }
-    ]
-  },
   "simple/report/ModelFile": {
     "code": "simple/report/ModelFile",
     "name1": "模板文件管理",
@@ -969,92 +805,6 @@
     "routeParamsObj": "",
     "permissions": []
   },
-  "simple/qingTui/EmpOpenId": {
-    "code": "simple/qingTui/EmpOpenId",
-    "name1": "人员与应用",
-    "url": "/simple/qingTui/EmpOpenId",
-    "route": "/simple/qingTui/EmpOpenId",
-    "iconClass": "",
-    "displayIndex": 2,
-    "parentCode": "simple/qingTui",
-    "parentName": "人员应用",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_qingTui_EmpOpenId_Add",
-        "name1": "新增人员与应用",
-        "fullName": "simple.人员与应用.人员与应用.新增",
-        "moduleCode": "simple/qingTui/EmpOpenId",
-        "urls": [
-          "/simple/qingTui/EmpOpenId/createEmpOpenId",
-          "/simple/qingTui/EmpOpenId/saveEmpOpenId",
-          "/simple/qingTui/EmpOpenId/bindingQingtui"
-        ]
-      },
-      {
-        "code": "simple_qingTui_EmpOpenId_Edit",
-        "name1": "编辑人员与应用",
-        "fullName": "simple.人员与应用.人员与应用.编辑",
-        "moduleCode": "simple/qingTui/EmpOpenId",
-        "urls": [
-          "/simple/qingTui/EmpOpenId/updateEmpOpenId"
-        ]
-      },
-      {
-        "code": "simple_qingTui_EmpOpenId_Delete",
-        "name1": "删除人员与应用",
-        "fullName": "simple.人员与应用.人员与应用.删除",
-        "moduleCode": "simple/qingTui/EmpOpenId",
-        "urls": [
-          "/simple/qingTui/EmpOpenId/deleteEmpOpenId"
-        ]
-      },
-      {
-        "code": "simple_qingTui_EmpOpenId_View",
-        "name1": "查看人员与应用",
-        "fullName": "simple.人员与应用.人员与应用.查看",
-        "moduleCode": "simple/qingTui/EmpOpenId",
-        "urls": [
-          "/simple/member/Member/findMembersWithIdNameByName",
-          "/simple/qingTui/EmpOpenId/findEmpOpenIdForEdit",
-          "/simple/qingTui/EmpOpenId/findEmpOpenIds",
-          "/simple/organization/Employee/findEmployeesWithIdNameByName",
-          "/simple/qingTui/EmpOpenId/findEmpOpenIdForView",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName"
-        ]
-      }
-    ]
-  },
-  "simple/qingTui": {
-    "code": "simple/qingTui",
-    "name1": "人员应用",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-renyuan",
-    "displayIndex": 3,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/regist": {
-    "code": "simple/regist",
-    "name1": "注册审核",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-ruzhuchenggongdapx",
-    "displayIndex": 10,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/organization": {
     "code": "simple/organization",
     "name1": "组织机构",
@@ -1149,35 +899,35 @@
         "code": "simple_system_SystemConfig_Add",
         "name1": "新增系统参数",
         "fullName": "simple.系统管理.系统参数.新增",
-        "moduleCode": "simple/systemConfig/SystemConfig",
+        "moduleCode": "simple/system/SystemConfig",
         "urls": [
           "/simple/systemConfig/SystemConfig/createSystemConfig",
           "/simple/systemConfig/SystemConfig/saveSystemConfig"
         ]
       },
       {
-        "code": "simple_systemConfig_SystemConfig_Edit",
+        "code": "simple_system_SystemConfig_Edit",
         "name1": "编辑系统参数",
         "fullName": "simple.系统管理.系统参数.编辑",
-        "moduleCode": "simple/systemConfig/SystemConfig",
+        "moduleCode": "simple/system/SystemConfig",
         "urls": [
           "/simple/systemConfig/SystemConfig/updateSystemConfig"
         ]
       },
       {
-        "code": "simple_systemConfig_SystemConfig_Delete",
+        "code": "simple_system_SystemConfig_Delete",
         "name1": "删除系统参数",
         "fullName": "simple.系统管理.系统参数.删除",
-        "moduleCode": "simple/systemConfig/SystemConfig",
+        "moduleCode": "simple/system/SystemConfig",
         "urls": [
           "/simple/systemConfig/SystemConfig/deleteSystemConfig"
         ]
       },
       {
-        "code": "simple_systemConfig_SystemConfig_View",
+        "code": "simple_system_SystemConfig_View",
         "name1": "查看系统参数",
         "fullName": "simple.系统管理.系统参数.查看",
-        "moduleCode": "simple/systemConfig/SystemConfig",
+        "moduleCode": "simple/system/SystemConfig",
         "urls": [
           "/simple/systemConfig/SystemConfig/findSystemConfigForEdit",
           "/simple/systemConfig/SystemConfig/findSystemConfigs",
