@@ -396,7 +396,6 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         Organization organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
         if (organization == null) {
             organization = new Organization();
-            organization.setEId(id);
             organization.setName("逆向CDIO实验室");
             organization.setCode("000");
             organization.setBusinessLicenseCode("000");
@@ -408,13 +407,14 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             this.organizationDao.saveOrganization(organization);
         }
 
+        organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
         Role superRole = this.roleService.createSuperRole();
         OperatorAndRole operatorAndRole = this.operatorAndRoleDao.findOperatorAndRoleByOperatorAndRole(SuperUserCode, RoleService.SuperCode);
         if (operatorAndRole == null) {
             operatorAndRole = new OperatorAndRole();
             operatorAndRole.setOperatorId(superOperator.getEId());
             operatorAndRole.setRoleId(superRole.getEId());
-            operatorAndRole.setOrganizationId(id);
+            operatorAndRole.setOrganizationId(organization.getEId());
             this.operatorAndRoleDao.saveOperatorAndRole(operatorAndRole);
         }
 
