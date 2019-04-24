@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @DEntity(label="商户",comment="",moduleLabel="智慧餐饮")
-@Entity(name="ps_member")
+/*@Entity(name="ps_member")*/
 public class Member extends BaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 
