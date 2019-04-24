@@ -7,7 +7,7 @@ spring:
     name: cisdi-info-ms-cms_sample
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/D4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1:3306/temp?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
 #    url: jdbc:mysql://192.168.20.55:3306/d4?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
     username: root
     password: root
@@ -28,14 +28,3 @@ mybatis:
   - classpath*:/com/cisdi/info/**/dao/**/mapper/*.xml     #mybaits mapperxml文件路径
   configuration:
     map-underscore-to-camel-case: true
-cisdi:
-  websecurity:
-    permitAllantMachers: #此处为数组形式，配置为不受认证处理的url路径Pattern
-    - /static/**   #js和css相关文件
-    - /cms/index.html   #cms主页
-    - /favicon.ico
-    - /Login/**
-    #loginPage: /cms/login #默认跳转登陆页面路径，因为已经前后分离不起效果，如果需要起效将redirectLogin配置为true。
-    loginProcessingUrl: /Login/loginSubmit #登陆处理url，需要post形式提交，使用cms后不要更改
-    logoutUrl: /cms/logout #退出处理url，需要以post方式提交。使用cms后不要更改
-    rejectPublicInvocations: true #默认不配置为false，true为未设定权限资源不否允许访问
