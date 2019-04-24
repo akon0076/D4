@@ -9,6 +9,8 @@ import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.log.LogService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,6 +24,8 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @Autowired
     private LogService logService;
@@ -37,9 +41,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public String allExceptionHandler(HttpServletRequest request, HttpServletResponse response,
                                       Exception exception) throws Exception {
-        DDDException.logInFile(exception);
-
         exception.printStackTrace();
+        logger.error(exception.getMessage(), exception);
 
         ResponseEntry responseEntry = null;
         if (exception instanceof DDDException) {
@@ -51,7 +54,6 @@ public class GlobalExceptionHandler {
             responseEntry = new ResponseEntry(dddException.getCode(), dddException.getMessage(), dddException.getExtendedData());
             response.setStatus(590);
         }
-        saveLog(request, exception);
         String json = gson.toJson(responseEntry);
 
         return json;

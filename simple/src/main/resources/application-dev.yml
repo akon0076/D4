@@ -54,9 +54,7 @@ spring:
     static-locations: file:D://D4/DDDFile/
 
 logging:
-  file: d:/D4/DDDLog/ddd.log #日志文件输出目录
-  level:
-    com.cisdi.info: debug #日志Level设定
+  config: classpath:logback.xml #日志配置
 
 mybatis:
   mapper-locations:

@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ${editDtoPackageName}.${editDtoClassName};
 import ${entityClass.clazz.name};
 import ${config.basePackage}.${entityClass.subSystemName}.service.${entityClass.moduleName}.${EntityNameUp}Service;
@@ -108,7 +108,7 @@ import ${entityManager.getEntityClassByClassName($columnInfo.foreignEntity).claz
 @RequestMapping("/${entityClass.subSystemName}/${entityClass.moduleName}/${EntityNameUp}")
 @CrossOrigin(allowCredentials = "true")
 public class ${className} {
-	private static Logger logger = LogManager.getLogger();
+private static Logger logger = LoggerFactory.getLogger(${className}.class);
 
 #set($imports=$d4Util.createMap())
 
