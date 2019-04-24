@@ -47,19 +47,8 @@
                     </div>
                     <div class="table-control">
                         <el-table v-loading="tableLoading" size="small" class="table-style" :data="${EntityNameLow}s" border highlight-current-row @current-change="handleCurrentChange">
-                            <el-table-column type="expand" fixed="left">
-                                <template slot-scope="props">
-                                    <el-form label-position="left" inline class="list-table-expand">
-                                        #foreach($columnInfo in $entityClass.columnInfos)
-                                            <el-form-item label="${columnInfo.label}">
-                                                <span>{{ props.row.${columnInfo.fieldName} }}</span>
-                                            </el-form-item>
-                                        #end
-                                    </el-form>
-                                </template>
-                            </el-table-column>
 
-                            <el-table-column show-overflow-tooltip align="left" prop="name" label="${entityClass.label}名称" min-width="100" fixed="left" sortable resizable show-overflow-tooltip>
+                            <el-table-column show-overflow-tooltip align="left" prop="name" label="${entityClass.label}名称" min-width="100" fixed="left"  resizable show-overflow-tooltip>
                                 <template slot-scope="scope">
                                         <p v-on:click="display${EntityNameUp}(${EntityNameLow}s[scope.$index].eid)"
                                            style="text-decoration: underline">
