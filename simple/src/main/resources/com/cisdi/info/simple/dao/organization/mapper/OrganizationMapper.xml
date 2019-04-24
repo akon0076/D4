@@ -156,9 +156,8 @@
                 display_order = #{displayOrder} ,
                 remark = #{remark} ,
                 create_id = #{createId} ,
-                create_datetime = #{createDatetime} ,
                 update_id = #{updateId} ,
-                update_datetime = #{updateDatetime},
+                update_datetime= CURRENT_TIMESTAMP ()
         where eid=#{EId}
     </update>
 

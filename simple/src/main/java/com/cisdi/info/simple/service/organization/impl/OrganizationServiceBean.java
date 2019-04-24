@@ -3,6 +3,8 @@ package com.cisdi.info.simple.service.organization.impl;
 import com.cisdi.info.simple.dao.organization.OrganizationDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
+import com.cisdi.info.simple.entity.base.BaseEntity;
+import com.cisdi.info.simple.entity.organization.Department;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.cisdi.info.simple.entity.organization.Organization;
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Map;
+
 import com.cisdi.info.simple.DDDException;
 
 @Service
@@ -95,6 +99,23 @@ public class OrganizationServiceBean extends BaseService implements Organization
 
 	public void deleteOrganization(Long organizationId)
 	{
+		Map<Class<? extends BaseEntity>,EntityUsage> entityUsageMap = this.checkForeignEntity(Organization.class, organizationId);
+		if(entityUsageMap != null && entityUsageMap.size() >0)
+		{
+			StringBuilder errors = new StringBuilder();
+			errors.append("计划删除的数据正在被以下数引用\n");
+			for(EntityUsage entityUsage : entityUsageMap.values())
+			{
+				errors.append("\t").append(entityUsage.getEntityLabel()).append("\n");
+				for(Map.Entry<Long,String> entry : entityUsage.getUsageIdNames().entrySet() )
+				{
+					errors.append("\t\t").append(entry.getKey()).append("\t").append(entry.getValue()).append("\n");
+				}
+			}
+			errors.append("，不能删除，请检查处理后再删除");
+			throw  new DDDException(errors.toString());
+		}
+
 		Integer rows = this.organizationDao.deleteOrganization(organizationId);
 		if(rows != 1)
 		{
