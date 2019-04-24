@@ -422,6 +422,7 @@
         "moduleCode": "simple/organization/Department",
         "urls": [
           "/simple/organization/Department/findDepartments",
+          "/simple/organization/Department/findAllDepartmentsByOrgId",
           "/simple/organization/Department/findDepartmentForEdit",
           "/simple/organization/Department/findDepartmentForView",
           "/simple/organization/Department/findDepartmentsWithIdNameByName"
