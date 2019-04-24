@@ -23,8 +23,6 @@ import com.cisdi.info.simple.service.organization.impl.EmployeeServiceBean;
 import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.permission.OperatorService;
 import com.cisdi.info.simple.service.qingTui.impl.EmpOpenIdServiceBean;
-import com.cisdi.info.simple.service.regist.EmployeRegistService;
-import com.cisdi.info.simple.service.regist.OrganizationRegistService;
 import com.cisdi.info.simple.util.MailUtil;
 import com.cisdi.info.simple.config.NudgePlusConfig;
 import com.cisdi.nudgeplus.sdk.service.OAuthService;
@@ -70,11 +68,7 @@ public class LoginInfoController {
     @Autowired
     private EmpOpenIdDao empOpenIdDao;
     @Autowired
-    private OrganizationRegistService organizationRegistService;
-    @Autowired
     private OrganizationDao organizationDao;
-    @Autowired
-    private EmployeRegistService employeRegistService;
     @Autowired
     private AttachmentService attachmentService;
 
@@ -251,13 +245,6 @@ public class LoginInfoController {
         return map;
     }
 
-    // 单位注册入口
-    @PostMapping("/saveOrganizationRegist")
-    public OrganizationRegist saveOrganizationRegist(@Valid @RequestBody OrganizationRegist organizationRegist){
-        OrganizationRegist orgRegist =this.organizationRegistService.saveOrganizationRegist(organizationRegist);
-        return orgRegist;
-    }
-
     @GetMapping("/findOrganizationsWithIdNameByName")
     public Map<String,Object> findOrganizationsWithIdNameByName(@Valid @RequestParam String organizationName)
     {
@@ -270,12 +257,6 @@ public class LoginInfoController {
            map.put("size",0);
        }
         return map;
-    }
-
-    // 人员注册入口
-    @PostMapping("/saveEmployeRegist")
-    public void saveEmployeRegist(@RequestBody EmployeRegist employeRegist){
-        EmployeRegist empRegist =this.employeRegistService.saveEmployeRegist(employeRegist);
     }
 
     @PostMapping("/saveAttachment")

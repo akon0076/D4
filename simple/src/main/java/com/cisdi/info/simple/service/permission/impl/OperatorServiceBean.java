@@ -369,7 +369,6 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             organization = new Organization();
             organization.setName("逆向CDIO实验室");
             organization.setCode("000");
-            organization.setBusinessLicenseCode("000");
             organization.setCreateDatetime(new Date());
             organization.setUpdateDatetime(new Date());
             organization.setRemark("这是一个用于开发的组织，实际使用时请删除");
