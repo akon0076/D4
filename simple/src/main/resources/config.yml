@@ -10,7 +10,7 @@ simple:
   staticFilePath: D:\\D4\\DDDFile\\
   logPath: D:\\D4\\DDDException\\
 
-  applicationName: 框架
+  applicationName: d4Frame
   applicationCode: DDD4
   shortCode: DD
   basePackage: com.cisdi.info

@@ -143,15 +143,16 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
         return permission;
     }
 
+    /**
+     * 根据权限点编码找到权限点，然后更新
+     * @param permissionEditDto
+     * @return
+     */
     @Override
     public Permission updatePermission(PermissionEditDto permissionEditDto) {
         String lastCode = permissionEditDto.getLastCode();
         Permission permission = permissionEditDto.getPermission();
         loadPermissions();
-        if (permissionMap.containsKey(permission.getCode())) {
-            logger.debug("权限点编码必须唯一！");
-            throw new DDDException("权限点编码必须唯一！");
-        }
         ModuleManager.updatePermission(permission, lastCode);
         permissionMap.remove(lastCode);
         permissionMap.put(permission.getCode(), permission);
@@ -161,7 +162,6 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
     @Override
     public void deletePermission(String permissionCode) {
         loadPermissions();
-        // 这里写删除权限点的
         Permission permission = permissionMap.get(permissionCode);
         if (ModuleManager.removePermission(permission)) {
             permissionMap.remove(permissionCode);

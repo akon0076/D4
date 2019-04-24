@@ -81,5 +81,42 @@
       "children": [],
       "hasChildren": null
     }
+  ],
+  "OperatorStatus": [
+    {
+      "name1": "在用",
+      "fullname": "OperatorStatus.在用",
+      "codeType": "OperatorStatus",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": null,
+      "children": [],
+      "hasChildren": null
+    },
+    {
+      "name1": "停用",
+      "fullname": "OperatorStatus.停用",
+      "codeType": "OperatorStatus",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": null,
+      "children": [],
+      "hasChildren": null
+    }
+  ],
+  "OperatorType": [
+    {
+      "name1": "职员",
+      "fullname": "OperatorType.职员",
+      "codeType": "OperatorType",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": 0,
+      "children": null,
+      "hasChildren": null
+    }
   ]
 }

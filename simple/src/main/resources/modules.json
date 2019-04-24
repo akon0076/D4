@@ -1,18 +1,4 @@
 {
-  "simple": {
-    "code": "simple",
-    "name1": "基础管理",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-icon-test ",
-    "displayIndex": 1,
-    "parentCode": "",
-    "parentName": "",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "mobile": {
     "code": "mobile",
     "name1": "移动管理",
@@ -832,6 +818,7 @@
         "moduleCode": "simple/organization/Employee",
         "urls": [
           "/simple/organization/Employee/findEmployees",
+          "/simple/organization/Employee/findAllEmployees",
           "/simple/organization/Employee/findEmployeeForView",
           "/simple/organization/Employee/findEmployeeForEdit",
           "/simple/organization/Department/findDepartmentsWithIdNameByName",
@@ -1178,25 +1165,6 @@
     "routeParamsObj": "",
     "permissions": [
       {
-        "code": "simple_log_Log_Add",
-        "name1": "新增日志",
-        "fullName": "simple.日志.系统日志.新增",
-        "moduleCode": "simple/log/Log",
-        "urls": [
-          "/simple/log/Log/createLog",
-          "/simple/log/Log/saveLog"
-        ]
-      },
-      {
-        "code": "simple_log_Log_Edit",
-        "name1": "编辑日志",
-        "fullName": "simple.日志.系统日志.编辑",
-        "moduleCode": "simple/log/Log",
-        "urls": [
-          "/simple/log/Log/updateLog"
-        ]
-      },
-      {
         "code": "simple_log_Log_Delete",
         "name1": "删除日志",
         "fullName": "simple.日志.系统日志.删除",
@@ -1211,12 +1179,25 @@
         "fullName": "simple.日志.系统日志.查看",
         "moduleCode": "simple/log/Log",
         "urls": [
-          "/simple/log/Log/findLogForEdit",
           "/simple/log/Log/findLogForView",
           "/simple/permission/Operator/findOperatorsWithIdNameByName",
           "/simple/log/Log/findLogs"
         ]
       }
     ]
+  },
+  "simple": {
+    "code": "simple",
+    "name1": "基础管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-icon-test ",
+    "displayIndex": 1,
+    "parentCode": "",
+    "parentName": "",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": []
   }
 }

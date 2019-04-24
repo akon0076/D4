@@ -1,34 +1,28 @@
 package com.cisdi.info.simple.service.qingTui.impl;
 
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-
+import com.cisdi.info.simple.config.Config;
+import com.cisdi.info.simple.config.NudgePlusConfig;
 import com.cisdi.info.simple.entity.member.Member;
 import com.cisdi.info.simple.entity.organization.Employee;
 import com.cisdi.info.simple.entity.qingTui.EmpOpenId;
 import com.cisdi.info.simple.service.organization.EmployeeService;
-import com.cisdi.info.simple.config.Config;
+import com.cisdi.info.simple.service.qingTui.MessageTipService;
 import com.cisdi.info.simple.util.MessageAndEmp;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.cisdi.nudgeplus.sdk.service.SingleMessageService;
 import com.cisdi.nudgeplus.sdk.service.TokenService;
 import com.cisdi.nudgeplus.tmsbeans.model.RichMsg;
 import com.cisdi.nudgeplus.tmsbeans.model.RichUrl;
 import com.cisdi.nudgeplus.tmsbeans.model.TextMsg;
-import com.cisdi.info.simple.service.qingTui.MessageTipService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.cisdi.info.simple.util.NudgePlusConfig;
+
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.*;
 @Service
 @Transactional
 public class MessageTipServiceBean implements MessageTipService {

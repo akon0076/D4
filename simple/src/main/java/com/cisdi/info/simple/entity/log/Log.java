@@ -48,7 +48,7 @@ public class Log extends BaseEntity implements Serializable{
 	private Date logDate;
 
 	@DColumn(index=9,label="操作内容",comment="操作内容")
-	@Column(name="operation_content",length=255,nullable=true,unique=false)
+	@Column(name="operation_content",length=9999,nullable=true,unique=false)
 	private String operationContent;
 
 	@DColumn(index=10,label="url",comment="url")
