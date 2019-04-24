@@ -373,60 +373,6 @@
       }
     ]
   },
-  "simple/systemConfig/SystemConfig": {
-    "code": "simple/systemConfig/SystemConfig",
-    "name1": "系统参数",
-    "url": "/simple/systemConfig/SystemConfig",
-    "route": "/simple/systemConfig/SystemConfig",
-    "iconClass": "",
-    "displayIndex": 0,
-    "parentCode": "simple/systemConfig",
-    "parentName": "系统参数",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_systemConfig_SystemConfig_Add",
-        "name1": "新增系统参数",
-        "fullName": "simple.系统参数.系统参数.新增",
-        "moduleCode": "simple/systemConfig/SystemConfig",
-        "urls": [
-          "/simple/systemConfig/SystemConfig/createSystemConfig",
-          "/simple/systemConfig/SystemConfig/saveSystemConfig"
-        ]
-      },
-      {
-        "code": "simple_systemConfig_SystemConfig_Edit",
-        "name1": "编辑系统参数",
-        "fullName": "simple.系统参数.系统参数.编辑",
-        "moduleCode": "simple/systemConfig/SystemConfig",
-        "urls": [
-          "/simple/systemConfig/SystemConfig/updateSystemConfig"
-        ]
-      },
-      {
-        "code": "simple_systemConfig_SystemConfig_Delete",
-        "name1": "删除系统参数",
-        "fullName": "simple.系统参数.系统参数.删除",
-        "moduleCode": "simple/systemConfig/SystemConfig",
-        "urls": [
-          "/simple/systemConfig/SystemConfig/deleteSystemConfig"
-        ]
-      },
-      {
-        "code": "simple_systemConfig_SystemConfig_View",
-        "name1": "查看系统参数",
-        "fullName": "simple.系统参数.系统参数.查看",
-        "moduleCode": "simple/systemConfig/SystemConfig",
-        "urls": [
-          "/simple/systemConfig/SystemConfig/findSystemConfigForEdit",
-          "/simple/systemConfig/SystemConfig/findSystemConfigs",
-          "/simple/systemConfig/SystemConfig/findSystemConfigForView"
-        ]
-      }
-    ]
-  },
   "simple/organization/Department": {
     "code": "simple/organization/Department",
     "name1": "部门",
@@ -1095,20 +1041,6 @@
     "routeParamsObj": "",
     "permissions": []
   },
-  "simple/systemConfig": {
-    "code": "simple/systemConfig",
-    "name1": "系统参数",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-xitongcanshu ",
-    "displayIndex": 4,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/regist": {
     "code": "simple/regist",
     "name1": "注册审核",
@@ -1199,5 +1131,59 @@
     "isInUse": "是",
     "routeParamsObj": "",
     "permissions": []
+  },
+  "simple/system/SystemConfig": {
+    "code": "simple/system/SystemConfig",
+    "name1": "系统参数",
+    "url": "/simple/system/SystemConfig",
+    "route": "/simple/system/SystemConfig",
+    "iconClass": "",
+    "displayIndex": 3,
+    "parentCode": "simple/system",
+    "parentName": "系统参数",
+    "moduleType": "电脑模块",
+    "isInUse": "是",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_system_SystemConfig_Add",
+        "name1": "新增系统参数",
+        "fullName": "simple.系统管理.系统参数.新增",
+        "moduleCode": "simple/systemConfig/SystemConfig",
+        "urls": [
+          "/simple/systemConfig/SystemConfig/createSystemConfig",
+          "/simple/systemConfig/SystemConfig/saveSystemConfig"
+        ]
+      },
+      {
+        "code": "simple_systemConfig_SystemConfig_Edit",
+        "name1": "编辑系统参数",
+        "fullName": "simple.系统管理.系统参数.编辑",
+        "moduleCode": "simple/systemConfig/SystemConfig",
+        "urls": [
+          "/simple/systemConfig/SystemConfig/updateSystemConfig"
+        ]
+      },
+      {
+        "code": "simple_systemConfig_SystemConfig_Delete",
+        "name1": "删除系统参数",
+        "fullName": "simple.系统管理.系统参数.删除",
+        "moduleCode": "simple/systemConfig/SystemConfig",
+        "urls": [
+          "/simple/systemConfig/SystemConfig/deleteSystemConfig"
+        ]
+      },
+      {
+        "code": "simple_systemConfig_SystemConfig_View",
+        "name1": "查看系统参数",
+        "fullName": "simple.系统管理.系统参数.查看",
+        "moduleCode": "simple/systemConfig/SystemConfig",
+        "urls": [
+          "/simple/systemConfig/SystemConfig/findSystemConfigForEdit",
+          "/simple/systemConfig/SystemConfig/findSystemConfigs",
+          "/simple/systemConfig/SystemConfig/findSystemConfigForView"
+        ]
+      }
+    ]
   }
 }
