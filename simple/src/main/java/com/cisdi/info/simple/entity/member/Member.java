@@ -1,18 +1,14 @@
 package com.cisdi.info.simple.entity.member;
 
 import com.cisdi.info.simple.annotation.DColumn;
-import com.cisdi.info.simple.annotation.DEntity;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 
-
 import javax.persistence.Column;
-
-import javax.persistence.Entity;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
-@DEntity(label="商户",comment="",moduleLabel="智慧餐饮")
+/*@DEntity(label="商户",comment="",moduleLabel="智慧餐饮")*/
 /*@Entity(name="ps_member")*/
 public class Member extends BaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
