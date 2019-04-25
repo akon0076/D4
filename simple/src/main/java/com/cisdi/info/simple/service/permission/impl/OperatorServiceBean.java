@@ -2,7 +2,6 @@ package com.cisdi.info.simple.service.permission.impl;
 
 
 import com.cisdi.info.simple.DDDException;
-import com.cisdi.info.simple.dao.member.MemberDao;
 import com.cisdi.info.simple.dao.organization.EmployeeDao;
 import com.cisdi.info.simple.dao.organization.OrganizationDao;
 import com.cisdi.info.simple.dao.permission.OperatorAndRoleDao;
@@ -71,9 +70,6 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     private RoleService roleService;
 
     @Autowired
-    private MemberDao memberDao;
-
-    @Autowired
     private EmployeeDao employeeDao;
 
     @Autowired
@@ -110,24 +106,17 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         return this.operatorDao.findOperator(operatorId);
     }
 
-    //所有外键的Name都以加载
     public Operator findOperatorWithForeignName(Long operatorId) {
         return this.operatorDao.findOperatorWithForeignName(operatorId);
     }
 
     public Long saveOperator(Operator operator) {
         this.setSavePulicColumns(operator);
-//        String password = operator.getCode() + operator.getPassWord();
-//        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
-//        operator.setPassWord(md5Password);
         return this.operatorDao.saveOperator(operator);
     }
 
     public Operator updateOperator(Operator operator) {
         this.setUpdatePulicColumns(operator);
-//        String password = operator.getCode() + operator.getPassWord();
-//        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
-//        operator.setPassWord(md5Password);
         return this.operatorDao.updateOperator(operator);
     }
 
@@ -362,6 +351,9 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     }
 
 
+    /**
+     * 创建初始的超级管理员
+     */
     @Override
     public void createSuperUser() {
         //初始化创建组织
@@ -432,15 +424,59 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         return operatorDao.findAllModuleCodesByOperatorId(operatorId);
     }
 
+    /**
+     * 管理员修改密码
+     *
+     * @param passwordDto
+     * @return
+     */
     @Override
     public boolean changePassword(PasswordDto passwordDto) {
         String pass = passwordDto.getPass();
+        //密码加密保存
         String password = DigestUtils.md5DigestAsHex(pass.getBytes());
         passwordDto.setPass(password);
         passwordDto.setCheckPass(password);
         passwordDto.setUpdateDatetime(new Date());
         passwordDto.setUpdateId(this.getCurrentLoginOperator().getEId());
-        return operatorDao.changePassword(passwordDto) > 0;
+        int result = operatorDao.changePassword(passwordDto);
+        if (result != 1) {
+            throw new DDDException("密码修改失败");
+        }
+        return result > 0;
+    }
+
+    /**
+     * 自己修改密码
+     *
+     * @param passwordDto
+     * @return
+     */
+    @Override
+    public boolean changeMyPassword(PasswordDto passwordDto) {
+        Long opertorId = this.getCurrentLoginOperator().getEId();
+        Operator operator = operatorDao.findOperatorWithPassword(opertorId);
+        String oldPwd = passwordDto.getOldPwd();
+        String oldPass = DigestUtils.md5DigestAsHex(oldPwd.getBytes());
+
+        //判断原密码是否正确
+        if (!operator.getPassWord().equals(oldPass)) {
+            throw new DDDException("原密码错误");
+        }
+
+        //设置新密码，加密保存
+        String pass = passwordDto.getPass();
+        String password = DigestUtils.md5DigestAsHex(pass.getBytes());
+        passwordDto.setPass(password);
+        passwordDto.setCheckPass(password);
+        passwordDto.setUpdateDatetime(new Date());
+        passwordDto.setUpdateId(opertorId);
+        passwordDto.setOperatorId(opertorId);
+        int result = operatorDao.changeMyPassword(passwordDto);
+        if (result != 1) {
+            throw new DDDException("密码修改失败");
+        }
+        return result > 0;
     }
 
     /**

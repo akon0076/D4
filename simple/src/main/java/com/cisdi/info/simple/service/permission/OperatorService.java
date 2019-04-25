@@ -48,4 +48,6 @@ public interface OperatorService {
 
     public boolean changePassword(PasswordDto passwordDto);
 
+    public boolean changeMyPassword(PasswordDto passwordDto);
+
 }

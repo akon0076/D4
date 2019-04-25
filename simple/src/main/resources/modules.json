@@ -937,5 +937,29 @@
         ]
       }
     ]
+  },
+  "simple/password": {
+    "code": "simple/password",
+    "name1": "修改密码",
+    "url": "",
+    "route": "",
+    "iconClass": null,
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "否",
+    "routeParamsObj": null,
+    "permissions": [
+      {
+        "code": "simple_Operator_ChangePassword",
+        "name1": "修改密码",
+        "fullName": "simple.操作员.修改密码",
+        "moduleCode": "simple/password",
+        "urls": [
+          "/simple/permission/Operator/changeMyPassword"
+        ]
+      }
+    ]
   }
 }

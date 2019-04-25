@@ -9,6 +9,8 @@ import java.util.Date;
 public class PasswordDto {
     private Long operatorId;
 
+    private String oldPwd;
+
     private String pass;
 
     private String checkPass;
@@ -55,5 +57,13 @@ public class PasswordDto {
 
     public void setUpdateDatetime(Date updateDatetime) {
         this.updateDatetime = updateDatetime;
+    }
+
+    public String getOldPwd() {
+        return oldPwd;
+    }
+
+    public void setOldPwd(String oldPwd) {
+        this.oldPwd = oldPwd;
     }
 }

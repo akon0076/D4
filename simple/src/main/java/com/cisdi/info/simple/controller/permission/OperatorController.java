@@ -160,5 +160,11 @@ public class OperatorController {
         boolean result = operatorService.changePassword(passwordDto);
         return result ? "修改成功" : "修改失败";
     }
+
+    @PostMapping("/changeMyPassword")
+    public String changeMyPassword(@RequestBody PasswordDto passwordDto) {
+        boolean result = operatorService.changeMyPassword(passwordDto);
+        return result ? "修改成功" : "修改失败";
+    }
 }
 

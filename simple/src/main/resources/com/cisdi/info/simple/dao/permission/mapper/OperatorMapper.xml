@@ -54,7 +54,7 @@
         select count(EId) as totalCount from simple_operator as t0 where ${sql}
     </select>
 
-    <!--  根据Id查询 -->
+    <!--  根据Id查询，不包含密码 -->
     <select id="findOperator" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="java.lang.Long">
         select t0.eid  ,
             t0.name  ,
@@ -67,6 +67,25 @@
             t0.create_datetime  ,
             t0.update_id  ,
             t0.update_datetime
+        from simple_operator t0
+        where eid = #{operatorId}
+    </select>
+
+
+    <!--  根据Id查询，包含密码 -->
+    <select id="findOperatorWithPassword" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="java.lang.Long">
+        select t0.eid  ,
+        t0.name  ,
+        t0.code  ,
+        t0.status  ,
+        t0.pass_word  ,
+        t0.type  ,
+        t0.person_id  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
         from simple_operator t0
         where eid = #{operatorId}
     </select>
@@ -174,6 +193,15 @@
 
     <!--  管理员修改密码 -->
     <update id="changePassword" parameterType="com.cisdi.info.simple.dto.operator.PasswordDto">
+        update simple_operator set
+                pass_word = #{pass} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{operatorId}
+    </update>
+
+    <!--  自己修改密码 -->
+    <update id="changeMyPassword" parameterType="com.cisdi.info.simple.dto.operator.PasswordDto">
         update simple_operator set
                 pass_word = #{pass} ,
                 update_id = #{updateId} ,
