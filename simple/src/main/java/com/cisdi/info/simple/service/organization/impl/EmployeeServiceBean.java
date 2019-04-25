@@ -7,7 +7,6 @@ import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.entity.organization.Employee;
-import com.cisdi.info.simple.entity.permission.Operator;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.organization.EmployeeService;
 import com.cisdi.info.simple.service.permission.OperatorService;
@@ -16,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -77,42 +75,14 @@ public class EmployeeServiceBean extends BaseService implements EmployeeService 
      * @return
      */
     public Employee saveEmployee(Employee employee) {
-        //TODO:请在此校验参数的合法性
         this.setSavePulicColumns(employee);
         Integer rows = this.employeeDao.saveEmployee(employee);
-        if (rows != 1) {
-            throw new DDDException("新增保存职员出错");
-        }
-        Operator operatorByCode = operatorDao.findOperatorByCode(employee.getCode());
-        //如果对于的操作员不存在，则默认自动增加
-        if (operatorByCode == null) {
-            Operator operator = new Operator();
-            operator.setCode(employee.getCode());
-            //对密码进行加密
-            String password = DigestUtils.md5DigestAsHex(employee.getPassWord().getBytes());
-            operator.setPassWord(password);
-            operator.setStatus("在用");
-            operator.setType("职员");
-            operator.setPersonId(employee.getEId());
-            operator.setName(employee.getName());
-            //设置公共自动
-            this.setSavePulicColumns(operator);
-            operatorService.saveOperator(operator);
-        } else {
-            operatorByCode.setPersonId(employee.getEId());
-            operatorDao.updateOperator(operatorByCode);
-        }
         return employee;
     }
 
     public Employee updateEmployee(Employee employee) {
-        //TODO:请在此校验参数的合法性
         this.setUpdatePulicColumns(employee);
         Integer rows = this.employeeDao.updateEmployee(employee);
-        if (rows != 1) {
-            String error = "修改保存职员出错，数据库应该返回1,但返回了 " + rows + ",数据可能被删除";
-            throw new DDDException(error);
-        }
         return employee;
     }
 
