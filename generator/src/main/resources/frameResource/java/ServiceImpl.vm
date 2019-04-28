@@ -30,7 +30,7 @@ import com.cisdi.info.simple.DDDException;
 @Transactional
 public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityNameUp}Service {
 
-	private static Logger logger = LogManager.getLogger();
+	private static Logger logger = LoggerFactory.getLogger(${EntityNameUp}ServiceBean.class);
 
 	@Autowired
 	private ${EntityNameUp}Dao ${EntityNameLow}Dao;
