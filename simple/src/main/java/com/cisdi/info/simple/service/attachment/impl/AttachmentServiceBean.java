@@ -157,7 +157,7 @@ public class AttachmentServiceBean extends BaseService implements AttachmentServ
         }
 
         String[] fileInfo = getFileInfo(file);
-        String toPrefix = fileInfo[0] + generateSuffix();
+         String toPrefix = fileInfo[0] + uniqueIdentifier();
         String toSuffix = fileInfo[1];
         String logicalFileName = toPrefix + toSuffix;
         if (!attachment.getAssociateFormName().equals("simple_organizationRegit")) {
@@ -442,6 +442,12 @@ public class AttachmentServiceBean extends BaseService implements AttachmentServ
 		}
 
 	}
+	    //生成唯一编码
+    public String uniqueIdentifier(){
+        String id= UUID.randomUUID().toString();
+        id=id.replace("-", "");
+        return id;
+    }
 
     @Override
     public List<Attachment> findAllUploadedFilesByIdAndName(String  id, String name){
