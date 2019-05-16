@@ -97,7 +97,6 @@ public class ModuleManager {
      * @param file 文件URL地址
      */
     public static void loadModules(String file) {
-        if (modules != null) return;
         Gson gson = new Gson();
         String json = null;
         json = FileLockUtils.readFileToString(new File(file), "UTF-8");

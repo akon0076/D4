@@ -1,6 +1,7 @@
 package com.cisdi.info.simple.service.permission.impl;
 
 import com.cisdi.info.simple.DDDException;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.dao.permission.ModuleDao;
 import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
@@ -8,10 +9,10 @@ import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
 import com.cisdi.info.simple.service.base.BaseService;
+import com.cisdi.info.simple.service.permission.ExtendsMouleService;
 import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.permission.PermissionService;
 import com.cisdi.info.simple.service.permission.RoleAndPermissionService;
-import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.util.D4Util;
 import com.cisdi.info.simple.util.ModuleManager;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Transactional
@@ -40,6 +42,13 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
 
     @Autowired
     private RoleAndPermissionService roleAndPermissionService;
+
+    @Autowired
+    private final Map<String, ExtendsMouleService> extendsMouleServiceMap = new ConcurrentHashMap<>();
+
+    private ExtendsMouleService getExtendsMouleService(String serviceName) {
+        return this.extendsMouleServiceMap.get(serviceName);
+    }
 
     @Override
     public PageResultDTO findModules(PageDTO pageDTO) {
@@ -207,116 +216,91 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
     }
 
     /**
-     * @Author April_Xiang
      * @param operatorId 操作员Id
-     * @param modelType 模块类型
-     * @return  根据moduleCode找到所有模块,并生成树
+     * @param modelType  模块类型
+     * @return 根据moduleCode找到所有模块, 并生成树
+     * @Author April_Xiang
      */
     @Override
     public ModuleTreeNode constructNewTree(Long operatorId, String modelType) {
-          //找到该操作员对应的所有ModuleCode
-      if("电脑模块".equals(modelType)){
-          List<String> moduleCodes = this.operatorDao.findAllModuleCodesByOperatorId(operatorId);
-          ModuleTreeNode allModuleTreeNode=new ModuleTreeNode();
-          Map<String, ModuleTreeNode> treeNodeMap = new HashMap<>();
-          Set<ModuleTreeNode> topTreeNode = new HashSet<>();
-          for(int i=0;i<moduleCodes.size();i++) {
-              String[] codeString = StringUtils.split(moduleCodes.get(i), "/");
-              String tempString = "";
-              for(int j=0;j<codeString.length;j++) {
-                  if(j==0){
-                      tempString = codeString[j];
-                  }
-                  else{
-                      tempString+="/"+codeString[j];
+        //默认为电脑模块
+        modelType = StringUtils.isBlank(modelType) ? "电脑模块" : modelType;
+        //找到该操作员对应的所有ModuleCode
+        List<String> moduleCodes = this.operatorDao.findAllModuleCodesByOperatorId(operatorId);
+        Map<String, ModuleTreeNode> treeNodeMap = new HashMap<>();
+        Set<ModuleTreeNode> topTreeNode = new HashSet<>();
+        for (int i = 0; i < moduleCodes.size(); i++) {
+            String[] codeString = StringUtils.split(moduleCodes.get(i), "/");
+            String tempString = "";
+            for (int j = 0; j < codeString.length; j++) {
+                tempString = j == 0 ? codeString[j] : tempString + "/" + codeString[j];
+                Module module = ModuleManager.findModuleByCode(tempString);
+                if (module == null) {
+                    throw new DDDException("找不到编码为" + tempString + "的模块");
+                }
+                if (treeNodeMap.get(tempString) != null || !modelType.equals(module.getModuleType()) || "否".equals(module.getIsInUse())) {
+                    continue;
+                }
+                Module parentNode = this.findFirstCanBeUse(module);
+                ModuleTreeNode moduleTreeNodeChild = this.convertModule2TreeNode(module, 1);
+                treeNodeMap.put(tempString, moduleTreeNodeChild);
+                if (parentNode != null) {
+                    ModuleTreeNode moduleTreeNodeParent = treeNodeMap.get(parentNode.getCode());
+                    moduleTreeNodeChild.setLevel(moduleTreeNodeParent.getLevel() + 1);
+                    treeNodeMap.get(parentNode.getCode()).getNodes().add(moduleTreeNodeChild);
+                } else {
+                    topTreeNode.add(moduleTreeNodeChild);
+                }
+                String extendsMouleServiceName = module.getExtendsMouleServiceName();
+                if (!StringUtils.isBlank(extendsMouleServiceName)) {
+                    List<Module> extendMoules = loadExtendMoule(extendsMouleServiceName);
+                    setModuleTreeNodeChilds(moduleTreeNodeChild, extendMoules);
+                }
+            }
+        }
+        ModuleTreeNode rootModuleTreeNode = new ModuleTreeNode();
+        rootModuleTreeNode.setId("root");
+        rootModuleTreeNode.setName("root");
+        rootModuleTreeNode.setText("根节点");
+        rootModuleTreeNode.getNodes().addAll(topTreeNode);
+        sort(rootModuleTreeNode);
+        return rootModuleTreeNode;
+    }
 
-                  }
-                  if (treeNodeMap.get(tempString)!=null)
-                      continue;
-                  Module module = ModuleManager.findModuleByCode(tempString);
-                  if(!"电脑模块".equals(module.getModuleType()))
-                      continue;
-                  if("否".equals(module.getIsInUse()))
-                      continue;
-                  if(module==null)
-                      throw new DDDException("找不到编码为"+tempString+"的模块");
-                  Module parentNode = this.findFirstCanBeUse(module);
-                  ModuleTreeNode moduleTreeNodeChild=this.convertModule2TreeNode(module,1);
-                  treeNodeMap.put(tempString,moduleTreeNodeChild);
-                  if(parentNode!=null){
-                      ModuleTreeNode moduleTreeNodeParent = treeNodeMap.get(parentNode.getCode());
-                      moduleTreeNodeChild.setLevel((Integer.parseInt(moduleTreeNodeParent.getLevel())+1)+"");
-                      treeNodeMap.get(parentNode.getCode()).getNodes().add(moduleTreeNodeChild);
-                  }
-                  else{
-                      topTreeNode.add(moduleTreeNodeChild);
-                  }
-              }
-          }
-          ModuleTreeNode rootModuleTreeNode = new ModuleTreeNode();
-          rootModuleTreeNode.setId("root");
-          rootModuleTreeNode.setName("root");
-          rootModuleTreeNode.setText("根节点");
-          rootModuleTreeNode.getNodes().addAll(topTreeNode);
-          sort(rootModuleTreeNode);
-          return rootModuleTreeNode;
-      }else if("移动模块".equals(modelType)){
-          List<String> moduleCodes = this.operatorDao.findAllModuleCodesByOperatorId(operatorId);
-          ModuleTreeNode allModuleTreeNode=new ModuleTreeNode();
-          Map<String, ModuleTreeNode> treeNodeMap = new HashMap<>();
-          Set<ModuleTreeNode> topTreeNode = new HashSet<>();
-          for(int i=0;i<moduleCodes.size();i++) {
-              String[] codeString = StringUtils.split(moduleCodes.get(i), "/");
-              String tempString = "";
-              for(int j=0;j<codeString.length;j++) {
-                  if(j==0){
-                      tempString = codeString[j];
-                  }
-                  else{
-                      tempString+="/"+codeString[j];
+    /**
+     * 设置扩展子模块
+     *
+     * @param moduleTreeNode
+     * @param extendMoules
+     */
+    private void setModuleTreeNodeChilds(ModuleTreeNode moduleTreeNode, List<Module> extendMoules) {
+        for (Module extendMoule : extendMoules) {
+            //设置子节点
+            ModuleTreeNode treeNode = convertModule2TreeNode(extendMoule, moduleTreeNode.getLevel() + 1);
+            moduleTreeNode.addNode(treeNode);
+            //判断是否还有扩展模块
+            String extendsMouleServiceName = extendMoule.getExtendsMouleServiceName();
+            if (!StringUtils.isBlank(extendsMouleServiceName)) {
+                List<Module> extendMouleChilds = loadExtendMoule(extendsMouleServiceName);
+                if (extendMouleChilds != null && extendMouleChilds.size() != 0) {
+                    //设置扩展子模块
+                    setModuleTreeNodeChilds(treeNode, extendMouleChilds);
+                }
+            }
 
-                  }
-                  if (treeNodeMap.get(tempString)!=null)
-                      continue;
-                  Module module = ModuleManager.findModuleByCode(tempString);
-                  if(!"移动模块".equals(module.getModuleType()))
-                      continue;
-                  if("否".equals(module.getIsInUse()))
-                      continue;
-                  if(module==null)
-                      throw new DDDException("找不到编码为"+tempString+"的模块");
-                  Module parentNode = this.findFirstCanBeUse(module);
-                  ModuleTreeNode moduleTreeNodeChild=this.convertModule2TreeNode(module,1);
-                  treeNodeMap.put(tempString,moduleTreeNodeChild);
-                  if(parentNode!=null){
-                      ModuleTreeNode moduleTreeNodeParent = treeNodeMap.get(parentNode.getCode());
-                      moduleTreeNodeChild.setLevel((Integer.parseInt(moduleTreeNodeParent.getLevel())+1)+"");
-                      treeNodeMap.get(parentNode.getCode()).getNodes().add(moduleTreeNodeChild);
-                  }
-                  else{
-                      topTreeNode.add(moduleTreeNodeChild);
-                  }
-              }
-          }
-          ModuleTreeNode rootModuleTreeNode = new ModuleTreeNode();
-          rootModuleTreeNode.setId("root");
-          rootModuleTreeNode.setName("root");
-          rootModuleTreeNode.setText("根节点");
-          rootModuleTreeNode.getNodes().addAll(topTreeNode);
-          sort(rootModuleTreeNode);
-          return rootModuleTreeNode;
-      }
-        return null;
+        }
     }
 
     //通过传入的module找到第一个可用的父module
     public Module findFirstCanBeUse(Module module) {
         String code = module.getParentCode();
-        if (code == null || "".equals(code))
+        if (code == null || "".equals(code)) {
             return null;
+        }
         Module parentNode = ModuleManager.findModuleByCode(code);
-        if (parentNode == null)
+        if (parentNode == null) {
             throw new DDDException("编码为" + module.getCode() + "的父模块编码(" + code + ")无法找到");
+        }
         if ("是".equals(parentNode.getIsInUse())) {
             return parentNode;
         } else {
@@ -468,6 +452,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         return this.moduleDao.moduleAccount();
     }
 
+    @Override
     public ModuleTreeNode wisdomCateringConstructNewTree(Long operatorId, String modelType) {
         List<String> permissionCodes = this.operatorDao.findPermissions(operatorId);
 
@@ -551,6 +536,31 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         return ModuleManager.findModule(moduleCode);
     }
 
+    /**
+     * 根据serviceName加载扩展模块
+     *
+     * @param serviceName
+     * @return
+     */
+    @Override
+    public List<Module> loadExtendMoule(String serviceName) {
+        if (StringUtils.isBlank(serviceName)) {
+            return null;
+        }
+        //首字母转小写
+        serviceName = (new StringBuilder()).append(Character.toLowerCase(serviceName.charAt(0))).append(serviceName.substring(1)).toString();
+        //获取扩展的自定义service
+        ExtendsMouleService extendsMouleService = extendsMouleServiceMap.get(serviceName);
+        if (extendsMouleService == null) {
+            String error = "没有找到对应的service：" + serviceName;
+            logger.error(error);
+            throw new DDDException(error);
+        }
+        //获取扩展模块
+        List<Module> modules = extendsMouleService.loadExtendMoule();
+        return modules;
+    }
+
     private Module findMoudle(String code) {
         Module module = ModuleManager.findModule(code);
         if (module == null) {
@@ -571,15 +581,13 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         treeNode.setRouteParamsObj(module.getRouteParamsObj());
         treeNode.setDisplayIndex(module.getDisplayIndex());
 
-        treeNode.setLevel(level.toString());
+        treeNode.setLevel(level);
         treeNode.setIsExpanded(false);
         treeNode.setIsSelected(false);
 
         String iconClass = module.getIconClass();
         if (iconClass != null && (!("".equals(iconClass)))) {
             treeNode.setIcon(iconClass);
-        } else {
-            //
         }
         return treeNode;
     }

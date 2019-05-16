@@ -47,5 +47,13 @@ public interface ModuleService {
     Integer moduleAccount();
 
     public ModuleTreeNode wisdomCateringConstructNewTree(Long operatorId, String modelType);
-    public Module  findModuleForDisplay(String moduleCode);
+
+    public Module findModuleForDisplay(String moduleCode);
+
+    /**
+     * 根据serviceName加载扩展模块
+     * @param serviceName
+     * @return
+     */
+    public List<Module> loadExtendMoule(String serviceName);
 }
