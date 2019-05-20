@@ -274,7 +274,13 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
      * @param extendMoules
      */
     private void setModuleTreeNodeChilds(ModuleTreeNode moduleTreeNode, List<Module> extendMoules) {
+        if (extendMoules == null) {
+            return;
+        }
         for (Module extendMoule : extendMoules) {
+            if (extendMoule == null) {
+                continue;
+            }
             //设置子节点
             ModuleTreeNode treeNode = convertModule2TreeNode(extendMoule, moduleTreeNode.getLevel() + 1);
             moduleTreeNode.addNode(treeNode);
