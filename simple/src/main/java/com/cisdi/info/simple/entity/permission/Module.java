@@ -35,7 +35,6 @@ public class Module extends BaseEntity implements Serializable {
     @Column(length = 200, nullable = true, unique = false)
     private String route;
 
-
     @Expose
     @DColumn(index = 7, label = "图标", comment = "图标")
     @Column(length = 200, nullable = true, unique = false)
@@ -80,9 +79,14 @@ public class Module extends BaseEntity implements Serializable {
     private String routeParamsObj;
 
     @Transient
-    private List<Module> children;
+    private List<Module> children = new ArrayList<>();
 
     private String extendsMouleServiceName;
+
+    /**
+     * 编辑之前的模块编码
+     */
+    private String lastCode;
 
     @Expose
     @Transient
@@ -249,5 +253,13 @@ public class Module extends BaseEntity implements Serializable {
 
     public void setExtendsMouleServiceName(String extendsMouleServiceName) {
         this.extendsMouleServiceName = extendsMouleServiceName;
+    }
+
+    public String getLastCode() {
+        return lastCode;
+    }
+
+    public void setLastCode(String lastCode) {
+        this.lastCode = lastCode;
     }
 }

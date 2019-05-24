@@ -34,11 +34,11 @@
       "hasChildren": null
     }
   ],
-  "模块类型": [
+  "ModuleType": [
     {
       "name1": "电脑模块",
-      "fullname": "模块类型.电脑模块",
-      "codeType": "模块类型",
+      "fullname": "ModuleType.电脑模块",
+      "codeType": "ModuleType",
       "parentFullname": null,
       "parentId": null,
       "parentName": null,
@@ -48,8 +48,8 @@
     },
     {
       "name1": "移动模块",
-      "fullname": "模块类型.移动模块",
-      "codeType": "模块类型",
+      "fullname": "ModuleType.移动模块",
+      "codeType": "ModuleType",
       "parentFullname": null,
       "parentId": null,
       "parentName": null,
@@ -116,6 +116,30 @@
       "parentName": null,
       "displayOrder": 0,
       "children": null,
+      "hasChildren": null
+    }
+  ],
+  "UseStatus": [
+    {
+      "name1": "在用",
+      "fullname": "UseStatus.在用",
+      "codeType": "UseStatus",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": 1,
+      "children": [],
+      "hasChildren": null
+    },
+    {
+      "name1": "停用",
+      "fullname": "UseStatus.停用",
+      "codeType": "UseStatus",
+      "parentFullname": null,
+      "parentId": null,
+      "parentName": null,
+      "displayOrder": 2,
+      "children": [],
       "hasChildren": null
     }
   ]

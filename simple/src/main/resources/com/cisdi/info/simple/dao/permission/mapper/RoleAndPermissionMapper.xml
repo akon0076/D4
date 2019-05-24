@@ -4,7 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cisdi.info.simple.dao.permission.RoleAndPermissionDao">
     <!-- 根据分页参数查询数据集合 -->
-    <select id="findRoleAndPermissions" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+    <select id="findRoleAndPermissions" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission"
+            parameterType="com.cisdi.info.simple.dto.base.PageDTO">
         select
         t0.eid  ,
         t1.`name`  ,
@@ -24,7 +25,7 @@
     </select>
 
     <!-- 根据查询所有数据集合 -->
-    <select id="findAllRoleAndPermissions" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" >
+    <select id="findAllRoleAndPermissions" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
         select
             t0.eid  ,
             t0.name  ,
@@ -41,7 +42,8 @@
     </select>
 
     <!-- 根据查询所有数据集合,只提取ID 和 Name -->
-    <select id="findAllRoleAndPermissionsWithIdName" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" >
+    <select id="findAllRoleAndPermissionsWithIdName"
+            resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
         select
             t0.EId,t0.Name
         from simple_role_and_permission t0
@@ -49,17 +51,20 @@
     </select>
 
     <!-- 根据分页参数查询数据集合总条数 -->
-    <select id="findRoleAndPermissionTotalCount" resultType="java.lang.Long" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
+    <select id="findRoleAndPermissionTotalCount" resultType="java.lang.Long"
+            parameterType="com.cisdi.info.simple.dto.base.PageDTO">
         select count(EId) as totalCount from simple_role_and_permission as t0 where ${sql}
     </select>
 
     <!--  根据Id查询 -->
-    <select id="findRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="java.lang.Long">
+    <select id="findRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission"
+            parameterType="java.lang.Long">
         select * from simple_role_and_permission where eid = #{roleAndPermissionId}
     </select>
 
     <!-- -->
-    <select id="findRoleAndPermissionWithForeignName" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="java.lang.Long">
+    <select id="findRoleAndPermissionWithForeignName"
+            resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="java.lang.Long">
         select
             t0.eid  ,
             t0.name  ,
@@ -77,7 +82,8 @@
 
 
     <!--  保存 -->
-    <select id="saveRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
+    <select id="saveRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission"
+            parameterType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
         insert into simple_role_and_permission
         (
                 name ,
@@ -105,7 +111,8 @@
     </select>
 
     <!--  编辑 -->
-    <select id="updateRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission" parameterType="com.cisdi.info.simple.entity.permission.RoleAndPermission" >
+    <select id="updateRoleAndPermission" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission"
+            parameterType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
         update simple_role_and_permission set
                 name = #{name} ,
                 permission_code = #{permissionCode} ,
@@ -135,11 +142,14 @@
     </delete>
 
     <!--  根据角色Id查询对应的权限点 -->
-    <select id="findRoleAndPermissionByRoleId" parameterType="java.lang.Long" resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
+    <select id="findRoleAndPermissionByRoleId" parameterType="java.lang.Long"
+            resultType="com.cisdi.info.simple.entity.permission.RoleAndPermission">
         select * from simple_role_and_permission where role_id = #{roleId}
     </select>
+
+    <!--  根据ModuleCode删除角色对应的权限 -->
     <delete id="deleteRoleAndPermissionByModuleCode">
-        DELETE  from simple_role_and_permission where module_code=#{moduleCode}
+        delete from simple_role_and_permission where module_code = #{moduleCode}
     </delete>
 
 </mapper>

@@ -36,5 +36,6 @@ public interface RoleAndPermissionDao {
     public int deleteRoleAndPermissionByRoleIdAndPermissionCode(@Param("roleId") Long roleId, @Param("permissionCode") String permissionCode);
 
     public List<RoleAndPermission> findRoleAndPermissionByRoleId(Long roleId);
-    public Integer deleteRoleAndPermissionByModuleCode(String moduleCode);
+
+    public int deleteRoleAndPermissionByModuleCode(String moduleCode);
 }

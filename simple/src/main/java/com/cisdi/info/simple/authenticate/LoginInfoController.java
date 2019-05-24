@@ -1,5 +1,6 @@
 package com.cisdi.info.simple.authenticate;
 
+import com.cisdi.info.simple.config.NudgePlusConfig;
 import com.cisdi.info.simple.dao.organization.OrganizationDao;
 import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dao.qingTui.EmpOpenIdDao;
@@ -14,8 +15,6 @@ import com.cisdi.info.simple.entity.permission.LoginUser;
 import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
 import com.cisdi.info.simple.entity.permission.Operator;
 import com.cisdi.info.simple.entity.qingTui.EmpOpenId;
-import com.cisdi.info.simple.entity.regist.EmployeRegist;
-import com.cisdi.info.simple.entity.regist.OrganizationRegist;
 import com.cisdi.info.simple.service.attachment.AttachmentService;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.member.MemberService;
@@ -24,7 +23,6 @@ import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.permission.OperatorService;
 import com.cisdi.info.simple.service.qingTui.impl.EmpOpenIdServiceBean;
 import com.cisdi.info.simple.util.MailUtil;
-import com.cisdi.info.simple.config.NudgePlusConfig;
 import com.cisdi.nudgeplus.sdk.service.OAuthService;
 import com.cisdi.nudgeplus.tmsbeans.beans.UserInfoResult;
 import org.codehaus.jettison.json.JSONException;
@@ -127,10 +125,7 @@ public class LoginInfoController {
         this.operatorService.wisdomCateringLogout();
         return "OK";
     }
-    @GetMapping("/wisdomCateringConstructNewTree")
-    public ModuleTreeNode wisdomCateringConstructNewTree(@RequestParam  Long operatorId, @RequestParam String moduleType) {
-        return this.moduleService.wisdomCateringConstructNewTree(operatorId, moduleType);
-    }
+
     //移动端模拟登录
      boolean mobileLoginSubmit(Long operatorId){
         Operator operator = this.operatorService.findOperator(operatorId);

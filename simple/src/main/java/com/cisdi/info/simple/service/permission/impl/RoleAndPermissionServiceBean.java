@@ -107,7 +107,7 @@ public class RoleAndPermissionServiceBean extends BaseService implements RoleAnd
     }
 
     @Override
-    public Integer deleteRoleAndPermissionByModuleCode(String moduleCode) {
-        return  this.roleAndPermissionDao.deleteRoleAndPermissionByModuleCode(moduleCode);
+    public boolean deleteRoleAndPermissionByModuleCode(String moduleCode) {
+        return this.roleAndPermissionDao.deleteRoleAndPermissionByModuleCode(moduleCode) > 0;
     }
 }

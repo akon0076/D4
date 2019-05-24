@@ -1,18 +1,4 @@
 {
-  "mobile": {
-    "code": "mobile",
-    "name1": "移动管理",
-    "url": "",
-    "route": "",
-    "iconClass": "",
-    "displayIndex": 0,
-    "parentCode": "",
-    "parentName": "",
-    "moduleType": "移动模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
   "simple/organization/Organization": {
     "code": "simple/organization/Organization",
     "name1": "单位",
@@ -23,7 +9,7 @@
     "parentCode": "simple/organization",
     "parentName": "组织机构",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -79,7 +65,7 @@
     "parentCode": "simple/permission",
     "parentName": "授权管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -134,7 +120,7 @@
     "parentCode": "simple/permission",
     "parentName": "授权管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -171,6 +157,7 @@
         "fullName": "simple.授权.模块.查看",
         "moduleCode": "simple/permission/Module",
         "urls": [
+          "/simple/permission/Module/findModuleTree",
           "/simple/permission/Module/findModuleForView",
           "/simple/permission/Module/findAllModules",
           "/simple/permission/Module/findModulesWithIdNameByName",
@@ -191,7 +178,7 @@
     "parentCode": "simple/permission",
     "parentName": "授权管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -261,7 +248,7 @@
     "parentCode": "simple/permission",
     "parentName": "授权管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -326,7 +313,7 @@
     "parentCode": "simple/attachment",
     "parentName": "附件管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -384,7 +371,7 @@
     "parentCode": "simple/organization",
     "parentName": "组织机构",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -440,7 +427,7 @@
     "parentCode": "simple/report",
     "parentName": "报表管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -494,7 +481,7 @@
     "parentCode": "simple/report",
     "parentName": "报表管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -519,7 +506,7 @@
     "parentCode": "simple/system",
     "parentName": "系统管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -574,7 +561,7 @@
     "parentCode": "simple/organization",
     "parentName": "组织机构",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -631,7 +618,7 @@
     "parentCode": "simple/task",
     "parentName": "定时任务",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -693,7 +680,7 @@
     "parentCode": "simple/task",
     "parentName": "定时任务",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -747,21 +734,7 @@
     "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/system": {
-    "code": "simple/system",
-    "name1": "系统管理",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-xitongguanli1",
-    "displayIndex": 6,
-    "parentCode": "simple",
-    "parentName": "基础管理",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": []
   },
@@ -775,7 +748,7 @@
     "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": []
   },
@@ -789,21 +762,7 @@
     "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/task": {
-    "code": "simple/task",
-    "name1": "定时任务",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-navicon-dsrwpz",
-    "displayIndex": 1,
-    "parentCode": "simple",
-    "parentName": "simple",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": []
   },
@@ -817,21 +776,7 @@
     "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
-    "routeParamsObj": "",
-    "permissions": []
-  },
-  "simple/log": {
-    "code": "simple/log",
-    "name1": "日志管理",
-    "url": "",
-    "route": "",
-    "iconClass": "iconfont icon-rizhiguanli",
-    "displayIndex": 1,
-    "parentCode": "simple",
-    "parentName": "simple",
-    "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": []
   },
@@ -845,7 +790,7 @@
     "parentCode": "simple/log",
     "parentName": "日志管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -880,9 +825,33 @@
     "parentCode": "",
     "parentName": "",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": []
+  },
+  "simple/password": {
+    "code": "simple/password",
+    "name1": "修改密码",
+    "url": "",
+    "route": "",
+    "iconClass": null,
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "停用",
+    "routeParamsObj": null,
+    "permissions": [
+      {
+        "code": "simple_Operator_ChangePassword",
+        "name1": "修改密码",
+        "fullName": "simple.操作员.修改密码",
+        "moduleCode": "simple/password",
+        "urls": [
+          "/simple/permission/Operator/changeMyPassword"
+        ]
+      }
+    ]
   },
   "simple/system/SystemConfig": {
     "code": "simple/system/SystemConfig",
@@ -892,9 +861,9 @@
     "iconClass": "",
     "displayIndex": 3,
     "parentCode": "simple/system",
-    "parentName": "系统参数",
+    "parentName": "系统管理",
     "moduleType": "电脑模块",
-    "isInUse": "是",
+    "isInUse": "在用",
     "routeParamsObj": "",
     "permissions": [
       {
@@ -938,28 +907,46 @@
       }
     ]
   },
-  "simple/password": {
-    "code": "simple/password",
-    "name1": "修改密码",
+  "simple/system": {
+    "code": "simple/system",
+    "name1": "系统管理",
     "url": "",
     "route": "",
-    "iconClass": null,
+    "iconClass": "iconfont icon-xitongguanli1",
+    "displayIndex": 6,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "在用",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/task": {
+    "code": "simple/task",
+    "name1": "定时任务",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-navicon-dsrwpz",
     "displayIndex": 1,
     "parentCode": "simple",
     "parentName": "基础管理",
     "moduleType": "电脑模块",
-    "isInUse": "否",
-    "routeParamsObj": null,
-    "permissions": [
-      {
-        "code": "simple_Operator_ChangePassword",
-        "name1": "修改密码",
-        "fullName": "simple.操作员.修改密码",
-        "moduleCode": "simple/password",
-        "urls": [
-          "/simple/permission/Operator/changeMyPassword"
-        ]
-      }
-    ]
+    "isInUse": "在用",
+    "routeParamsObj": "",
+    "permissions": []
+  },
+  "simple/log": {
+    "code": "simple/log",
+    "name1": "日志管理",
+    "url": "",
+    "route": "",
+    "iconClass": "iconfont icon-rizhiguanli",
+    "displayIndex": 1,
+    "parentCode": "simple",
+    "parentName": "基础管理",
+    "moduleType": "电脑模块",
+    "isInUse": "在用",
+    "routeParamsObj": "",
+    "permissions": []
   }
 }

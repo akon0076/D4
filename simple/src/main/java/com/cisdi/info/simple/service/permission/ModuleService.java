@@ -1,15 +1,12 @@
 package com.cisdi.info.simple.service.permission;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
-import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
 
 import java.util.List;
 
 public interface ModuleService {
-
-    public PageResultDTO findModules(PageDTO pageDTO);
 
     public List<Module> findAllModules();
 
@@ -26,7 +23,7 @@ public interface ModuleService {
 
     public Module updateModule(Module module);
 
-    public void deleteModule(String moduleCode);
+    public boolean deleteModule(String moduleCode);
 
     public ModuleTreeNode constructNewTree(Long operatorId, String modelType);
 
@@ -46,8 +43,6 @@ public interface ModuleService {
 
     Integer moduleAccount();
 
-    public ModuleTreeNode wisdomCateringConstructNewTree(Long operatorId, String modelType);
-
     public Module findModuleForDisplay(String moduleCode);
 
     /**
@@ -56,4 +51,11 @@ public interface ModuleService {
      * @return
      */
     public List<Module> loadExtendMoule(String serviceName);
+
+    /**
+     * 获取全部模块树
+     * @param pageDTO
+     * @return
+     */
+    public List<Module> findModuleTree(PageDTO pageDTO);
 }
