@@ -225,46 +225,6 @@ public class ModuleManager {
         }
     }
 
-    public static void addModuleFromJson(String moduleJson) {
-        writeLock.writeLock().lock();
-        try {
-            Gson gson = new Gson();
-            Map<String, Module> newModules = gson.fromJson(moduleJson, new TypeToken<Map<String, Module>>() {
-            }.getType());
-
-            for (Module module : newModules.values()) {
-                addModule(module);
-            }
-            saveModules(Config.moduleFile);
-        } finally {
-            writeLock.writeLock().unlock();
-        }
-    }
-
-    /**
-     * 新增模块
-     *
-     * @param module
-     */
-    public static void addModule(Module module) {
-        try {
-            if (module == null) {
-                throw new DDDException("模块为null，请检查参数是否正确");
-            }
-            String code = module.getCode();
-            if (StringUtils.isBlank(code)) {
-                throw new DDDException("模块编码为null,请重新输入");
-            }
-            writeLock.writeLock().lock();
-            if (ModuleManager.findModule(module.getCode()) != null) {
-                throw new DDDException("模块编码重复,请重新输入");
-            }
-            addModule(code, module);
-        } finally {
-            writeLock.writeLock().unlock();
-        }
-    }
-
     /**
      * 根据编码找到指定模块
      *
