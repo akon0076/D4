@@ -26,6 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Transactional
 public class ModuleServiceBean extends BaseService implements ModuleService {
 
+    private static final String STOP_USE = "停用";
+
     private static Logger logger = LogManager.getLogger();
 
     @Autowired
@@ -47,12 +49,108 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         return this.extendsMouleServiceMap.get(serviceName);
     }
 
+    /**
+     * 获取全部模块
+     *
+     * @return
+     */
     @Override
     public List<Module> findAllModules() {
         Collection<Module> modules = ModuleManager.findAllModules();
         List<Module> list = new ArrayList<>();
         list.addAll(modules);
         return list;
+    }
+
+    /**
+     * 找到全部非叶节点模块
+     *
+     * @return
+     */
+    @Override
+    public List<Module> findAllParentModules() {
+        List<Module> moduleTree = findModuleTree();
+        List<Module> resultList = new ArrayList<>();
+        for (Module module : moduleTree) {
+            if (STOP_USE.equals(module.getIsInUse())) {
+                continue;
+            }
+            if (module.getPermissions().size() == 0) {
+                resultList.add(module);
+            }
+            List<Module> children = module.getChildren();
+            if (children.size() != 0) {
+                findAllParentModules(resultList, children);
+            }
+        }
+        for (Module module : resultList) {
+            module.setChildren(null);
+        }
+        return resultList;
+    }
+
+    /**
+     * 找到全部叶节点模块
+     *
+     * @return
+     */
+    @Override
+    public List<Module> findAllLeafModules() {
+        List<Module> moduleTree = findModuleTree();
+        List<Module> resultList = new ArrayList<>();
+        for (Module module : moduleTree) {
+            if (STOP_USE.equals(module.getIsInUse())) {
+                continue;
+            }
+            List<Module> children = module.getChildren();
+            if (children.size() == 0) {
+                resultList.add(module);
+            } else {
+                findAllLeafModules(resultList, children);
+            }
+        }
+        return resultList;
+    }
+
+    /**
+     * 处理子节点
+     *
+     * @param resultList
+     * @param children
+     */
+    private void findAllParentModules(List<Module> resultList, List<Module> children) {
+        for (Module module : children) {
+            if (STOP_USE.equals(module.getIsInUse())) {
+                continue;
+            }
+            if (module.getPermissions().size() == 0) {
+                resultList.add(module);
+            }
+            List<Module> child = module.getChildren();
+            if (child.size() != 0) {
+                findAllParentModules(resultList, child);
+            }
+        }
+    }
+
+    /**
+     * 处理子节点
+     *
+     * @param resultList
+     * @param children
+     */
+    private void findAllLeafModules(List<Module> resultList, List<Module> children) {
+        for (Module module : children) {
+            if (STOP_USE.equals(module.getIsInUse())) {
+                continue;
+            }
+            List<Module> child = module.getChildren();
+            if (child.size() == 0) {
+                resultList.add(module);
+            } else {
+                findAllLeafModules(resultList, child);
+            }
+        }
     }
 
     @Override
@@ -80,6 +178,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
      * @param pageDTO
      * @return
      */
+    @Override
     public List<Module> findModuleTree(PageDTO pageDTO) {
         Map<String, Module> moduleMap = ModuleManager.refreshAndLoadModules();
         if (moduleMap == null || moduleMap.size() == 0) {
@@ -94,14 +193,39 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
             }
             setModuleChildren(modules, module);
         }
-        Integer currentPage = pageDTO.getCurrentPage();
-        Integer pageSize = pageDTO.getPageSize();
+        Integer currentPage = pageDTO == null ? 1 : pageDTO.getCurrentPage();
+        Integer pageSize = pageDTO == null ? 10 : pageDTO.getPageSize();
         int formIndex = (currentPage - 1) * pageSize;
         int toIndex = formIndex + pageSize;
         toIndex = toIndex > list.size() ? list.size() : toIndex;
         List<Module> resultlist = list.subList(formIndex, toIndex);
         Module resultModule = new Module();
         resultModule.getChildren().addAll(resultlist);
+        sort(resultModule);
+        return resultModule.getChildren();
+    }
+
+    /**
+     * 获取全部模块树
+     *
+     * @return
+     */
+    public List<Module> findModuleTree() {
+        Map<String, Module> moduleMap = ModuleManager.refreshAndLoadModules();
+        if (moduleMap == null || moduleMap.size() == 0) {
+            throw new DDDException("模块加载失败");
+        }
+        List<Module> list = new ArrayList<>();
+        Collection<Module> modules = moduleMap.values();
+        for (Module module : modules) {
+            String parentCode = module.getParentCode();
+            if (StringUtils.isBlank(parentCode)) {
+                list.add(module);
+            }
+            setModuleChildren(modules, module);
+        }
+        Module resultModule = new Module();
+        resultModule.getChildren().addAll(list);
         sort(resultModule);
         return resultModule.getChildren();
     }
@@ -216,7 +340,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
             if (module == null) {
                 throw new DDDException("找不到编码为" + moduleCode + "的模块");
             }
-            if (treeNodeMap.get(moduleCode) != null || !modelType.equals(module.getModuleType()) || "停用".equals(module.getIsInUse())) {
+            if (treeNodeMap.get(moduleCode) != null || !modelType.equals(module.getModuleType()) || STOP_USE.equals(module.getIsInUse())) {
                 continue;
             }
             setPrentModuleTreeNode(treeNodeMap, topTreeNode, module, null);
@@ -312,7 +436,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         Map<String, ModuleTreeNode> treeNodeMap = new HashMap<>();
         Set<ModuleTreeNode> topTreeNode = new HashSet<>();
         for (Module module : allModules) {
-            if (treeNodeMap.get(module.getCode()) != null || !modelType.equals(module.getModuleType()) || "停用".equals(module.getIsInUse())) {
+            if (treeNodeMap.get(module.getCode()) != null || !modelType.equals(module.getModuleType()) || STOP_USE.equals(module.getIsInUse())) {
                 continue;
             }
             setPrentModuleTreeNode(treeNodeMap, topTreeNode, module, null);
@@ -325,104 +449,6 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         sort(rootModuleTreeNode);
         return rootModuleTreeNode;
     }
-
-    /**
-     * 初始化模块进入数据库
-     *
-     * @param modules
-     */
-    @Override
-    public void saveModelsToDataBase(List<Module> modules) {
-        Integer count = 0;
-        for (Module module1 : modules) {
-            Module newModule = new Module();
-
-            newModule.setParentName(module1.getParentName());
-            newModule.setParent(module1.getParent());
-            newModule.setPermissions(module1.getPermissions());
-            newModule.setUrl(module1.getUrl());
-            newModule.setRouteParamsObj(module1.getRouteParamsObj());
-            newModule.setParentCode(module1.getParentCode());
-            newModule.setParentId(module1.getParentId());
-            newModule.setModuleType(module1.getModuleType());
-            newModule.setIconClass(module1.getIconClass());
-            newModule.setDisplayIndex(module1.getDisplayIndex());
-            newModule.setRoute(module1.getRoute());
-            newModule.setCode(module1.getCode());
-            newModule.setChildren(module1.getChildren());
-            newModule.setIsInUse(module1.getIsInUse());
-
-            if (module1.getParentCode() != null) {
-                if (!module1.getParentName().equals("")) {
-                    String name = module1.getParentName() + "_" + module1.getName();
-                    newModule.setName(name);
-                } else {
-                    newModule.setName(module1.getName());
-                }
-                this.moduleDao.saveModule(newModule);
-            } else {
-                logger.error("模块：" + module1.getCode() + "，生成出错，父级模块默认不为null，应该是''，请检查代码生成是否正确");
-                throw new DDDException("模块：" + module1.getCode() + "，生成出错，父级模块默认不为null，应该是''，请检查代码生成是否正确");
-            }
-            count++;
-        }
-        logger.debug("模块条数:" + count);
-    }
-
-    /**
-     * 第二次启动针对模块改变刷新数据库
-     *
-     * @param modules
-     */
-    @Override
-    public void changeModelsToDataBase(List<Module> modules) {
-
-        Integer count = 0;
-        for (Module module1 : modules) {
-            Module newModule = new Module();
-
-            newModule.setParentName(module1.getParentName());
-            newModule.setParent(module1.getParent());
-            newModule.setPermissions(module1.getPermissions());
-            newModule.setUrl(module1.getUrl());
-            newModule.setRouteParamsObj(module1.getRouteParamsObj());
-            newModule.setParentCode(module1.getParentCode());
-            newModule.setParentId(module1.getParentId());
-            newModule.setModuleType(module1.getModuleType());
-            newModule.setIconClass(module1.getIconClass());
-            newModule.setDisplayIndex(module1.getDisplayIndex());
-            newModule.setRoute(module1.getRoute());
-            newModule.setCode(module1.getCode());
-            newModule.setChildren(module1.getChildren());
-            newModule.setIsInUse(module1.getIsInUse());
-
-            if (module1.getParentName() != null) {
-                if (!module1.getParentName().equals("")) {
-                    String name = module1.getParentName() + "_" + module1.getName();
-                    newModule.setName(name);
-                } else {
-                    newModule.setName(module1.getName());
-                }
-                this.moduleDao.updateModule(newModule);
-            } else {
-                logger.error("模块：" + module1.getCode() + "，生成出错，parentCode默认不为null，应该是''，请检查代码生成是否正确");
-                throw new DDDException("模块：" + module1.getCode() + "，生成出错，parentCode默认不为null，应该是''，请检查代码生成是否正确");
-            }
-            count++;
-        }
-        logger.debug("模块条数:" + count);
-    }
-
-    /**
-     * 获取数据库中模块的总条数
-     *
-     * @return 总条数
-     */
-    @Override
-    public Integer moduleAccount() {
-        return this.moduleDao.moduleAccount();
-    }
-
 
     @Override
     public Module findModuleForDisplay(String moduleCode) {

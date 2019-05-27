@@ -113,6 +113,16 @@ public class ModuleController {
         return this.moduleService.findAllModules();
     }
 
+    @GetMapping("/findAllParentModules")
+    public List<Module> findAllParentModules() {
+        return this.moduleService.findAllParentModules();
+    }
+
+    @GetMapping("/findAllLeafModules")
+    public List<Module> findAllLeafModules() {
+        return this.moduleService.findAllLeafModules();
+    }
+
     @GetMapping("/findAllTreeNode")
     public ModuleTreeNode findAllTreeNode(@RequestParam String modelType) {
         return this.moduleService.findAllTreeNode(modelType);
@@ -146,7 +156,7 @@ public class ModuleController {
     private void prepareModuleEditDto(ModuleEditDto moduleEditDto) {
         moduleEditDto.setModuleTypeCodeTables(this.codeTableService.findCodeTablesByCodeType("ModuleType"));
         moduleEditDto.setIsInUseCodeTables(this.codeTableService.findCodeTablesByCodeType("UseStatus"));
-        moduleEditDto.setParentModules(this.moduleService.findAllModulesWithIdName());
+        moduleEditDto.setParentModules(this.moduleService.findAllParentModules());
     }
 
     @PostMapping("/saveModule")
@@ -164,14 +174,5 @@ public class ModuleController {
         return moduleService.deleteModule(moduleId);
     }
 
-    @GetMapping("/findModulesWithIdNameById")
-    public Module findModulesWithIdNameById(@RequestParam Long moduleId) {
-        return null;//this.moduleService.findModulesWithIdNameById(moduleId);
-    }
-
-    @GetMapping("/findModulesWithIdNameByName")
-    public List<Module> findModulesWithIdNameByName(String moduleName) {
-        return null;//this.moduleService.findModulesWithIdNameByName(moduleName);
-    }
 }
 

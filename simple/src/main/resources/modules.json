@@ -1,7 +1,7 @@
 {
   "simple/organization/Organization": {
     "code": "simple/organization/Organization",
-    "name1": "单位",
+    "name1": "单位管理",
     "url": "/simple/organization/Organization",
     "route": "/simple/organization/Organization",
     "iconClass": "iconfont icon-danwei",
@@ -55,199 +55,9 @@
       }
     ]
   },
-  "simple/permission/Operator": {
-    "code": "simple/permission/Operator",
-    "name1": "操作员",
-    "url": "/simple/permission/Operator",
-    "route": "/simple/permission/Operator",
-    "iconClass": "iconfont icon-caozuoyuan",
-    "displayIndex": 1,
-    "parentCode": "simple/permission",
-    "parentName": "授权管理",
-    "moduleType": "电脑模块",
-    "isInUse": "在用",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_permission_Operator_Add",
-        "name1": "新增操作员",
-        "fullName": "simple.授权.操作员.新增",
-        "moduleCode": "simple/permission/Operator",
-        "urls": [
-          "/simple/permission/Operator/createOperator",
-          "/simple/permission/Operator/saveOperator"
-        ]
-      },
-      {
-        "code": "simple_permission_Operator_Edit",
-        "name1": "编辑操作员",
-        "fullName": "simple.授权.操作员.编辑",
-        "moduleCode": "simple/permission/Operator",
-        "urls": [
-          "/simple/permission/Operator/updateOperator",
-          "/simple/permission/Operator/changePassword"
-        ]
-      },
-      {
-        "code": "simple_permission_Operator_Delete",
-        "name1": "删除操作员",
-        "fullName": "simple.授权.操作员.删除",
-        "moduleCode": "simple/permission/Operator",
-        "urls": [
-          "/simple/permission/Operator/deleteOperator"
-        ]
-      },
-      {
-        "code": "simple_permission_Operator_View",
-        "name1": "查看操作员",
-        "fullName": "simple.授权.操作员.查看",
-        "moduleCode": "simple/permission/Operator",
-        "urls": [
-          "/simple/permission/Operator/findOperatorForEdit",
-          "/simple/permission/Operator/findOperators",
-          "/simple/permission/Operator/findOperatorForView"
-        ]
-      }
-    ]
-  },
-  "simple/permission/Permission": {
-    "code": "simple/permission/Permission",
-    "name1": "权限点",
-    "url": "/simple/permission/Permission",
-    "route": "/simple/permission/Permission",
-    "iconClass": "iconfont icon-quanxiandianguanli",
-    "displayIndex": 1,
-    "parentCode": "simple/permission",
-    "parentName": "授权管理",
-    "moduleType": "电脑模块",
-    "isInUse": "在用",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_permission_Permission_Add",
-        "name1": "新增权限点",
-        "fullName": "simple.授权.权限点.新增",
-        "moduleCode": "simple/permission/Permission",
-        "urls": [
-          "/simple/permission/Permission/createPermission",
-          "/simple/permission/Permission/savePermission",
-          "/simple/permission/RoleAndPermission/createRoleAndPermission",
-          "/simple/permission/RoleAndPermission/saveRoleAndPermission",
-          "/simple/permission/OperatorAndRole/createOperatorAndRole",
-          "/simple/permission/OperatorAndRole/saveOperatorAndRole"
-        ]
-      },
-      {
-        "code": "simple_permission_Permission_Edit",
-        "name1": "编辑权限点",
-        "fullName": "simple.授权.权限点.编辑",
-        "moduleCode": "simple/permission/Permission",
-        "urls": [
-          "/simple/permission/Permission/updatePermission",
-          "/simple/permission/RoleAndPermission/updateRoleAndPermission"
-        ]
-      },
-      {
-        "code": "simple_permission_Permission_Delete",
-        "name1": "删除权限点",
-        "fullName": "simple.授权.权限点.删除",
-        "moduleCode": "simple/permission/Permission",
-        "urls": [
-          "/simple/permission/Permission/deletePermission",
-          "/simple/permission/RoleAndPermission/deleteRoleAndPermission"
-        ]
-      },
-      {
-        "code": "simple_permission_Permission_View",
-        "name1": "查看权限点",
-        "fullName": "simple.授权.权限点.查看",
-        "moduleCode": "simple/permission/Permission",
-        "urls": [
-          "/simple/permission/Permission/findAllPermissions",
-          "/simple/permission/RoleAndPermission/findRoleAndPermissionForView",
-          "/simple/permission/RoleAndPermission/findRoleAndPermissionByRoleId",
-          "/simple/permission/Permission/findPermissions",
-          "/simple/permission/Permission/findPermissionForView",
-          "/simple/permission/Permission/findPermissionForEdit",
-          "/simple/permission/RoleAndPermission/findRoleAndPermissionForEdit",
-          "/simple/permission/Role/findRolesWithIdNameByName",
-          "/simple/permission/RoleAndPermission/findRoleAndPermissions",
-          "/simple/permission/OperatorAndRole/findOperatorAndRoles",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName",
-          "/simple/permission/OperatorAndRole/findOperatorAndRoleForView"
-        ]
-      }
-    ]
-  },
-  "simple/permission/Role": {
-    "code": "simple/permission/Role",
-    "name1": "角色",
-    "url": "/simple/permission/Role",
-    "route": "/simple/permission/Role",
-    "iconClass": "iconfont icon-jiaosecopy",
-    "displayIndex": 1,
-    "parentCode": "simple/permission",
-    "parentName": "授权管理",
-    "moduleType": "电脑模块",
-    "isInUse": "在用",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_permission_Role_Add",
-        "name1": "新增角色",
-        "fullName": "simple.授权.角色.新增",
-        "moduleCode": "simple/permission/Role",
-        "urls": [
-          "/simple/permission/Role/createRole",
-          "/simple/permission/Role/saveRole",
-          "/simple/permission/OperatorAndRole/createOperatorAndRole",
-          "/simple/permission/OperatorAndRole/saveOperatorAndRole"
-        ]
-      },
-      {
-        "code": "simple_permission_Role_Edit",
-        "name1": "编辑角色",
-        "fullName": "simple.授权.角色.编辑",
-        "moduleCode": "simple/permission/Role",
-        "urls": [
-          "/simple/permission/Role/updateRole",
-          "/simple/permission/OperatorAndRole/updateOperatorAndRole"
-        ]
-      },
-      {
-        "code": "simple_permission_Role_Delete",
-        "name1": "删除角色",
-        "fullName": "simple.授权.角色.删除",
-        "moduleCode": "simple/permission/Role",
-        "urls": [
-          "/simple/permission/Role/deleteRole",
-          "/simple/permission/OperatorAndRole/deleteOperatorAndRole"
-        ]
-      },
-      {
-        "code": "simple_permission_Role_View",
-        "name1": "查看角色",
-        "fullName": "simple.授权.角色.查看",
-        "moduleCode": "simple/permission/Role",
-        "urls": [
-          "/simple/permission/OperatorAndRole/findOperatorAndRoleByOperatorId",
-          "/simple/permission/Role/findRolesWithIdNameByName",
-          "/simple/permission/Role/findRoleForView",
-          "/simple/permission/Role/findAllRoles",
-          "/simple/permission/Role/findRoles",
-          "/simple/permission/Role/findRoleForEdit",
-          "/simple/permission/OperatorAndRole/findOperatorAndRoleForEdit",
-          "/simple/permission/Operator/findOperatorsWithIdNameByName",
-          "/simple/permission/OperatorAndRole/findOperatorAndRoleByOperatorIdAndOrganizationId",
-          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
-        ]
-      }
-    ]
-  },
   "simple/attachment/Attachment": {
     "code": "simple/attachment/Attachment",
-    "name1": "附件",
+    "name1": "附件管理",
     "url": "/simple/attachment/Attachment",
     "route": "/simple/attachment/Attachment",
     "iconClass": "iconfont icon-fujian",
@@ -305,7 +115,7 @@
   },
   "simple/organization/Department": {
     "code": "simple/organization/Department",
-    "name1": "部门",
+    "name1": "部门管理",
     "url": "/simple/organization/Department",
     "route": "/simple/organization/Department",
     "iconClass": "iconfont icon-bumen",
@@ -440,7 +250,7 @@
   },
   "simple/organization/Employee": {
     "code": "simple/organization/Employee",
-    "name1": "职员",
+    "name1": "职员管理",
     "url": "/simple/organization/Employee",
     "route": "/simple/organization/Employee",
     "iconClass": "iconfont icon-zhiyuan",
@@ -941,10 +751,202 @@
           "/simple/permission/Module/findModuleTree",
           "/simple/permission/Module/findModuleForView",
           "/simple/permission/Module/findAllModules",
+          "/simple/permission/Module/findAllParentModules",
+          "/simple/permission/Module/findAllLeafModules",
           "/simple/permission/Module/findModulesWithIdNameByName",
           "/simple/permission/Module/findModules",
           "/simple/permission/Module/findModuleForEdit",
           "/simple/permission/Module/findAllTreeNode"
+        ]
+      }
+    ]
+  },
+  "simple/permission/Permission": {
+    "code": "simple/permission/Permission",
+    "name1": "权限管理",
+    "url": "/simple/permission/Permission",
+    "route": "/simple/permission/Permission",
+    "iconClass": "iconfont icon-quanxiandianguanli",
+    "displayIndex": 1,
+    "parentCode": "simple/permission",
+    "parentName": "授权管理",
+    "moduleType": "电脑模块",
+    "isInUse": "在用",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_permission_Permission_Add",
+        "name1": "新增权限点",
+        "fullName": "simple.授权.权限点.新增",
+        "moduleCode": "simple/permission/Permission",
+        "urls": [
+          "/simple/permission/Permission/createPermission",
+          "/simple/permission/Permission/savePermission",
+          "/simple/permission/RoleAndPermission/createRoleAndPermission",
+          "/simple/permission/RoleAndPermission/saveRoleAndPermission",
+          "/simple/permission/OperatorAndRole/createOperatorAndRole",
+          "/simple/permission/OperatorAndRole/saveOperatorAndRole"
+        ]
+      },
+      {
+        "code": "simple_permission_Permission_Edit",
+        "name1": "编辑权限点",
+        "fullName": "simple.授权.权限点.编辑",
+        "moduleCode": "simple/permission/Permission",
+        "urls": [
+          "/simple/permission/Permission/updatePermission",
+          "/simple/permission/RoleAndPermission/updateRoleAndPermission"
+        ]
+      },
+      {
+        "code": "simple_permission_Permission_Delete",
+        "name1": "删除权限点",
+        "fullName": "simple.授权.权限点.删除",
+        "moduleCode": "simple/permission/Permission",
+        "urls": [
+          "/simple/permission/Permission/deletePermission",
+          "/simple/permission/RoleAndPermission/deleteRoleAndPermission"
+        ]
+      },
+      {
+        "code": "simple_permission_Permission_View",
+        "name1": "查看权限点",
+        "fullName": "simple.授权.权限点.查看",
+        "moduleCode": "simple/permission/Permission",
+        "urls": [
+          "/simple/permission/Permission/findAllPermissions",
+          "/simple/permission/RoleAndPermission/findRoleAndPermissionForView",
+          "/simple/permission/RoleAndPermission/findRoleAndPermissionByRoleId",
+          "/simple/permission/Permission/findPermissions",
+          "/simple/permission/Permission/findPermissionForView",
+          "/simple/permission/Permission/findPermissionForEdit",
+          "/simple/permission/RoleAndPermission/findRoleAndPermissionForEdit",
+          "/simple/permission/Role/findRolesWithIdNameByName",
+          "/simple/permission/RoleAndPermission/findRoleAndPermissions",
+          "/simple/permission/OperatorAndRole/findOperatorAndRoles",
+          "/simple/permission/Operator/findOperatorsWithIdNameByName",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName",
+          "/simple/permission/OperatorAndRole/findOperatorAndRoleForView"
+        ]
+      }
+    ]
+  },
+  "simple/permission/Role": {
+    "code": "simple/permission/Role",
+    "name1": "角色管理",
+    "url": "/simple/permission/Role",
+    "route": "/simple/permission/Role",
+    "iconClass": "iconfont icon-jiaosecopy",
+    "displayIndex": 1,
+    "parentCode": "simple/permission",
+    "parentName": "授权管理",
+    "moduleType": "电脑模块",
+    "isInUse": "在用",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_permission_Role_Add",
+        "name1": "新增角色",
+        "fullName": "simple.授权.角色.新增",
+        "moduleCode": "simple/permission/Role",
+        "urls": [
+          "/simple/permission/Role/createRole",
+          "/simple/permission/Role/saveRole",
+          "/simple/permission/OperatorAndRole/createOperatorAndRole",
+          "/simple/permission/OperatorAndRole/saveOperatorAndRole"
+        ]
+      },
+      {
+        "code": "simple_permission_Role_Edit",
+        "name1": "编辑角色",
+        "fullName": "simple.授权.角色.编辑",
+        "moduleCode": "simple/permission/Role",
+        "urls": [
+          "/simple/permission/Role/updateRole",
+          "/simple/permission/OperatorAndRole/updateOperatorAndRole"
+        ]
+      },
+      {
+        "code": "simple_permission_Role_Delete",
+        "name1": "删除角色",
+        "fullName": "simple.授权.角色.删除",
+        "moduleCode": "simple/permission/Role",
+        "urls": [
+          "/simple/permission/Role/deleteRole",
+          "/simple/permission/OperatorAndRole/deleteOperatorAndRole"
+        ]
+      },
+      {
+        "code": "simple_permission_Role_View",
+        "name1": "查看角色",
+        "fullName": "simple.授权.角色.查看",
+        "moduleCode": "simple/permission/Role",
+        "urls": [
+          "/simple/permission/OperatorAndRole/findOperatorAndRoleByOperatorId",
+          "/simple/permission/Role/findRolesWithIdNameByName",
+          "/simple/permission/Role/findRoleForView",
+          "/simple/permission/Role/findAllRoles",
+          "/simple/permission/Role/findRoles",
+          "/simple/permission/Role/findRoleForEdit",
+          "/simple/permission/OperatorAndRole/findOperatorAndRoleForEdit",
+          "/simple/permission/Operator/findOperatorsWithIdNameByName",
+          "/simple/permission/OperatorAndRole/findOperatorAndRoleByOperatorIdAndOrganizationId",
+          "/simple/organization/Organization/findOrganizationsWithIdNameByName"
+        ]
+      }
+    ]
+  },
+  "simple/permission/Operator": {
+    "code": "simple/permission/Operator",
+    "name1": "操作员管理",
+    "url": "/simple/permission/Operator",
+    "route": "/simple/permission/Operator",
+    "iconClass": "iconfont icon-caozuoyuan",
+    "displayIndex": 1,
+    "parentCode": "simple/permission",
+    "parentName": "授权管理",
+    "moduleType": "电脑模块",
+    "isInUse": "在用",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_permission_Operator_Add",
+        "name1": "新增操作员",
+        "fullName": "simple.授权.操作员.新增",
+        "moduleCode": "simple/permission/Operator",
+        "urls": [
+          "/simple/permission/Operator/createOperator",
+          "/simple/permission/Operator/saveOperator"
+        ]
+      },
+      {
+        "code": "simple_permission_Operator_Edit",
+        "name1": "编辑操作员",
+        "fullName": "simple.授权.操作员.编辑",
+        "moduleCode": "simple/permission/Operator",
+        "urls": [
+          "/simple/permission/Operator/updateOperator",
+          "/simple/permission/Operator/changePassword"
+        ]
+      },
+      {
+        "code": "simple_permission_Operator_Delete",
+        "name1": "删除操作员",
+        "fullName": "simple.授权.操作员.删除",
+        "moduleCode": "simple/permission/Operator",
+        "urls": [
+          "/simple/permission/Operator/deleteOperator"
+        ]
+      },
+      {
+        "code": "simple_permission_Operator_View",
+        "name1": "查看操作员",
+        "fullName": "simple.授权.操作员.查看",
+        "moduleCode": "simple/permission/Operator",
+        "urls": [
+          "/simple/permission/Operator/findOperatorForEdit",
+          "/simple/permission/Operator/findOperators",
+          "/simple/permission/Operator/findOperatorForView"
         ]
       }
     ]
