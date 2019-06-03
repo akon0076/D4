@@ -307,13 +307,15 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
             throw new DDDException("模块为null，请检查参数是否正确");
         }
         String code = module.getCode();
+        String lastCode = module.getLastCode();
         if (StringUtils.isBlank(code)) {
             throw new DDDException("模块编码为null,请重新输入");
         }
-        if (ModuleManager.findModuleByCode(code) != null) {
-            throw new DDDException("模块编码必须唯一，当前编码已存在");
+        if (!code.equals(lastCode)) {
+            if (ModuleManager.findModuleByCode(code) != null) {
+                throw new DDDException("模块编码必须唯一，当前编码已存在");
+            }
         }
-        String lastCode = module.getLastCode();
         Map<String, Module> moduleMap = ModuleManager.refreshAndLoadModules();
         //删除之前的模块
         if (moduleMap.remove(lastCode) == null) {

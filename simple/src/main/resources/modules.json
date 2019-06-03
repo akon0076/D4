@@ -223,31 +223,6 @@
       }
     ]
   },
-  "simple/report/reportMesShow": {
-    "code": "simple/report/reportMesShow",
-    "name1": "统计报表",
-    "url": "/simple/report/reportMesShow",
-    "route": "/simple/report/reportMesShow",
-    "iconClass": "",
-    "displayIndex": 2,
-    "parentCode": "simple/report",
-    "parentName": "报表管理",
-    "moduleType": "电脑模块",
-    "isInUse": "在用",
-    "routeParamsObj": "",
-    "permissions": [
-      {
-        "code": "simple_report_reportMesShow_View",
-        "name1": "查看统计报表统计报表",
-        "fullName": "simple.报表管理.统计报表.查看统计报表",
-        "moduleCode": "simple/report/reportMesShow",
-        "urls": [
-          "/simple/report/ModelFile/findModelFiles",
-          "/simple/report/ModelFile/findModelFileForView"
-        ]
-      }
-    ]
-  },
   "simple/organization/Employee": {
     "code": "simple/organization/Employee",
     "name1": "职员管理",
@@ -663,8 +638,10 @@
           "/simple/system/CodeTable/findCodeTableForEdit",
           "/simple/system/CodeTable/findCodeTable",
           "/simple/system/CodeTable/findAllCodeType",
+          "/simple/system/CodeTable/findAllCodeTablesTree",
           "/simple/system/CodeTable/findCodeTableForView",
           "/simple/system/CodeTable/findCodeTables",
+          "/simple/system/CodeTable/findCodeTableByCode",
           "/simple/system/CodeTable/findCodeTablesWithIdNameByName"
         ]
       },
@@ -928,6 +905,31 @@
           "/simple/permission/Operator/findOperatorForEdit",
           "/simple/permission/Operator/findOperators",
           "/simple/permission/Operator/findOperatorForView"
+        ]
+      }
+    ]
+  },
+  "simple/report/reportMesShow": {
+    "code": "simple/report/reportMesShow",
+    "name1": "统计报表",
+    "url": "/simple/report/reportMesShow",
+    "route": "/simple/report/reportMesShow",
+    "iconClass": "",
+    "displayIndex": 2,
+    "parentCode": "simple/report",
+    "parentName": "报表管理",
+    "moduleType": "电脑模块",
+    "isInUse": "停用",
+    "routeParamsObj": "",
+    "permissions": [
+      {
+        "code": "simple_report_reportMesShow_View",
+        "name1": "查看统计报表统计报表",
+        "fullName": "simple.报表管理.统计报表.查看统计报表",
+        "moduleCode": "simple/report/reportMesShow",
+        "urls": [
+          "/simple/report/ModelFile/findModelFiles",
+          "/simple/report/ModelFile/findModelFileForView"
         ]
       }
     ]
