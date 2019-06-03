@@ -112,6 +112,10 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
 
     public Long saveOperator(Operator operator) {
         this.setSavePulicColumns(operator);
+        Operator operatorByCode = this.operatorDao.findOperatorByCode(operator.getCode());
+        if (operatorByCode != null) {
+            throw new DDDException("当前账号已存在");
+        }
         return this.operatorDao.saveOperator(operator);
     }
 

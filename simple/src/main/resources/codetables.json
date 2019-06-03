@@ -253,5 +253,20 @@
     "value": "女",
     "isPublic": true,
     "children": []
+  },
+  "09da5e9d28c947a5ac3ddfa9b1da95a9": {
+    "uuid": "09da5e9d28c947a5ac3ddfa9b1da95a9",
+    "codeTypeId": "262d5f7d25924736b65676003b063cc7",
+    "code": "operatorType",
+    "name": null,
+    "codeType": "码表选项",
+    "parentUUID": "262d5f7d25924736b65676003b063cc7",
+    "displayIndex": 2,
+    "orgId": null,
+    "orgName": null,
+    "label": "虚拟用户",
+    "value": "虚拟用户",
+    "isPublic": true,
+    "children": []
   }
 }
