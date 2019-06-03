@@ -253,5 +253,50 @@
     "value": "女",
     "isPublic": true,
     "children": []
+  },
+  "11aff8474ab74e9b87479de539179a85": {
+    "uuid": "11aff8474ab74e9b87479de539179a85",
+    "codeTypeId": null,
+    "code": "aaa",
+    "name": "aaa",
+    "codeType": "码表类型",
+    "parentUUID": null,
+    "displayIndex": 1,
+    "orgId": null,
+    "orgName": null,
+    "label": null,
+    "value": null,
+    "isPublic": false,
+    "children": []
+  },
+  "1547e2cdf5724c49adef85d16fede169": {
+    "uuid": "1547e2cdf5724c49adef85d16fede169",
+    "codeTypeId": "11aff8474ab74e9b87479de539179a85",
+    "code": "aaa",
+    "name": "aaa-逆向CDIO实验室",
+    "codeType": "组织单位",
+    "parentUUID": "11aff8474ab74e9b87479de539179a85",
+    "displayIndex": 1,
+    "orgId": 1,
+    "orgName": "aaa-逆向CDIO实验室",
+    "label": null,
+    "value": null,
+    "isPublic": true,
+    "children": []
+  },
+  "69ce050c30c7487ca2d3df566bdd9587": {
+    "uuid": "69ce050c30c7487ca2d3df566bdd9587",
+    "codeTypeId": "11aff8474ab74e9b87479de539179a85",
+    "code": "aaa",
+    "name": null,
+    "codeType": "码表选项",
+    "parentUUID": "1547e2cdf5724c49adef85d16fede169",
+    "displayIndex": 1,
+    "orgId": 1,
+    "orgName": null,
+    "label": "s",
+    "value": "s",
+    "isPublic": false,
+    "children": []
   }
 }
