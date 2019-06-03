@@ -1,17 +1,13 @@
 package com.cisdi.info.simple.entity.organization;
 
-import com.cisdi.info.simple.entity.base.BaseEntity;
-
-
-import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
-
-
+import com.cisdi.info.simple.entity.base.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.List;
 
 @DEntity(label="部门",comment="",moduleLabel="部门")
@@ -51,7 +47,7 @@ public class Department extends BaseEntity implements Serializable{
 
 	@DColumn(index=9,label="是否启用",comment="是否启用")
 	@Column(name="enable",length=255,nullable=true,unique=false)
-	private Boolean enable;
+	private Boolean enable = true;
 
 
 	public String getCode() {

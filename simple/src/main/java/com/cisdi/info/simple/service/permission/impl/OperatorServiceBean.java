@@ -125,7 +125,10 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     }
 
     public void deleteOperator(Long operatorId) {
+        //删除操作员
         this.operatorDao.deleteOperator(operatorId);
+        //删除对应权限
+        this.operatorAndRoleDao.deleteOperatorAndRoleByOperatorId(operatorId);
     }
 
 
