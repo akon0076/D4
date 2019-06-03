@@ -116,6 +116,9 @@ public class ModuleManager {
      * @return 模块列表
      */
     private static Map<String, Module> getModules() {
+        if (modules == null) {
+            loadModules();
+        }
         return modules;
     }
 
@@ -145,7 +148,7 @@ public class ModuleManager {
             writeLock.writeLock().lock();
             refresh();
             getModules().put(code, newModule);
-            saveModules(Config.moduleFile);
+            saveModules();
         } finally {
             writeLock.writeLock().unlock();
         }
@@ -277,56 +280,20 @@ public class ModuleManager {
      * @param code
      */
     private static void deleteChildrenModule(Map<String, Module> moduleMap, String code) {
-        for (Module module : moduleMap.values()) {
+        Iterator<Module> iterator = moduleMap.values().iterator();
+        List<Module> list = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Module module = iterator.next();
             if (code.equals(module.getParentCode())) {
-                String childModuleCode = module.getCode();
                 //删除子模块
-                moduleMap.remove(childModuleCode);
-                //继续处理子模块
-                deleteChildrenModule(moduleMap, childModuleCode);
+                iterator.remove();
+                list.add(module);
             }
         }
-    }
-
-    /**
-     * 编辑模块
-     *
-     * @param module 模块
-     */
-    public static void updateModule(Module module) {
-
-        Module module1 = getModules().get(module.getCode());
-
-        // 手动填充一些数据进入（因为直接更新会导致一些数据丢失） ---> start
-        if (module.getName().split("_").length > 1) {
-            module.setName(module.getName().split("_")[1]);
-        } else {
-            module.setName(module.getName().split("_")[0]);
+        //继续处理子模块
+        for (Module module : list) {
+            deleteChildrenModule(moduleMap, module.getCode());
         }
-        module.setParentCode(module1.getParentCode());
-        module.setParentName(module1.getParentName());
-        // 手动填充一些数据进入（因为直接更新会导致一些数据丢失） ---> end
-
-        // 替换权限点的FullName
-        List<Permission> moduleList = module1.getPermissions();
-
-        for (Permission permission : moduleList) {
-            // 获取名称分割为数组
-            String[] name = permission.getName().split("_");
-            // 获取类全名
-            String[] fullName = permission.getFullName().split("\\.");
-
-            permission.setName(name[name.length - 1]);
-            permission.setFullName(fullName[0] + "." + fullName[1] + "." + module.getName() + "." + fullName[3]);
-        }
-        // 把权限加入模块对应的位置
-        module.setPermissions(moduleList);
-        // 先删除模块
-        getModules().remove(module.getCode());
-        // 再当作新模块加入进去
-        getModules().put(module.getCode(), module);
-
-        saveModules();
     }
 
     /**
@@ -345,7 +312,7 @@ public class ModuleManager {
         try {
             writeLock.writeLock().lock();
             Gson gson = createGson();
-            String json = gson.toJson(getModules());
+            String json = gson.toJson(ModuleManager.modules);
             FileLockUtils.writeStringToFile(new File(file), json, "UTF-8");
             refresh();
         } finally {
@@ -441,12 +408,10 @@ public class ModuleManager {
 
                 return true;
             } else {
-                logger.error("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
                 throw new DDDException("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
             }
 
         } else {
-            logger.error("找不到" + permission.getModuleCode() + "对应的权限点！");
             throw new DDDException("找不到" + permission.getModuleCode() + "对应的权限点！");
         }
     }
@@ -474,7 +439,6 @@ public class ModuleManager {
             // 保存模块
             saveModules(Config.moduleFile);
         } else {
-            logger.error("找不到模块编码为:" + permission.getModuleCode() + "的模块,新增权限点失败");
             throw new DDDException("找不到模块编码为:" + permission.getModuleCode() + "的模块,新增权限点失败");
         }
 

@@ -126,8 +126,8 @@ public class OperatorController {
     }
 
     private void prepareOperatorEditDto(OperatorEditDto operatorEditDto) {
-        operatorEditDto.setStatusCodeTables(this.codeTableService.findCodeTablesByCodeType("OperatorStatus"));
-        operatorEditDto.setTypeCodeTables(this.codeTableService.findCodeTablesByCodeType("OperatorType"));
+        operatorEditDto.setStatusCodeTables(this.codeTableService.findCodeTableByCode("operatorStatus"));
+        operatorEditDto.setTypeCodeTables(this.codeTableService.findCodeTableByCode("operatorType"));
     }
 
     @PostMapping("/saveOperator")

@@ -44,7 +44,7 @@ public class Module extends BaseEntity implements Serializable {
     @Expose
     @DColumn(index = 8, label = "显示顺序", comment = "显示顺序")
     @Column(length = 250, nullable = true, unique = false)
-    private Long displayIndex;
+    private Long displayIndex = 1L;
 
     @DColumn(index = 9, label = "上级模块", foreignEntity = "Module", comment = "上级模块")
     @Column(length = 250, nullable = true, unique = false)

@@ -154,8 +154,8 @@ public class ModuleController {
     }
 
     private void prepareModuleEditDto(ModuleEditDto moduleEditDto) {
-        moduleEditDto.setModuleTypeCodeTables(this.codeTableService.findCodeTablesByCodeType("ModuleType"));
-        moduleEditDto.setIsInUseCodeTables(this.codeTableService.findCodeTablesByCodeType("UseStatus"));
+        moduleEditDto.setModuleTypeCodeTables(this.codeTableService.findCodeTableByCode("moduleType"));
+        moduleEditDto.setIsInUseCodeTables(this.codeTableService.findCodeTableByCode("useStatus"));
         moduleEditDto.setParentModules(this.moduleService.findAllParentModules());
     }
 

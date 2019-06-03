@@ -198,11 +198,11 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         int formIndex = (currentPage - 1) * pageSize;
         int toIndex = formIndex + pageSize;
         toIndex = toIndex > list.size() ? list.size() : toIndex;
-        List<Module> resultlist = list.subList(formIndex, toIndex);
         Module resultModule = new Module();
-        resultModule.getChildren().addAll(resultlist);
+        resultModule.getChildren().addAll(list);
         sort(resultModule);
-        return resultModule.getChildren();
+        List<Module> resultlist = list.subList(formIndex, toIndex);
+        return resultlist;
     }
 
     /**
@@ -261,10 +261,38 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         if (StringUtils.isBlank(code)) {
             throw new DDDException("模块编码为null,请重新输入");
         }
+        if (ModuleManager.findModuleByCode(code) != null) {
+            throw new DDDException("模块编码必须唯一，当前编码已存在");
+        }
         if (module.getDisplayIndex() == null) {
             module.setDisplayIndex(1L);
         }
         ModuleManager.addModule(code, module);
+    }
+
+    /**
+     * 获取全部模块权限树
+     *
+     * @return
+     */
+    public List<Module> findModuleAndPermissionTree() {
+        Map<String, Module> moduleMap = ModuleManager.refreshAndLoadModules();
+        if (moduleMap == null || moduleMap.size() == 0) {
+            throw new DDDException("模块加载失败");
+        }
+        List<Module> list = new ArrayList<>();
+        Collection<Module> modules = moduleMap.values();
+        for (Module module : modules) {
+            String parentCode = module.getParentCode();
+            if (StringUtils.isBlank(parentCode)) {
+                list.add(module);
+            }
+            setModuleChildren(modules, module);
+        }
+        Module resultModule = new Module();
+        resultModule.getChildren().addAll(list);
+        sort(resultModule);
+        return resultModule.getChildren();
     }
 
     /**
@@ -282,6 +310,9 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         if (StringUtils.isBlank(code)) {
             throw new DDDException("模块编码为null,请重新输入");
         }
+        if (ModuleManager.findModuleByCode(code) != null) {
+            throw new DDDException("模块编码必须唯一，当前编码已存在");
+        }
         String lastCode = module.getLastCode();
         Map<String, Module> moduleMap = ModuleManager.refreshAndLoadModules();
         //删除之前的模块
@@ -294,9 +325,6 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
                 childModule.setParentName(module.getName());
                 childModule.setParentCode(code);
             }
-        }
-        if (module.getDisplayIndex() == null) {
-            module.setDisplayIndex(1L);
         }
         Module moduleResult = moduleMap.put(code, module);
         //保存文件

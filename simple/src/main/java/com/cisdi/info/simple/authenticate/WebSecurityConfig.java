@@ -71,7 +71,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 return true;
             }
             if (loginUser != null) {
-
                 boolean hasPermission = ModuleManager.hasPermission(uri, loginUser.getUserRoles());
                 if (hasPermission) {
                     return true;
