@@ -152,6 +152,7 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
         codeTable.setParentUUID(codeTypeId);
         codeTable.setCodeTypeId(codeTypeId);
         codeTable.setOrgId(codeTableOrgDTO.getOrgId());
+        codeTable.setPublic(codeTableOrgDTO.isPublic());
         codeTable.setName(tableName);
         codeTable.setCodeType(ORG_TYPE);
         codeTable.setOrgName(tableName);
@@ -173,10 +174,6 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
         if (table.isPublic()) {
             return savePublicOption(codeTableOptionDTO);
         } else {
-            Long orgId = codeTableOptionDTO.getOrgId();
-            if (orgId == null) {
-                throw new DDDException("组织单位不能为null");
-            }
             return savePrivateOption(codeTableOptionDTO);
         }
     }
@@ -211,20 +208,22 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
      */
     private CodeTable savePrivateOption(CodeTableOptionDTO codeTableOptionDTO) {
         String codeTypeId = codeTableOptionDTO.getCodeTypeId();
-        CodeTable orgCodeTable = findOrgCodeType(codeTypeId, codeTableOptionDTO.getOrgId());
+        Long orgId = this.getCurrentLoginOrganization().getEId();
+        CodeTable orgCodeTable = findOrgCodeType(codeTypeId, orgId);
         if (orgCodeTable == null) {
             CodeTableOrgDTO codeTableOrgDTO = new CodeTableOrgDTO();
             codeTableOrgDTO.setCodeTypeId(codeTypeId);
-            codeTableOrgDTO.setOrgId(codeTableOptionDTO.getOrgId());
+            codeTableOrgDTO.setPublic(false);
+            codeTableOrgDTO.setOrgId(orgId);
             saveOrganization(codeTableOrgDTO);
-            orgCodeTable = findOrgCodeType(codeTypeId, codeTableOptionDTO.getOrgId());
+            orgCodeTable = findOrgCodeType(codeTypeId, orgId);
         }
         CodeTable codeTable = new CodeTable();
         String uuid = D4Util.getUUID();
         codeTable.setUuid(uuid);
         codeTable.setCodeTypeId(codeTypeId);
         codeTable.setParentUUID(orgCodeTable.getUuid());
-        codeTable.setOrgId(codeTableOptionDTO.getOrgId());
+        codeTable.setOrgId(orgId);
         codeTable.setLabel(codeTableOptionDTO.getLabel());
         codeTable.setValue(codeTableOptionDTO.getValue());
         codeTable.setCodeType(CODE_OPTION);

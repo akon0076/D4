@@ -31,6 +31,9 @@ public class CodeTableOrgDTO {
     @NotNull
     private Long orgId;
 
+    @Expose
+    private boolean isPublic = true;
+
     public String getCodeType() {
         return codeType;
     }
@@ -69,5 +72,13 @@ public class CodeTableOrgDTO {
 
     public void setCodeTypeId(String codeTypeId) {
         this.codeTypeId = codeTypeId;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
     }
 }
