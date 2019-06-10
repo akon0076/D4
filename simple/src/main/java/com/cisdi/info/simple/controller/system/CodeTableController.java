@@ -152,11 +152,7 @@ public class CodeTableController {
 
     @PostMapping("/findAllCodeTablesTree")
     public PageResultDTO saveOption(@RequestBody PageDTO pageDTO) {
-        PageResultDTO pageResultDTO = new PageResultDTO();
-        List<CodeTable> codeTables = this.codeTableService.findAllCodeTablesTree(pageDTO);
-        pageResultDTO.setDatas(codeTables);
-        pageResultDTO.setTotalCount((long) codeTables.size());
-        return pageResultDTO;
+        return this.codeTableService.findAllCodeTablesTree(pageDTO);
     }
 
     @GetMapping("/findCodeTableByCode")

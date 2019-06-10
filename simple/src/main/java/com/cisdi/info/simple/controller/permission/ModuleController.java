@@ -96,11 +96,7 @@ public class ModuleController {
 
     @PostMapping("/findModuleTree")
     public PageResultDTO findModuleTree(@RequestBody PageDTO pageDTO) {
-        PageResultDTO pageResultDTO = new PageResultDTO();
-        List<Module> moduleTree = this.moduleService.findModuleTree(pageDTO);
-        pageResultDTO.setDatas(moduleTree);
-        pageResultDTO.setTotalCount((long) moduleTree.size());
-        return pageResultDTO;
+        return this.moduleService.findModuleTree(pageDTO);
     }
 
     @GetMapping("/findModuleForView")

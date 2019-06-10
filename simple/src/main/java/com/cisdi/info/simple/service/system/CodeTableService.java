@@ -1,6 +1,7 @@
 package com.cisdi.info.simple.service.system;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
+import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.system.CodeTableOptionDTO;
 import com.cisdi.info.simple.dto.system.CodeTableOrgDTO;
 import com.cisdi.info.simple.dto.system.CodeTableTypeDTO;
@@ -87,5 +88,5 @@ public interface CodeTableService {
      * @param pageDTO
      * @return
      */
-    public List<CodeTable> findAllCodeTablesTree(PageDTO pageDTO);
+    public PageResultDTO findAllCodeTablesTree(PageDTO pageDTO);
 }

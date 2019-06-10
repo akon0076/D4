@@ -4,6 +4,7 @@ import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.dao.permission.ModuleDao;
 import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
+import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
 import com.cisdi.info.simple.service.base.BaseService;
@@ -179,7 +180,7 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
      * @return
      */
     @Override
-    public List<Module> findModuleTree(PageDTO pageDTO) {
+    public PageResultDTO findModuleTree(PageDTO pageDTO) {
         Map<String, Module> moduleMap = ModuleManager.refreshAndLoadModules();
         if (moduleMap == null || moduleMap.size() == 0) {
             throw new DDDException("模块加载失败");
@@ -201,8 +202,11 @@ public class ModuleServiceBean extends BaseService implements ModuleService {
         Module resultModule = new Module();
         resultModule.getChildren().addAll(list);
         sort(resultModule);
-        List<Module> resultlist = list.subList(formIndex, toIndex);
-        return resultlist;
+        List<Module> resultlist = resultModule.getChildren().subList(formIndex, toIndex);
+        PageResultDTO pageResultDTO = new PageResultDTO();
+        pageResultDTO.setDatas(resultlist);
+        pageResultDTO.setTotalCount((long) list.size());
+        return pageResultDTO;
     }
 
     /**

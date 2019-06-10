@@ -1,6 +1,7 @@
 package com.cisdi.info.simple.service.permission;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
+import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.entity.permission.Module;
 import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
 
@@ -57,5 +58,5 @@ public interface ModuleService {
      * @param pageDTO
      * @return
      */
-    public List<Module> findModuleTree(PageDTO pageDTO);
+    public PageResultDTO findModuleTree(PageDTO pageDTO);
 }

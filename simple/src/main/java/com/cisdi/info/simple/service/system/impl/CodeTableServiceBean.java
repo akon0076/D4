@@ -3,6 +3,7 @@ package com.cisdi.info.simple.service.system.impl;
 import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.dao.organization.OrganizationDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
+import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.system.CodeTableOptionDTO;
 import com.cisdi.info.simple.dto.system.CodeTableOrgDTO;
 import com.cisdi.info.simple.dto.system.CodeTableTypeDTO;
@@ -63,7 +64,7 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
      * @return
      */
     @Override
-    public List<CodeTable> findAllCodeTablesTree(PageDTO pageDTO) {
+    public PageResultDTO findAllCodeTablesTree(PageDTO pageDTO) {
         List<CodeTable> list = CodeTableManager.findAllCodeTables();
         List<CodeTable> tree = new ArrayList<>();
         for (CodeTable codeTable : list) {
@@ -81,7 +82,10 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
         resultModule.getChildren().addAll(tree);
         sort(resultModule);
         List<CodeTable> resultlist = resultModule.getChildren().subList(formIndex, toIndex);
-        return resultlist;
+        PageResultDTO pageResultDTO = new PageResultDTO();
+        pageResultDTO.setDatas(resultlist);
+        pageResultDTO.setTotalCount((long) tree.size());
+        return pageResultDTO;
     }
 
     /**
