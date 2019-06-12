@@ -78,13 +78,72 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
         int formIndex = (currentPage - 1) * pageSize;
         int toIndex = formIndex + pageSize;
         toIndex = toIndex > tree.size() ? tree.size() : toIndex;
-        CodeTable resultModule = new CodeTable();
-        resultModule.getChildren().addAll(tree);
-        sort(resultModule);
-        List<CodeTable> resultlist = resultModule.getChildren().subList(formIndex, toIndex);
+        CodeTable resultCodeTable = new CodeTable();
+        resultCodeTable.getChildren().addAll(tree);
+        sort(resultCodeTable);
+        List<CodeTable> resultlist = resultCodeTable.getChildren().subList(formIndex, toIndex);
         PageResultDTO pageResultDTO = new PageResultDTO();
         pageResultDTO.setDatas(resultlist);
         pageResultDTO.setTotalCount((long) tree.size());
+        return pageResultDTO;
+    }
+
+    /**
+     * 找到全部当前单位的私有码表
+     *
+     * @param pageDTO
+     * @return
+     */
+    public PageResultDTO findAllOrgCodeTablesTree(PageDTO pageDTO) {
+        List<CodeTable> list = CodeTableManager.findAllCodeTables();
+        List<CodeTable> tree = new ArrayList<>();
+        for (CodeTable codeTable : list) {
+            if (codeTable.getParentUUID() == null && !codeTable.isPublic()) {
+                tree.add(codeTable);
+                setChildren(list, codeTable);
+            }
+        }
+
+        //找到全部当前单位的私有码表
+        Long orgId = this.getCurrentLoginOrganization().getEId();
+        List<CodeTable> resultTree = new ArrayList<>();
+        tree.forEach(tables -> {
+            List<CodeTable> children = tables.getChildren();
+            tables.setChildren(new ArrayList<>());
+            resultTree.add(tables);
+            if (children.size() > 0) {
+                children.forEach(table -> {
+                    if (orgId.equals(table.getOrgId())) {
+                        tables.setChildren(table.getChildren());
+                    }
+                });
+            }
+        });
+        //排序和分页处理
+        PageResultDTO pageResultDTO = sortAndPageTree(pageDTO, resultTree);
+        return pageResultDTO;
+    }
+
+    /**
+     * 排序和分页处理
+     *
+     * @param pageDTO
+     * @param resultTree
+     * @return
+     */
+    private PageResultDTO sortAndPageTree(PageDTO pageDTO, List<CodeTable> resultTree) {
+        Integer currentPage = pageDTO == null ? 1 : pageDTO.getCurrentPage();
+        Integer pageSize = pageDTO == null ? 10 : pageDTO.getPageSize();
+        int formIndex = (currentPage - 1) * pageSize;
+        int toIndex = formIndex + pageSize;
+        toIndex = toIndex > resultTree.size() ? resultTree.size() : toIndex;
+        CodeTable resultCodeTable = new CodeTable();
+        resultCodeTable.getChildren().addAll(resultTree);
+        sort(resultCodeTable);
+        List<CodeTable> resultlist = resultCodeTable.getChildren().subList(formIndex, toIndex);
+        PageResultDTO pageResultDTO = new PageResultDTO();
+        pageResultDTO.setDatas(resultlist);
+        pageResultDTO.setTotalCount((long) resultTree.size());
         return pageResultDTO;
     }
 
@@ -150,7 +209,7 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
         }
         Organization organization = organizationDao.findOrganization(orgId);
         CodeTable codeTable = new CodeTable();
-        String tableName = table.getName() + "-" + organization.getName();
+        String tableName = organization.getName();
         String uuid = D4Util.getUUID();
         codeTable.setUuid(uuid);
         codeTable.setParentUUID(codeTypeId);
@@ -433,6 +492,23 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
         List<CodeTable> list = new ArrayList<>();
         for (CodeTable codeTable : allCodeTables) {
             if (CODE_TYPE.equals(codeTable.getCodeType())) {
+                list.add(codeTable);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 查找所有私有码表类型
+     *
+     * @return
+     */
+    @Override
+    public List<CodeTable> findAllPrivateCodeType() {
+        List<CodeTable> allCodeTables = CodeTableManager.findAllCodeTables();
+        List<CodeTable> list = new ArrayList<>();
+        for (CodeTable codeTable : allCodeTables) {
+            if (CODE_TYPE.equals(codeTable.getCodeType()) && !codeTable.isPublic()) {
                 list.add(codeTable);
             }
         }

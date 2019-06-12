@@ -933,5 +933,56 @@
         ]
       }
     ]
+  },
+  "simple/system/organizationCodeTable": {
+    "code": "simple/system/organizationCodeTable",
+    "name1": "单位码表",
+    "url": "/simple/system/OrganizationCodeTable",
+    "route": "/simple/system/OrganizationCodeTable",
+    "iconClass": null,
+    "displayIndex": 1,
+    "parentCode": "simple/system",
+    "parentName": "系统管理",
+    "moduleType": "电脑模块",
+    "isInUse": "在用",
+    "routeParamsObj": null,
+    "permissions": [
+      {
+      "code": "simple_system_OrganizationCodeTable_Edit",
+      "name1": "编辑单位码表",
+      "fullName": "simple.系统管理.单位码表.编辑",
+      "moduleCode": "simple/system/organizationCodeTable",
+      "urls": [
+        "/simple/system/CodeTable/updateCodeTableOption"
+      ]
+    },
+      {
+        "code": "simple_system_OrganizationCodeTable_Delete",
+        "name1": "删除单位码表",
+        "fullName": "simple.系统管理.单位码表.删除",
+        "moduleCode": "simple/system/organizationCodeTable",
+        "urls": [
+          "/simple/system/CodeTable/deleteCodeTable"
+        ]
+      },
+      {
+        "code": "simple_system_OrganizationCodeTable_View",
+        "name1": "查看单位码表",
+        "fullName": "simple.系统管理.单位码表.查看",
+        "moduleCode": "simple/system/organizationCodeTable",
+        "urls": [
+          "/simple/system/CodeTable/findAllOrgCodeTablesTree",
+          "/simple/system/CodeTable/findAllPrivateCodeType"
+        ]
+      },
+      {
+        "code": "simple_system_OrganizationCodeTable_Add",
+        "name1": "新增单位码表",
+        "fullName": "simple.系统管理.单位码表.新增",
+        "moduleCode": "simple/system/organizationCodeTable",
+        "urls": [
+          "/simple/system/CodeTable/saveOption"
+        ]
+      }]
   }
 }

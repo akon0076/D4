@@ -140,6 +140,11 @@ public class CodeTableController {
         return this.codeTableService.findAllCodeType();
     }
 
+    @GetMapping("/findAllPrivateCodeType")
+    public List<CodeTable> findAllPrivateCodeType() {
+        return this.codeTableService.findAllPrivateCodeType();
+    }
+
     @PostMapping("/saveCodeTable")
     public CodeTable saveCodeTable(@RequestBody @Valid CodeTableTypeDTO codeTable) {
         return this.codeTableService.saveCodeTable(codeTable);
@@ -151,8 +156,13 @@ public class CodeTableController {
     }
 
     @PostMapping("/findAllCodeTablesTree")
-    public PageResultDTO saveOption(@RequestBody PageDTO pageDTO) {
+    public PageResultDTO findAllCodeTablesTree(@RequestBody PageDTO pageDTO) {
         return this.codeTableService.findAllCodeTablesTree(pageDTO);
+    }
+
+    @PostMapping("/findAllOrgCodeTablesTree")
+    public PageResultDTO findAllOrgCodeTablesTree(@RequestBody PageDTO pageDTO) {
+        return this.codeTableService.findAllOrgCodeTablesTree(pageDTO);
     }
 
     @GetMapping("/findCodeTableByCode")

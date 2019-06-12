@@ -75,6 +75,13 @@ public interface CodeTableService {
     public List<CodeTable> findAllCodeType();
 
     /**
+     * 查找所有私有码表类型
+     *
+     * @return
+     */
+    public List<CodeTable> findAllPrivateCodeType();
+
+    /**
      * 根据uuid找到码表，包含子码表
      *
      * @param uuid
@@ -89,4 +96,11 @@ public interface CodeTableService {
      * @return
      */
     public PageResultDTO findAllCodeTablesTree(PageDTO pageDTO);
+
+    /**
+     * 找到全部当前单位的私有码表
+     * @param pageDTO
+     * @return
+     */
+    public PageResultDTO findAllOrgCodeTablesTree(PageDTO pageDTO);
 }
