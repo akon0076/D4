@@ -42,6 +42,22 @@ public interface CodeTableService {
     public CodeTable saveOption(CodeTableOptionDTO codeTableOptionDTO);
 
     /**
+     * 管理员新增单位码表
+     *
+     * @param codeTableOptionDTO
+     * @return
+     */
+    public CodeTable insertPrivateOption(CodeTableOptionDTO codeTableOptionDTO);
+
+    /**
+     * 管理员新增公共码表
+     *
+     * @param codeTableOptionDTO
+     * @return
+     */
+    public CodeTable insertPublicOption(CodeTableOptionDTO codeTableOptionDTO);
+
+    /**
      * 更新码表
      *
      * @param codeTable
@@ -99,6 +115,7 @@ public interface CodeTableService {
 
     /**
      * 找到全部当前单位的私有码表
+     *
      * @param pageDTO
      * @return
      */

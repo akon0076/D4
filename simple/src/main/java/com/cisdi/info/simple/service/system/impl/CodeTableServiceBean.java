@@ -65,27 +65,61 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
      */
     @Override
     public PageResultDTO findAllCodeTablesTree(PageDTO pageDTO) {
+        String columnName = pageDTO.getColumnName();
+        String content = pageDTO.getContent();
+        Long organizationId = pageDTO.getOrganizationId();
+
         List<CodeTable> list = CodeTableManager.findAllCodeTables();
         List<CodeTable> tree = new ArrayList<>();
         for (CodeTable codeTable : list) {
             if (codeTable.getParentUUID() == null) {
-                tree.add(codeTable);
-                setChildren(list, codeTable);
+                if (!StringUtils.isBlank(columnName)) {
+                    String attributerGetterName = D4Util.getAttributerGetterName(columnName);
+                    String codeTableContent = D4Util.invokeMethodByString(codeTable, attributerGetterName);
+                    if (content == null || content.trim().length() == 0 || codeTableContent.indexOf(content) != -1) {
+                        tree.add(codeTable);
+                        setChildren(list, codeTable);
+                    }
+                } else {
+                    tree.add(codeTable);
+                    setChildren(list, codeTable);
+                }
             }
         }
-        Integer currentPage = pageDTO == null ? 1 : pageDTO.getCurrentPage();
-        Integer pageSize = pageDTO == null ? 10 : pageDTO.getPageSize();
-        int formIndex = (currentPage - 1) * pageSize;
-        int toIndex = formIndex + pageSize;
-        toIndex = toIndex > tree.size() ? tree.size() : toIndex;
-        CodeTable resultCodeTable = new CodeTable();
-        resultCodeTable.getChildren().addAll(tree);
-        sort(resultCodeTable);
-        List<CodeTable> resultlist = resultCodeTable.getChildren().subList(formIndex, toIndex);
-        PageResultDTO pageResultDTO = new PageResultDTO();
-        pageResultDTO.setDatas(resultlist);
-        pageResultDTO.setTotalCount((long) tree.size());
-        return pageResultDTO;
+        if (organizationId != null) {
+            List<CodeTable> resultTree = new ArrayList<>();
+            if (organizationId == -1) {
+                tree.forEach(tables -> {
+                    if (tables.isPublic()) {
+                        resultTree.add(tables);
+                    }
+                });
+            } else {
+                //找到全部当前单位的私有码表
+                tree.forEach(tables -> {
+                    if (!tables.isPublic()) {
+                        List<CodeTable> children = tables.getChildren();
+                        tables.setChildren(new ArrayList<>());
+                        resultTree.add(tables);
+                        tables.setOrgId(organizationId);
+                        if (children.size() > 0) {
+                            children.forEach(table -> {
+                                if (organizationId.equals(table.getOrgId())) {
+                                    tables.setChildren(table.getChildren());
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            //排序和分页处理
+            PageResultDTO pageResultDTO = sortAndPageTree(pageDTO, resultTree);
+            return pageResultDTO;
+        } else {
+            //排序和分页处理
+            PageResultDTO pageResultDTO = sortAndPageTree(pageDTO, tree);
+            return pageResultDTO;
+        }
     }
 
     /**
@@ -95,15 +129,26 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
      * @return
      */
     public PageResultDTO findAllOrgCodeTablesTree(PageDTO pageDTO) {
+        String columnName = pageDTO.getColumnName();
+        String content = pageDTO.getContent();
+
         List<CodeTable> list = CodeTableManager.findAllCodeTables();
         List<CodeTable> tree = new ArrayList<>();
         for (CodeTable codeTable : list) {
             if (codeTable.getParentUUID() == null && !codeTable.isPublic()) {
-                tree.add(codeTable);
-                setChildren(list, codeTable);
+                if (!StringUtils.isBlank(columnName)) {
+                    String attributerGetterName = D4Util.getAttributerGetterName(columnName);
+                    String codeTableContent = D4Util.invokeMethodByString(codeTable, attributerGetterName);
+                    if (content == null || content.trim().length() == 0 || codeTableContent.indexOf(content) != -1) {
+                        tree.add(codeTable);
+                        setChildren(list, codeTable);
+                    }
+                } else {
+                    tree.add(codeTable);
+                    setChildren(list, codeTable);
+                }
             }
         }
-
         //找到全部当前单位的私有码表
         Long orgId = this.getCurrentLoginOrganization().getEId();
         List<CodeTable> resultTree = new ArrayList<>();
@@ -239,6 +284,64 @@ public class CodeTableServiceBean extends BaseService implements CodeTableServic
         } else {
             return savePrivateOption(codeTableOptionDTO);
         }
+    }
+
+    /**
+     * 管理员新增单位码表
+     *
+     * @param codeTableOptionDTO
+     * @return
+     */
+    public CodeTable insertPrivateOption(CodeTableOptionDTO codeTableOptionDTO) {
+        String codeTypeId = codeTableOptionDTO.getCodeTypeId();
+        Long orgId = codeTableOptionDTO.getOrgId();
+        CodeTable orgCodeTable = findOrgCodeType(codeTypeId, orgId);
+        if (orgCodeTable == null) {
+            CodeTableOrgDTO codeTableOrgDTO = new CodeTableOrgDTO();
+            codeTableOrgDTO.setCodeTypeId(codeTypeId);
+            codeTableOrgDTO.setPublic(false);
+            codeTableOrgDTO.setOrgId(orgId);
+            saveOrganization(codeTableOrgDTO);
+            orgCodeTable = findOrgCodeType(codeTypeId, orgId);
+        }
+        CodeTable codeTable = new CodeTable();
+        String uuid = D4Util.getUUID();
+        codeTable.setUuid(uuid);
+        codeTable.setCodeTypeId(codeTypeId);
+        codeTable.setParentUUID(orgCodeTable.getUuid());
+        codeTable.setOrgId(orgId);
+        codeTable.setLabel(codeTableOptionDTO.getLabel());
+        codeTable.setValue(codeTableOptionDTO.getValue());
+        codeTable.setCodeType(CODE_OPTION);
+        codeTable.setCode(orgCodeTable.getCode());
+        codeTable.setPublic(false);
+        codeTable.setDisplayIndex(codeTableOptionDTO.getDisplayIndex());
+        CodeTableManager.addCodeTable(codeTable);
+        return codeTable;
+    }
+
+    /**
+     * 管理员新增公共码表
+     *
+     * @param codeTableOptionDTO
+     * @return
+     */
+    public CodeTable insertPublicOption(CodeTableOptionDTO codeTableOptionDTO) {
+        String codeTypeId = codeTableOptionDTO.getCodeTypeId();
+        CodeTable table = findCodeTableByUUID(codeTypeId);
+        CodeTable codeTable = new CodeTable();
+        String uuid = D4Util.getUUID();
+        codeTable.setUuid(uuid);
+        codeTable.setParentUUID(codeTypeId);
+        codeTable.setCodeTypeId(codeTypeId);
+        codeTable.setLabel(codeTableOptionDTO.getLabel());
+        codeTable.setValue(codeTableOptionDTO.getValue());
+        codeTable.setCodeType(CODE_OPTION);
+        codeTable.setCode(table.getCode());
+        codeTable.setPublic(true);
+        codeTable.setDisplayIndex(codeTableOptionDTO.getDisplayIndex());
+        CodeTableManager.addCodeTable(codeTable);
+        return codeTable;
     }
 
     /**

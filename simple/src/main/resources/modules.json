@@ -652,6 +652,8 @@
         "moduleCode": "simple/system/CodeTable",
         "urls": [
           "/simple/system/CodeTable/createCodeTable",
+          "/simple/system/CodeTable/insertPublicOption",
+          "/simple/system/CodeTable/insertPrivateOption",
           "/simple/system/CodeTable/saveOrganization",
           "/simple/system/CodeTable/saveOption",
           "/simple/system/CodeTable/saveCodeTable"
@@ -934,8 +936,8 @@
       }
     ]
   },
-  "simple/system/organizationCodeTable": {
-    "code": "simple/system/organizationCodeTable",
+  "simple/system/OrganizationCodeTable": {
+    "code": "simple/system/OrganizationCodeTable",
     "name1": "单位码表",
     "url": "/simple/system/OrganizationCodeTable",
     "route": "/simple/system/OrganizationCodeTable",
@@ -953,7 +955,8 @@
       "fullName": "simple.系统管理.单位码表.编辑",
       "moduleCode": "simple/system/organizationCodeTable",
       "urls": [
-        "/simple/system/CodeTable/updateCodeTableOption"
+        "/simple/system/CodeTable/updateCodeTableOption",
+        "/simple/system/CodeTable/findAllPrivateCodeType"
       ]
     },
       {

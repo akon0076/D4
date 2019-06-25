@@ -155,6 +155,16 @@ public class CodeTableController {
         return this.codeTableService.saveOption(codeTable);
     }
 
+    @PostMapping("/insertPrivateOption")
+    public CodeTable insertPrivateOption(@RequestBody @Valid CodeTableOptionDTO codeTable) {
+        return this.codeTableService.insertPrivateOption(codeTable);
+    }
+
+    @PostMapping("/insertPublicOption")
+    public CodeTable insertPublicOption(@RequestBody @Valid CodeTableOptionDTO codeTable) {
+        return this.codeTableService.insertPublicOption(codeTable);
+    }
+
     @PostMapping("/findAllCodeTablesTree")
     public PageResultDTO findAllCodeTablesTree(@RequestBody PageDTO pageDTO) {
         return this.codeTableService.findAllCodeTablesTree(pageDTO);
