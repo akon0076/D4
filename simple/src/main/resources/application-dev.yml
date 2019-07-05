@@ -51,7 +51,7 @@ spring:
   mvc:
     static-path-pattern: /file/**
   resources:
-    static-locations: file:D://D4/DDDFile/
+    static-locations: file:D://D4frame/DDDFile/
 
 logging:
   config: classpath:logback.xml #日志配置
@@ -62,4 +62,15 @@ mybatis:
   - classpath*:/com/cisdi/info/**/dao/**/mapper/*.xml     #mybaits mapperxml文件路径
   configuration:
     map-underscore-to-camel-case: true
+
+aliyun: #阿里云接口配置
+  sms:
+    accessKeyId: LTAIkFry9WPuFnjI
+    accessKeySecret: wJIjDwfaXqVPTAJdI4rUIUpDh4Ekue
+    product: Dysmsapi
+    domain: dysmsapi.aliyuncs.com
+    regionId: cn-hangzhou
+    signName: 重庆建设专业职称申报系统
+    templateCode:
+      pin: SMS_164269462
 

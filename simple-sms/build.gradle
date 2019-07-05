@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'org.ddd.msg'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+repositories {
+    //阿里云镜像
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.springframework/spring-beans
+    compile group: 'org.springframework', name: 'spring-beans', version: '5.0.5.RELEASE'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.1.4.RELEASE'
+
+    // https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-core
+    compile group: 'com.aliyun', name: 'aliyun-java-sdk-core', version: '4.4.1'
+
+    // https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-dysmsapi
+    compile group: 'com.aliyun', name: 'aliyun-java-sdk-dysmsapi', version: '1.1.0'
+
+    // https://mvnrepository.com/artifact/com.alibaba/fastjson
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.58'
+}

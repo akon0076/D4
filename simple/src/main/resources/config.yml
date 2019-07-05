@@ -1,14 +1,14 @@
 simple:
-  workspapce: E:\\SpringBoot\\workplace
+  workspapce: D:\\D4frame
   serverPath: ${workspapce}\\D4\\simple
   uiPath: ${workspapce}\\D4_pc_ui
   codeTablesFile: ${serverPath}\\src\\main\\resources\\codetables.json
   moduleFile: ${serverPath}\\src\\main\\resources\\modules.json
   velocityTemplate: ${workspapce}\\D4\\generator\\src\\main\\resources
-  exceptionLogPath: D:\\D4\\DDDException
-  uploadFileAddress: D:\\D4\\spring_files
-  staticFilePath: D:\\D4\\DDDFile\\
-  logPath: D:\\D4\\DDDException\\
+  exceptionLogPath: D:\\D4frame\\DDDException
+  uploadFileAddress: D:\\D4frame\\spring_files
+  staticFilePath: D:\\D4frame\\DDDFile\\
+  logPath: D:\\D4frame\\DDDException\\
 
   applicationName: d4Frame
   applicationCode: DDD4

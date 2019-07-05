@@ -5,3 +5,7 @@ findProject(':simple')?.name = 'Simple'
 
 include 'generator'
 findProject(':generator')?.name = 'Generator'
+
+include 'simple-sms'
+findProject(':simple-sms')?.name = 'Simple-sms'
+

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author CISDI
  * @date 2018/04/27
  */
-@SpringBootApplication(scanBasePackages = {"com.cisdi.info.simple.*"}, exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = {"com.cisdi.info.simple.*","org.ddd.sms"},  exclude = {SecurityAutoConfiguration.class})
 @EntityScan("com.cisdi.info.simple.*")
 @EnableDiscoveryClient(autoRegister = false)
 @EnableTransactionManagement
