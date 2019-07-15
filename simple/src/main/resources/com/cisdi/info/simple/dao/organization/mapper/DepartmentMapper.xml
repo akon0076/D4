@@ -51,6 +51,14 @@
         ORDER BY t0.create_datetime
     </select>
 
+    <select id="findAllDepartmentsByOrgId" resultType="com.cisdi.info.simple.entity.organization.Department" parameterType="java.lang.Long">
+        select
+        t0.eid  ,
+        t0.name
+        from simple_department t0
+        WHERE organization_id = #{orgId}
+    </select>
+
     <!-- 根据名称查询数据集合,只提取ID 和 Name -->
     <select id="findDepartmentsWithIdNameByName" resultType="com.cisdi.info.simple.entity.organization.Department" parameterType="java.lang.String">
         select

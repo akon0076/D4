@@ -28,6 +28,8 @@ public interface RoleAndPermissionService {
 
     public List<RoleAndPermission> findRoleAndPermissionByRoleId(Long roleId);
 
-    //删除权限角色权限根据ModuleCode
-    public Integer deleteRoleAndPermissionByModuleCode(String moduleCode);
+    /**
+     * 根据ModuleCode删除角色对应的权限
+     */
+    public boolean deleteRoleAndPermissionByModuleCode(String moduleCode);
 }

@@ -95,19 +95,13 @@ public class PermissionServiceBean extends BaseService implements PermissionServ
     @Override
     public List<Permission> findAllPermissions() {
         // 读取json文件中的模块
-        Collection<Module> moduleCollection = ModuleManager.getAllModules();
-        Iterator iterator = moduleCollection.iterator();
-
-        List<Module> moduleList = new ArrayList<>();
-        while (iterator.hasNext()) {
-            moduleList.add((Module) iterator.next());
-        }
-
+        Collection<Module> moduleList = ModuleManager.refreshAndLoadModules().values();
         List<Permission> permissions = new ArrayList<>();
         for (Module module : moduleList) {
             List<Permission> modulePermissions = module.getPermissions();
             for (int i = 0; i < modulePermissions.size(); i++) {
                 Permission permission = modulePermissions.get(i);
+                permission.setModuleName(module.getName());
                 permissions.add(permission);
             }
         }

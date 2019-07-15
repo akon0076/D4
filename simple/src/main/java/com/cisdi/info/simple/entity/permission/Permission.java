@@ -21,6 +21,8 @@ public class Permission extends BaseEntity implements Serializable{
 	@Expose
 	private String fullName;
 
+	private String moduleName;
+
 	@Expose
 	private String moduleCode;
 
@@ -79,5 +81,13 @@ public class Permission extends BaseEntity implements Serializable{
 
 	public void setUrls(List<String> urls) {
 		this.urls = urls;
+	}
+
+	public String getModuleName() {
+		return moduleName;
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 }

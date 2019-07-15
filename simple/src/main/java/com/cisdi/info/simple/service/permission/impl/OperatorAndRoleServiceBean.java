@@ -77,15 +77,15 @@ public class OperatorAndRoleServiceBean extends BaseService implements OperatorA
     @Override
     public void updateOperatorAndRole(OperatorAndRoleDto operatorAndRoleDto) {
         Long operatorId = operatorAndRoleDto.getOperatorId();
+        Long organizationId = operatorAndRoleDto.getOrganizationId();
         Long[] removeRoles = operatorAndRoleDto.getRemoveRoles();
         for (Long roleId : removeRoles) {
             //删除原有的操作员角色对应关系
-            this.operatorAndRoleDao.deleteOperatorAndRoleByOperatorIdAndRoleId(operatorId, roleId);
+            this.operatorAndRoleDao.deleteOperatorAndRoleByOperatorIdAndRoleId(operatorId, roleId, organizationId);
         }
         OperatorAndRole operatorAndRole = new OperatorAndRole();
         this.setSavePulicColumns(operatorAndRole);
         operatorAndRole.setOperatorId(operatorId);
-        Long organizationId = operatorAndRoleDto.getOrganizationId();
         Long[] addRoles = operatorAndRoleDto.getAddRoles();
         for (Long roleId : addRoles) {
             operatorAndRole.setRoleId(roleId);

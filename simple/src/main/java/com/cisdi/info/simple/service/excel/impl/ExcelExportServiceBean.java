@@ -34,7 +34,7 @@ public class ExcelExportServiceBean implements ExcelExportService {
      * @throws Exception
      */
     @Override
-    public <T> void excelExport(List<T> list, Map<String, String> header, Class<T> clazz) throws Exception {
+    public <T> void excelExport(List<T> list, Map<String, String> header, Class<T> clazz, String fineName) throws Exception {
         //创建excel文档对象
         Workbook workbook = new HSSFWorkbook();
         //创建excel表单
@@ -67,7 +67,7 @@ public class ExcelExportServiceBean implements ExcelExportService {
         HttpServletResponse response = requestAttributes.getResponse();
         OutputStream outputStream = response.getOutputStream();
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=excel.xls");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fineName);
         workbook.write(outputStream);
         outputStream.flush();
         outputStream.close();

@@ -12,94 +12,89 @@ import java.util.*;
 
 public class D4Util {
 
-    public static  String convertCamelCaseName2UnderScore(String name)
-    {
-        return StringUtils.lowerCase(StringUtils.join( StringUtils.splitByCharacterTypeCamelCase(name),"_"));
+    public static String convertCamelCaseName2UnderScore(String name) {
+        return StringUtils.lowerCase(StringUtils.join(StringUtils.splitByCharacterTypeCamelCase(name), "_"));
     }
 
-    public static Map<String,String> createMap()
-    {
+    public static Map<String, String> createMap() {
 
         Map aaa = null;
 //        aaa.pu
-        return new LinkedHashMap<String,String>();
+        return new LinkedHashMap<String, String>();
     }
 
-    public static String addMapItem(Map<String,String> map,String key, String value)
-    {
+    public static String addMapItem(Map<String, String> map, String key, String value) {
 //        System.out.print(key);
 //        System.out.print(value);
 //        System.out.print(map.toString());
         map.put(key, value);
         return "";
     }
+
     //解析方法名
-    public static String  getAttributerGetterName(String attritureName){
+    public static String getAttributerGetterName(String attritureName) {
         String invokeMethodName = attritureName.substring(0, 1).toUpperCase().concat(attritureName.substring(1));
-        return "get"+invokeMethodName;
+        return "get" + invokeMethodName;
     }
 
     //通过传入的对象和字符串调用该对象的方法,并返回结果
     public static String invokeMethodByString(Object obj, String method) {
-        if(obj==null){
+        if (obj == null) {
             throw new IllegalArgumentException();
         }
-        Class clazz=obj.getClass();
+        Class clazz = obj.getClass();
         try {
-            Method method1= clazz.getMethod(method,null);
-               return   method1.invoke(obj, null)+"";
+            Method method1 = clazz.getMethod(method, null);
+            return method1.invoke(obj, null) + "";
         } catch (NoSuchMethodException e) {
-            throw new DDDException(clazz.getCanonicalName()+" 无此构造方法:"+method);
+            throw new DDDException(clazz.getCanonicalName() + " 无此构造方法:" + method);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-      return null;
+        return null;
 
     }
-    public  static String assembleSql(String columnName,String content){
-        if(columnName==null||columnName==""||content==null||content==""){
-            return  " (t0.eid like '%')";
-        }
-        String [] items=content.split("\\s+");//or
-        String [] anditems=content.split("\\s+and\\s");//and
-        String sql="";
-        String  hump="";
-        hump= humpToUnderline(columnName);
-    if(anditems.length>1)
-    {
-        sql= "(";
-        for(int i=0;i<anditems.length;i++){
-            if(i==anditems.length-1){
-                sql+="t0."+hump+"  LIKE '%"+anditems[i]+"%')";
-            }
-            else{
-                sql+="t0."+hump+"  LIKE '%"+anditems[i]+"%'  AND ";
-            }
 
+    public static String assembleSql(String columnName, String content) {
+        if (columnName == null || columnName == "" || content == null || content == "") {
+            return " (t0.eid like '%')";
         }
-    }
-    else{
-        if( items.length==0||items.length==1&&items[0]==""||items==null){
-            sql="("+"t0."+hump+"  LIKE '%' )";
-        }
-        else{
-            sql= "(";
-            for(int i=0;i<items.length;i++){
-                if(i==items.length-1){
-                    sql+="t0."+hump+"  LIKE '%"+items[i]+"%')";
-                }
-                else{
-                    sql+="t0."+hump+"  LIKE '%"+items[i]+"%'  OR ";
+        String[] items = content.split("\\s+");//or
+        String[] anditems = content.split("\\s+and\\s");//and
+        String sql = "";
+        String hump = "";
+        hump = humpToUnderline(columnName);
+        if (anditems.length > 1) {
+            sql = "(";
+            for (int i = 0; i < anditems.length; i++) {
+                if (i == anditems.length - 1) {
+                    sql += "t0." + hump + "  LIKE '%" + anditems[i] + "%')";
+                } else {
+                    sql += "t0." + hump + "  LIKE '%" + anditems[i] + "%'  AND ";
                 }
 
             }
-        }
+        } else {
+            if (items.length == 0 || items.length == 1 && items[0] == "" || items == null) {
+                sql = "(" + "t0." + hump + "  LIKE '%' )";
+            } else {
+                sql = "(";
+                for (int i = 0; i < items.length; i++) {
+                    if (i == items.length - 1) {
+                        sql += "t0." + hump + "  LIKE '%" + items[i] + "%')";
+                    } else {
+                        sql += "t0." + hump + "  LIKE '%" + items[i] + "%'  OR ";
+                    }
+
+                }
+            }
         }
 
         return sql;
     }
+
     /***
      * 驼峰命名转为下划线命名
      *
@@ -107,13 +102,13 @@ public class D4Util {
      *        驼峰命名的字符串
      */
 
-    public static String humpToUnderline(String para){
-        StringBuilder sb=new StringBuilder(para);
-        int temp=0;//定位
-        for(int i=0;i<para.length();i++){
-            if(Character.isUpperCase(para.charAt(i))){
-                sb.insert(i+temp, "_");
-                temp+=1;
+    public static String humpToUnderline(String para) {
+        StringBuilder sb = new StringBuilder(para);
+        int temp = 0;//定位
+        for (int i = 0; i < para.length(); i++) {
+            if (Character.isUpperCase(para.charAt(i))) {
+                sb.insert(i + temp, "_");
+                temp += 1;
             }
         }
         return sb.toString().toUpperCase();
@@ -126,13 +121,13 @@ public class D4Util {
      *        下划线命名的字符串
      */
 
-    public static String underlineToHump(String para){
-        StringBuilder result=new StringBuilder();
-        String a[]=para.split("_");
-        for(String s:a){
-            if(result.length()==0){
+    public static String underlineToHump(String para) {
+        StringBuilder result = new StringBuilder();
+        String a[] = para.split("_");
+        for (String s : a) {
+            if (result.length() == 0) {
                 result.append(s.toLowerCase());
-            }else{
+            } else {
                 result.append(s.substring(0, 1).toUpperCase());
                 result.append(s.substring(1).toLowerCase());
             }
@@ -141,11 +136,11 @@ public class D4Util {
     }
     //通过传入FileInputStream数组,返回压缩文件
     /*
-    * @parms fileAddress 数据库的 attachment_addr字段数组(必填)
-    * @parms fileNames 数据库的attachment_real_name 字段数组(必填)
-    * @parms compressFileName要下载的压缩文件名，如果不填默认为当前时间戳
-    * @parms fileType 压缩文件的后缀,不填默认为zip
-    */
+     * @parms fileAddress 数据库的 attachment_addr字段数组(必填)
+     * @parms fileNames 数据库的attachment_real_name 字段数组(必填)
+     * @parms compressFileName要下载的压缩文件名，如果不填默认为当前时间戳
+     * @parms fileType 压缩文件的后缀,不填默认为zip
+     */
    /* public static OutputStream getZipFile(String[] fileAddress,String[] fileNames,String compressFileName) throws IOException {
         if(fileAddress!=null&&fileAddress.length>0){
 
@@ -195,11 +190,12 @@ public class D4Util {
     /**
      * 处理数据方法
      * <p>批量将List<Object>类型的数据转换成List<Map<T>>的数据</p>
+     *
      * @param rows 行数据
      * @return rowList 返回处理的结果 List<Map<String ,String>> 其中是已经处理好的  对象->map
      * @author gjt
      */
-    public static List<Map> objectToListMap(List<Object> rows ) {
+    public static List<Map> objectToListMap(List<Object> rows) {
 
         if (rows.size() < 0) {
             throw new DDDException("传入数据不能为空");
@@ -213,7 +209,7 @@ public class D4Util {
             for (int j = 0; j < fields.length; j++) {
                 fields[j].setAccessible(true);
                 try {
-                    getFieldsNames.put(fields[j].getName() ,fields[j].get(rows.get(i)));
+                    getFieldsNames.put(fields[j].getName(), fields[j].get(rows.get(i)));
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -221,5 +217,14 @@ public class D4Util {
             rowList.add(getFieldsNames);
         }
         return rowList;
+    }
+
+    /**
+     * 获取UUID
+     * @return
+     */
+    public static String getUUID() {
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        return uuid;
     }
 }

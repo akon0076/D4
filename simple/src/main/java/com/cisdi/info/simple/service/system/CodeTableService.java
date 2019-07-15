@@ -2,28 +2,122 @@ package com.cisdi.info.simple.service.system;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
+import com.cisdi.info.simple.dto.system.CodeTableOptionDTO;
+import com.cisdi.info.simple.dto.system.CodeTableOrgDTO;
+import com.cisdi.info.simple.dto.system.CodeTableTypeDTO;
 import com.cisdi.info.simple.entity.system.CodeTable;
 
 import java.util.List;
 
 public interface CodeTableService {
 
-public PageResultDTO findCodeTables(PageDTO pageDTO);
+    public List<CodeTable> findCodeTables(PageDTO pageDTO);
 
-public List<CodeTable> findAllCodeTables();
+    public List<CodeTable> findAllCodeTables();
 
-public List<CodeTable> findAllCodeTablesWithIdName();
+    public CodeTable findCodeTable(String uuid);
 
-public CodeTable findCodeTable(Long codeTableId);
+    /**
+     * 新增码表
+     *
+     * @param codeTableTypeDTO
+     * @return
+     */
+    public CodeTable saveCodeTable(CodeTableTypeDTO codeTableTypeDTO);
 
-//所有外键的Name都以加载
-public CodeTable findCodeTableWithForeignName(String codeTableId);
+    /**
+     * 新增组织单位码表
+     *
+     * @param codeTableOrgDTO
+     * @return
+     */
+    public CodeTable saveOrganization(CodeTableOrgDTO codeTableOrgDTO);
 
-public CodeTable saveCodeTable(CodeTable codeTable);
+    /**
+     * 新增码表选项
+     *
+     * @param codeTableOptionDTO
+     * @return
+     */
+    public CodeTable saveOption(CodeTableOptionDTO codeTableOptionDTO);
 
-public CodeTable updateCodeTable(CodeTable codeTable);
+    /**
+     * 管理员新增单位码表
+     *
+     * @param codeTableOptionDTO
+     * @return
+     */
+    public CodeTable insertPrivateOption(CodeTableOptionDTO codeTableOptionDTO);
 
-public void deleteCodeTable(String codeTableId);
+    /**
+     * 管理员新增公共码表
+     *
+     * @param codeTableOptionDTO
+     * @return
+     */
+    public CodeTable insertPublicOption(CodeTableOptionDTO codeTableOptionDTO);
 
-public List<CodeTable> findCodeTablesByCodeType(String codeType);
+    /**
+     * 更新码表
+     *
+     * @param codeTable
+     * @return
+     */
+    public CodeTable updateCodeTable(CodeTable codeTable);
+
+    /**
+     * 更新码表选项
+     *
+     * @param codeTable
+     * @return
+     */
+    public CodeTable updateCodeTableOption(CodeTable codeTable);
+
+    public void deleteCodeTable(String codeTableId);
+
+    /**
+     * 根据编码找到对应码表
+     *
+     * @param code
+     * @return
+     */
+    public List<CodeTable> findCodeTableByCode(String code);
+
+    /**
+     * 查找所有码表类型
+     *
+     * @return
+     */
+    public List<CodeTable> findAllCodeType();
+
+    /**
+     * 查找所有私有码表类型
+     *
+     * @return
+     */
+    public List<CodeTable> findAllPrivateCodeType();
+
+    /**
+     * 根据uuid找到码表，包含子码表
+     *
+     * @param uuid
+     * @return
+     */
+    public CodeTable findCodeTableByUUID(String uuid);
+
+    /**
+     * 找到全部码表树
+     *
+     * @param pageDTO
+     * @return
+     */
+    public PageResultDTO findAllCodeTablesTree(PageDTO pageDTO);
+
+    /**
+     * 找到全部当前单位的私有码表
+     *
+     * @param pageDTO
+     * @return
+     */
+    public PageResultDTO findAllOrgCodeTablesTree(PageDTO pageDTO);
 }

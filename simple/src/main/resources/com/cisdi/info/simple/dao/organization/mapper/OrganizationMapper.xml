@@ -102,13 +102,7 @@
             t0.create_datetime ,
             t0.update_id ,
             t0.update_datetime  
-            ,t6.name as parent_name,
-            t0.business_license_code ,
-                t0.amount ,
-                t0.legal_person ,
-                t0.industry_attributes ,
-                t0.landline ,
-               t0.main_business
+            ,t6.name as parent_name
 
         from simple_organization t0
             LEFT JOIN simple_organization t6 on t0.parent_id =t6.EId
@@ -133,16 +127,7 @@
                 create_id ,
                 create_datetime ,
                 update_id ,
-                update_datetime ,
-                business_license_code ,
-                amount ,
-                legal_person ,
-                industry_attributes ,
-                landline ,
-                main_business ,
-                admin_name ,
-                admin_link_tel ,
-                admin_email
+                update_datetime
         )
         values
         (
@@ -156,16 +141,7 @@
                 #{createId} ,
                 #{createDatetime} ,
                 #{updateId} ,
-                #{updateDatetime} ,
-                #{businessLicenseCode} ,
-                #{amount} ,
-                #{legalPerson} ,
-                #{industryAttributes} ,
-                #{landline} ,
-                #{mainBusiness} ,
-                #{adminName} ,
-                #{adminLinkTel} ,
-                #{adminEmail}
+                #{updateDatetime}
         )
     </insert>
 
@@ -180,15 +156,8 @@
                 display_order = #{displayOrder} ,
                 remark = #{remark} ,
                 create_id = #{createId} ,
-                create_datetime = #{createDatetime} ,
                 update_id = #{updateId} ,
-                update_datetime = #{updateDatetime},
-                business_license_code= #{businessLicenseCode},
-                amount=#{amount},
-                legal_person=#{legalPerson} ,
-                industry_attributes=#{industryAttributes} ,
-                landline=#{landline} ,
-                main_business=#{mainBusiness}
+                update_datetime= CURRENT_TIMESTAMP ()
         where eid=#{EId}
     </update>
 

@@ -9,7 +9,6 @@
         t0.eid  ,
         t0.name  ,
         t0.code  ,
-        t0.pass_word  ,
         t0.status  ,
         t0.type  ,
         t0.person_id  ,
@@ -30,7 +29,6 @@
             t0.eid  ,
             t0.name  ,
             t0.code  ,
-            t0.pass_word  ,
             t0.status  ,
             t0.type  ,
             t0.person_id  ,
@@ -56,9 +54,40 @@
         select count(EId) as totalCount from simple_operator as t0 where ${sql}
     </select>
 
-    <!--  根据Id查询 -->
+    <!--  根据Id查询，不包含密码 -->
     <select id="findOperator" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="java.lang.Long">
-        select * from simple_operator where eid = #{operatorId}
+        select t0.eid  ,
+            t0.name  ,
+            t0.code  ,
+            t0.status  ,
+            t0.type  ,
+            t0.person_id  ,
+            t0.remark  ,
+            t0.create_id  ,
+            t0.create_datetime  ,
+            t0.update_id  ,
+            t0.update_datetime
+        from simple_operator t0
+        where eid = #{operatorId}
+    </select>
+
+
+    <!--  根据Id查询，包含密码 -->
+    <select id="findOperatorWithPassword" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="java.lang.Long">
+        select t0.eid  ,
+        t0.name  ,
+        t0.code  ,
+        t0.status  ,
+        t0.pass_word  ,
+        t0.type  ,
+        t0.person_id  ,
+        t0.remark  ,
+        t0.create_id  ,
+        t0.create_datetime  ,
+        t0.update_id  ,
+        t0.update_datetime
+        from simple_operator t0
+        where eid = #{operatorId}
     </select>
 
     <!-- -->
@@ -67,7 +96,6 @@
             t0.eid  ,
             t0.name  ,
             t0.code  ,
-            t0.pass_word  ,
             t0.status  ,
             t0.type  ,
             t0.person_id  ,
@@ -123,7 +151,6 @@
         update simple_operator set
                 name = #{name} ,
                 code = #{code} ,
-                pass_word = #{passWord} ,
                 status = #{status} ,
                 type = #{type} ,
                 person_id = #{personId} ,
@@ -144,9 +171,11 @@
     <select id="findOperatorByUserNameAndPassWord" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
         SELECT *  FROM simple_operator where code=#{userName} and pass_word=#{password}
     </select>
+
     <select id="findOperatorByEmailAndPassWord" resultType="com.cisdi.info.simple.entity.permission.Operator" parameterType="com.cisdi.info.simple.dto.operator.LoginDTO">
         SELECT *  FROM simple_operator where email=#{userName} and pass_word=#{password}
     </select>
+
     <select id="findPermissionsByOperatorId" resultType="java.lang.String" parameterType="java.lang.Long">
         SELECT code  from simple_permission where eid in
         (
@@ -162,6 +191,24 @@
         select * from simple_operator where code = #{code}
     </select>
 
+    <!--  管理员修改密码 -->
+    <update id="changePassword" parameterType="com.cisdi.info.simple.dto.operator.PasswordDto">
+        update simple_operator set
+                pass_word = #{pass} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{operatorId}
+    </update>
+
+    <!--  自己修改密码 -->
+    <update id="changeMyPassword" parameterType="com.cisdi.info.simple.dto.operator.PasswordDto">
+        update simple_operator set
+                pass_word = #{pass} ,
+                update_id = #{updateId} ,
+                update_datetime = #{updateDatetime}
+        where eid=#{operatorId}
+    </update>
+
     <!--  根据操作员对应的权限 -->
     <select id="findPermissions" resultType="java.lang.String" parameterType="java.lang.Long">
       select  t0.permission_code
@@ -171,14 +218,14 @@
             from simple_operator_and_role t1
             left join simple_role t3 on t1.role_id = t3.eid
             left join simple_operator t2 on t1.operator_id = t2.eid where t2.eid =#{operatorId})
-
     </select>
+
     <!--  根据操作员对应的权限 -->
     <select id="findPermissionsByIdAndType" resultType="java.lang.String" parameterType="com.cisdi.info.simple.dto.base.PageDTO">
         select  t0.permission_code
         from  simple_role_and_permission t0
-LEFT JOIN simple_permission t3 ON t3.code = t0.permission_code
-LEFT JOIN simple_module t4 ON t4.`code` = t3.module_code
+        LEFT JOIN simple_permission t3 ON t3.code = t0.permission_code
+        LEFT JOIN simple_module t4 ON t4.`code` = t3.module_code
         where t0.role_id in (
         select t3.eid
         from simple_operator_and_role t1

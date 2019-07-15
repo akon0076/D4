@@ -15,6 +15,8 @@ public interface DepartmentDao {
 
     public List<Department> findAllDepartments();
 
+    public List<Department> findAllDepartmentsByOrgId(Long orgId);
+
     public List<Department> findAllDepartmentsWithIdName();
 
     public List<Department> findDepartmentsWithIdNameByName(@Param("departmentName") String departmentName);

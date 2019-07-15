@@ -9,6 +9,7 @@ import com.cisdi.info.simple.entity.permission.RoleAndPermission;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +39,12 @@ public class ModuleManager {
         List<RoleAndPermission> roleAndPermissions = roleAndPermissionDao.findAllRoleAndPermissions();
         Map<String, List<String>> permissionMap = new HashMap<String, List<String>>();
 
-        for (Module module : getModules().values()) {
+        Map<String, Module> moduleMap = refreshAndLoadModules();
+        if (moduleMap == null) {
+            throw new DDDException("module.json加载失败，请检查配置文件");
+        }
+        Collection<Module> modules = moduleMap.values();
+        for (Module module : modules) {
             for (Permission permission : module.getPermissions()) {
                 permissionMap.put(permission.getCode(), permission.getUrls());
             }
@@ -92,27 +98,37 @@ public class ModuleManager {
     }
 
     /**
-     * 加载模块
+     * 加载模块到内存
      *
      * @param file 文件URL地址
      */
     public static void loadModules(String file) {
-        if (modules != null) return;
         Gson gson = new Gson();
-        String json = null;
-        json = FileLockUtils.readFileToString(new File(file), "UTF-8");
+        String json = FileLockUtils.readFileToString(new File(file), "UTF-8");
         modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
         }.getType());
     }
 
 
     /**
-     * 获取模块
+     * 获取内存中模块
      *
      * @return 模块列表
      */
     private static Map<String, Module> getModules() {
-        loadModules();
+        if (modules == null) {
+            loadModules();
+        }
+        return modules;
+    }
+
+    /**
+     * 刷新并获取文件中最新的模块
+     *
+     * @return 模块列表
+     */
+    public static Map<String, Module> refreshAndLoadModules() {
+        refresh();
         return modules;
     }
 
@@ -128,21 +144,21 @@ public class ModuleManager {
      * @param newModule
      */
     public static void addModule(String code, Module newModule) {
-        writeLock.writeLock().lock();
-        try{
+        try {
+            writeLock.writeLock().lock();
             refresh();
             getModules().put(code, newModule);
-            saveModules(Config.moduleFile);
-        }
-        finally {
+            saveModules();
+        } finally {
             writeLock.writeLock().unlock();
         }
 
     }
-//一个专门为代码生成,加入module.json的方法
+
+    //一个专门为代码生成,加入module.json的方法
     public static void addModuleFromJsonCodeGenerate(String moduleJson) {
         writeLock.writeLock().lock();
-        try{
+        try {
             Gson gson = new Gson();
             Map<String, Module> newModules = gson.fromJson(moduleJson, new TypeToken<Map<String, Module>>() {
             }.getType());
@@ -150,39 +166,37 @@ public class ModuleManager {
             for (Module module : newModules.values()) {
                 addModuleCodeGenerate(module);
             }
-        }
-        finally {
+        } finally {
             writeLock.writeLock().unlock();
         }
     }
+
     //一个专门为代码生成,加入module.json的方法
     public static void addModuleCodeGenerate(Module module) {
         writeLock.writeLock().lock();
         try {
 
-                if (ModuleManager.findModule(module.getCode()) != null) {
-                    throw new DDDException(module.getCode() + "代码生成时:"+module.getCode()+" 编码重复,请删除生成的实体,重新命名实体");
-                }
+            if (ModuleManager.findModule(module.getCode()) != null) {
+                throw new DDDException(module.getCode() + "代码生成时:" + module.getCode() + " 编码重复,请删除生成的实体,重新命名实体");
+            }
             if (ModuleManager.findModule(module.getParentCode()) != null) {
                 ModuleManager.addModule(module.getCode(), module);
-            }
-            else{
+            } else {
                 generateAllParentModule(module);
-                addModule(module.getCode(),module);
+                addModule(module.getCode(), module);
             }
-            }
-            finally {
+        } finally {
             writeLock.writeLock().unlock();
         }
-        }
-         //为代码生成所有的上级模块
-    public static  void generateAllParentModule(Module module){
+    }
+
+    //为代码生成所有的上级模块
+    public static void generateAllParentModule(Module module) {
         String parentCode = module.getParentCode();
         //如果当前模块的父模块能在内存中找到,说明当前模块存在父级
         if (ModuleManager.findModule(parentCode) != null) {
-               return;
-        }
-        else{
+            return;
+        } else {
             //创建他的上级模块
             Module parentModule = new Module();
             parentModule.setCode(module.getParentCode());
@@ -191,22 +205,21 @@ public class ModuleManager {
             parentModule.setRoute("");
             parentModule.setIconClass("");
             parentModule.setDisplayIndex((long) 1);
-            int index=parentModule.getCode().indexOf('/');
+            int index = parentModule.getCode().indexOf('/');
             if (index < 0) {//顶级模块
                 parentModule.setParentCode("");
                 parentModule.setParentName("");
                 parentModule.setModuleType("电脑模块");
-                parentModule.setIsInUse("是");
+                parentModule.setIsInUse("在用");
                 parentModule.setRouteParamsObj("");
                 ModuleManager.addModule(parentModule.getCode(), parentModule);
                 return;
-            }
-            else{
-                String ppcode=parentModule.getCode().substring(0,index);
+            } else {
+                String ppcode = parentModule.getCode().substring(0, index);
                 parentModule.setParentCode(ppcode);
                 parentModule.setParentName(ppcode);
                 parentModule.setModuleType("电脑模块");
-                parentModule.setIsInUse("是");
+                parentModule.setIsInUse("在用");
                 parentModule.setRouteParamsObj("");
                 ModuleManager.addModule(parentModule.getCode(), parentModule);
                 generateAllParentModule(parentModule);
@@ -214,97 +227,6 @@ public class ModuleManager {
 
         }
     }
-    public static void addModuleFromJson(String moduleJson) {
-        writeLock.writeLock().lock();
-        try{
-        Gson gson = new Gson();
-        Map<String, Module> newModules = gson.fromJson(moduleJson, new TypeToken<Map<String, Module>>() {
-        }.getType());
-
-        for (Module module : newModules.values()) {
-            addModule(module);
-        }
-        saveModules(Config.moduleFile);
-        }
-        finally {
-            writeLock.writeLock().unlock();
-        }
-    }
-
-    public static void addModule(Module module) {
-        writeLock.writeLock().lock();
-        try {
-            if (module.getParentCode() != null && !"".equals(module.getParentCode())) {
-                module.setCode(module.getParentCode() + "/" + module.getCode());
-                if (ModuleManager.findModule(module.getCode()) != null) {
-                    throw new DDDException(module.getCode() + " 编码重复,请重新输入");
-                }
-                ModuleManager.addModule(module.getCode(), module);
-            } else {
-                if (ModuleManager.findModule(module.getCode()) != null) {
-                    throw new DDDException(module.getCode() + " 编码重复,请重新输入");
-                }
-                ModuleManager.addModule(module.getCode(), module);
-            }
-        } finally {
-            writeLock.writeLock().unlock();
-        }
-    }
-
-//    public static void  addModule(String code, String name, String url, String route, String iconClass, Long displayIndex, String moduleType,  String routeParamsObj,String moduleName)
-//    {
-//        code = StringUtils.trimToEmpty(code);
-//        String[] codeParts = StringUtils.split(code, '/');
-//        if(codeParts.length != 3)
-//        {
-//            throw new DDDException("%s 是无效的模块编码，格式如：system_module_entity");
-//        }
-//
-//        String systemCode =codeParts[0];
-//        Module systemModule = findModuleByCode(systemCode);
-//        if(systemModule == null)
-//        {
-//            systemModule = new Module(systemCode,systemCode,"","","",1l,"是",moduleType,"");
-//            addModule(systemCode, systemModule);
-//        }
-//
-//        String moduleCode =systemCode+"/"+codeParts[1];
-//        Module moduleModule = findModuleByCode(moduleCode);
-//        if(moduleModule == null)
-//        {
-//            moduleModule = new Module(moduleCode,moduleName,"","","",1l,moduleType,"是","",systemModule);
-//            addModule(moduleCode, moduleModule);
-//        }
-//
-//        String entityCode =moduleCode+"/"+codeParts[2];
-//        Module entityModule = findModuleByCode(entityCode);
-//        if(entityModule == null)
-//        {
-//            entityModule = new Module(entityCode,name,url,route,iconClass,displayIndex,moduleType,"是",routeParamsObj,moduleModule);
-//            addModule(entityCode, entityModule);
-
-//            String fulleName = null;
-//            String baseUrl = "";
-//            List<String> urls = null;
-//DDDErrorController
-//            fulleName = StringUtils.join(new String[]{systemModule.getName(),moduleModule.getName(),entityModule.getName(),"新增"},".");
-//            urls = new ArrayList<String>();
-//            urls.add("");
-//
-////            entityModule.getPermissions().add(new Permission(entityCode+"/Add","新增",fulleName,entityCode));
-////
-////            fulleName = StringUtils.join(new String[]{systemModule.getName(),moduleModule.getName(),entityModule.getName(),"编辑"},".");
-////            entityModule.getPermissions().add(new Permission(entityCode+"/Edit","编辑",fulleName,entityCode));
-////
-////            fulleName = StringUtils.join(new String[]{systemModule.getName(),moduleModule.getName(),entityModule.getName(),"删除"},".");
-////            entityModule.getPermissions().add(new Permission(entityCode+"/Delete","删除",fulleName,entityCode));
-////
-////            fulleName = StringUtils.join(new String[]{systemModule.getName(),moduleModule.getName(),entityModule.getName(),"查看"},".");
-////            entityModule.getPermissions().add(new Permission(entityCode+"/View","查看",fulleName,entityCode));
-//        }
-//
-//        saveModules(Config.moduleFile);
-//    }
 
     /**
      * 根据编码找到指定模块
@@ -333,91 +255,81 @@ public class ModuleManager {
      * @param code 模块编码
      */
     public static boolean removeModule(String code) {
-        writeLock.writeLock().lock();
         try {
-            Module module = getModules().get(code);
-            if (module != null) {
-                // 如果是父级模块
-                if (hasChildrenModule(code)) {
-                    logger.error("请先删除" + module.getName() + "对应的子模块");
-                    throw new DDDException("请先删除" + module.getName() + "对应的子模块");
-                } else {
-                    getModules().remove(code);
-                    saveModules(Config.moduleFile);
-                    return true;
-                }
-            } else {
-                logger.error("找不到编码为" + module.getName() + "对应的模块");
-                throw new DDDException("找不到编码为" + module.getName() + "对应的模块");
+            if (StringUtils.isBlank(code)) {
+                throw new DDDException("模块编码为null,请重新输入");
             }
+            writeLock.writeLock().lock();
+            Map<String, Module> moduleMap = ModuleManager.refreshAndLoadModules();
+            if (moduleMap.remove(code) == null) {
+                throw new DDDException("该模块不存在，可能已经被删除或更改");
+            }
+            //删除子模块
+            deleteChildrenModule(moduleMap, code);
+            saveModules();
         } finally {
             writeLock.writeLock().unlock();
         }
-
+        return true;
     }
 
     /**
-     * 编辑模块
+     * 删除子模块
      *
-     * @param module 模块
+     * @param moduleMap
+     * @param code
      */
-    public static void updateModule(Module module) {
-
-        Module module1 = getModules().get(module.getCode());
-
-        // 手动填充一些数据进入（因为直接更新会导致一些数据丢失） ---> start
-        if (module.getName().split("_").length > 1) {
-            module.setName(module.getName().split("_")[1]);
-        } else {
-            module.setName(module.getName().split("_")[0]);
+    private static void deleteChildrenModule(Map<String, Module> moduleMap, String code) {
+        Iterator<Module> iterator = moduleMap.values().iterator();
+        List<Module> list = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Module module = iterator.next();
+            if (code.equals(module.getParentCode())) {
+                //删除子模块
+                iterator.remove();
+                list.add(module);
+            }
         }
-        module.setParentCode(module1.getParentCode());
-        module.setParentName(module1.getParentName());
-        // 手动填充一些数据进入（因为直接更新会导致一些数据丢失） ---> end
-
-        // 替换权限点的FullName
-        List<Permission> moduleList = module1.getPermissions();
-
-        for (Permission permission : moduleList) {
-            // 获取名称分割为数组
-            String[] name = permission.getName().split("_");
-            // 获取类全名
-            String[] fullName = permission.getFullName().split("\\.");
-
-            permission.setName(name[name.length - 1]);
-            permission.setFullName(fullName[0] + "." + fullName[1] + "." + module.getName() + "." + fullName[3]);
+        //继续处理子模块
+        for (Module module : list) {
+            deleteChildrenModule(moduleMap, module.getCode());
         }
-        // 把权限加入模块对应的位置
-        module.setPermissions(moduleList);
-        // 先删除模块
-        getModules().remove(module.getCode());
-        // 再当作新模块加入进去
-        getModules().put(module.getCode(), module);
+    }
 
+    /**
+     * 保存模块到文件
+     */
+    public static void saveModules() {
         saveModules(Config.moduleFile);
     }
 
-
+    /**
+     * 保存模块到文件
+     *
+     * @param file
+     */
     public static void saveModules(String file) {
-        writeLock.writeLock().lock();
         try {
-        Gson gson = createGson();
-        String json = gson.toJson(getModules());
-        FileLockUtils.writeStringToFile(new File(file), json, "UTF-8");
-    }
-        finally {
-        writeLock.writeLock().unlock();
-    }
+            writeLock.writeLock().lock();
+            Gson gson = createGson();
+            String json = gson.toJson(ModuleManager.modules);
+            FileLockUtils.writeStringToFile(new File(file), json, "UTF-8");
+            refresh();
+        } finally {
+            writeLock.writeLock().unlock();
+        }
     }
 
     public static Collection<Module> getAllModules() {
         return getModules().values();
     }
 
+    /**
+     * 重新加载文件中的模块到内存
+     */
     public static void refresh() {
         Gson gson = new Gson();
-        String json = null;
-        json = FileLockUtils.readFileToString(new File(Config.moduleFile), "UTF-8");
+        String json = FileLockUtils.readFileToString(new File(Config.moduleFile), "UTF-8");
         modules = gson.fromJson(json, new TypeToken<Map<String, Module>>() {
         }.getType());
     }
@@ -496,12 +408,10 @@ public class ModuleManager {
 
                 return true;
             } else {
-                logger.error("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
                 throw new DDDException("模块 " + permission.getModuleCode() + " 对应的权限点为空！");
             }
 
         } else {
-            logger.error("找不到" + permission.getModuleCode() + "对应的权限点！");
             throw new DDDException("找不到" + permission.getModuleCode() + "对应的权限点！");
         }
     }
@@ -529,7 +439,6 @@ public class ModuleManager {
             // 保存模块
             saveModules(Config.moduleFile);
         } else {
-            logger.error("找不到模块编码为:" + permission.getModuleCode() + "的模块,新增权限点失败");
             throw new DDDException("找不到模块编码为:" + permission.getModuleCode() + "的模块,新增权限点失败");
         }
 

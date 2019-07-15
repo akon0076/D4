@@ -4,6 +4,7 @@ import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.entity.permission.Operator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,6 +46,7 @@ public class Log extends BaseEntity implements Serializable{
 
 	@DColumn(index=8,label="操作时间",comment="操作时间")
 	@Column(name="log_date",length=255,nullable=true,unique=false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date logDate;
 
 	@DColumn(index=9,label="操作内容",comment="操作内容")

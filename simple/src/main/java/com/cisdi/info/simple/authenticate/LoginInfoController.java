@@ -1,5 +1,6 @@
 package com.cisdi.info.simple.authenticate;
 
+import com.cisdi.info.simple.config.NudgePlusConfig;
 import com.cisdi.info.simple.dao.organization.OrganizationDao;
 import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dao.qingTui.EmpOpenIdDao;
@@ -14,8 +15,6 @@ import com.cisdi.info.simple.entity.permission.LoginUser;
 import com.cisdi.info.simple.entity.permission.ModuleTreeNode;
 import com.cisdi.info.simple.entity.permission.Operator;
 import com.cisdi.info.simple.entity.qingTui.EmpOpenId;
-import com.cisdi.info.simple.entity.regist.EmployeRegist;
-import com.cisdi.info.simple.entity.regist.OrganizationRegist;
 import com.cisdi.info.simple.service.attachment.AttachmentService;
 import com.cisdi.info.simple.service.base.BaseService;
 import com.cisdi.info.simple.service.member.MemberService;
@@ -23,26 +22,20 @@ import com.cisdi.info.simple.service.organization.impl.EmployeeServiceBean;
 import com.cisdi.info.simple.service.permission.ModuleService;
 import com.cisdi.info.simple.service.permission.OperatorService;
 import com.cisdi.info.simple.service.qingTui.impl.EmpOpenIdServiceBean;
-import com.cisdi.info.simple.service.regist.EmployeRegistService;
-import com.cisdi.info.simple.service.regist.OrganizationRegistService;
 import com.cisdi.info.simple.util.MailUtil;
-import com.cisdi.info.simple.util.NudgePlusConfig;
 import com.cisdi.nudgeplus.sdk.service.OAuthService;
 import com.cisdi.nudgeplus.tmsbeans.beans.UserInfoResult;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,11 +66,7 @@ public class LoginInfoController {
     @Autowired
     private EmpOpenIdDao empOpenIdDao;
     @Autowired
-    private OrganizationRegistService organizationRegistService;
-    @Autowired
     private OrganizationDao organizationDao;
-    @Autowired
-    private EmployeRegistService employeRegistService;
     @Autowired
     private AttachmentService attachmentService;
 
@@ -136,10 +125,7 @@ public class LoginInfoController {
         this.operatorService.wisdomCateringLogout();
         return "OK";
     }
-    @GetMapping("/wisdomCateringConstructNewTree")
-    public ModuleTreeNode wisdomCateringConstructNewTree(@RequestParam  Long operatorId, @RequestParam String moduleType) {
-        return this.moduleService.wisdomCateringConstructNewTree(operatorId, moduleType);
-    }
+
     //移动端模拟登录
      boolean mobileLoginSubmit(Long operatorId){
         Operator operator = this.operatorService.findOperator(operatorId);
@@ -254,13 +240,6 @@ public class LoginInfoController {
         return map;
     }
 
-    // 单位注册入口
-    @PostMapping("/saveOrganizationRegist")
-    public OrganizationRegist saveOrganizationRegist(@Valid @RequestBody OrganizationRegist organizationRegist){
-        OrganizationRegist orgRegist =this.organizationRegistService.saveOrganizationRegist(organizationRegist);
-        return orgRegist;
-    }
-
     @GetMapping("/findOrganizationsWithIdNameByName")
     public Map<String,Object> findOrganizationsWithIdNameByName(@Valid @RequestParam String organizationName)
     {
@@ -273,12 +252,6 @@ public class LoginInfoController {
            map.put("size",0);
        }
         return map;
-    }
-
-    // 人员注册入口
-    @PostMapping("/saveEmployeRegist")
-    public void saveEmployeRegist(@RequestBody EmployeRegist employeRegist){
-        EmployeRegist empRegist =this.employeRegistService.saveEmployeRegist(employeRegist);
     }
 
     @PostMapping("/saveAttachment")

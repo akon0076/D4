@@ -8,7 +8,7 @@ simple:
   exceptionLogPath: D:\\D4\\DDDException
   uploadFileAddress: D:\\D4\\spring_files
 
-  applicationName: 框架
+  applicationName: d4Frame
   applicationCode: DDD4
   shortCode: DD
   basePackage: com.cisdi.info

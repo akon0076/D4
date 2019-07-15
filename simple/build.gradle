@@ -86,5 +86,5 @@ dependencies {
     compile group: 'com.alibaba', name: 'druid', version: '1.1.13'
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.47'
 
-
+    compile project(":Simple-sms")
 }

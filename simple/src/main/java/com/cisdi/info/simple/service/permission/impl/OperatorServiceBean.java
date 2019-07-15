@@ -2,7 +2,6 @@ package com.cisdi.info.simple.service.permission.impl;
 
 
 import com.cisdi.info.simple.DDDException;
-import com.cisdi.info.simple.dao.member.MemberDao;
 import com.cisdi.info.simple.dao.organization.EmployeeDao;
 import com.cisdi.info.simple.dao.organization.OrganizationDao;
 import com.cisdi.info.simple.dao.permission.OperatorAndRoleDao;
@@ -10,6 +9,7 @@ import com.cisdi.info.simple.dao.permission.OperatorDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
+import com.cisdi.info.simple.dto.operator.PasswordDto;
 import com.cisdi.info.simple.entity.log.Log;
 import com.cisdi.info.simple.entity.member.Member;
 import com.cisdi.info.simple.entity.organization.Employee;
@@ -26,8 +26,8 @@ import com.cisdi.info.simple.service.permission.OperatorService;
 import com.cisdi.info.simple.service.permission.RoleService;
 import com.cisdi.info.simple.service.verification.ValidateLogonService;
 import com.cisdi.info.simple.util.CaptchaHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -46,9 +46,11 @@ import java.util.*;
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
 public class OperatorServiceBean extends BaseService implements OperatorService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger logger = LoggerFactory.getLogger(OperatorServiceBean.class);
+
     @Autowired
     private ValidateLogonService validateLogonService;
+
     @Autowired
     private EmployeeService employeeService;
 
@@ -68,15 +70,14 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     private RoleService roleService;
 
     @Autowired
-    private MemberDao memberDao;
-
-    @Autowired
     private EmployeeDao employeeDao;
 
     @Autowired
     private CaptchaHelper captchaHelper;
+
     @Autowired
     private HttpServletRequest request;
+
     @Autowired
     private LogService logService;
 
@@ -105,29 +106,29 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
         return this.operatorDao.findOperator(operatorId);
     }
 
-    //所有外键的Name都以加载
     public Operator findOperatorWithForeignName(Long operatorId) {
         return this.operatorDao.findOperatorWithForeignName(operatorId);
     }
 
     public Long saveOperator(Operator operator) {
         this.setSavePulicColumns(operator);
-//        String password = operator.getCode() + operator.getPassWord();
-//        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
-//        operator.setPassWord(md5Password);
+        Operator operatorByCode = this.operatorDao.findOperatorByCode(operator.getCode());
+        if (operatorByCode != null) {
+            throw new DDDException("当前账号已存在");
+        }
         return this.operatorDao.saveOperator(operator);
     }
 
     public Operator updateOperator(Operator operator) {
         this.setUpdatePulicColumns(operator);
-//        String password = operator.getCode() + operator.getPassWord();
-//        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
-//        operator.setPassWord(md5Password);
         return this.operatorDao.updateOperator(operator);
     }
 
     public void deleteOperator(Long operatorId) {
+        //删除操作员
         this.operatorDao.deleteOperator(operatorId);
+        //删除对应权限
+        this.operatorAndRoleDao.deleteOperatorAndRoleByOperatorId(operatorId);
     }
 
 
@@ -152,7 +153,6 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             } else {
                 restult.put("isLogin", false);
             }
-            saveLog(request);
             return restult;
         } catch (Exception e) {
             e.printStackTrace();
@@ -358,24 +358,40 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     }
 
 
+    /**
+     * 创建初始的超级管理员
+     */
     @Override
     public void createSuperUser() {
+        //初始化创建组织
+        Organization organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
+        if (organization == null) {
+            organization = new Organization();
+            organization.setName("逆向CDIO实验室");
+            organization.setCode("000");
+            organization.setCreateDatetime(new Date());
+            organization.setUpdateDatetime(new Date());
+            organization.setRemark("这是一个用于开发的组织，实际使用时请删除");
+            this.organizationDao.saveOrganization(organization);
+        }
+        organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
+
+        //初始化创建职员
         Employee employee = this.employeeDao.findEmployeeByCode(SuperUserCode);
-        Long id = 1l;
         if (employee == null) {
             employee = new Employee();
-            employee.setEId(id);
             employee.setCode(SuperUserCode);
             employee.setName("超级管理员");
             employee.setCreateDatetime(new Date());
-            employee.setCreateId(id);
             employee.setUpdateDatetime(new Date());
-            employee.setUpdateId(id);
-            employee.setOrganizationId(id);
+            employee.setOrganizationId(organization.getEId());
             employee.setSex("男");
             employee.setRemark("这是一个用于开发的超级用户，实际使用时请删除");
             this.employeeDao.saveEmployee(employee);
         }
+        employee = this.employeeDao.findEmployeeByCode(SuperUserCode);
+
+        //初始化创建操作员
         Operator superOperator = this.operatorDao.findOperatorByCode(SuperUserCode);
         if (superOperator == null) {
             superOperator = new Operator();
@@ -388,33 +404,23 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
             superOperator.setPersonId(employee.getEId());
             superOperator.setCreateDatetime(new Date());
             superOperator.setUpdateDatetime(new Date());
-            superOperator.setCreateId(id);
-            superOperator.setUpdateId(id);
             superOperator.setStatus("在用");
             this.operatorDao.saveOperator(superOperator);
         }
-        Organization organization = organizationDao.findOrganizationByName("逆向CDIO实验室");
-        if (organization == null) {
-            organization = new Organization();
-            organization.setEId(id);
-            organization.setName("逆向CDIO实验室");
-            organization.setCode("000");
-            organization.setBusinessLicenseCode("000");
-            organization.setCreateDatetime(new Date());
-            organization.setUpdateDatetime(new Date());
-            organization.setCreateId(id);
-            organization.setUpdateId(id);
-            organization.setRemark("这是一个用于开发的组织，实际使用时请删除");
-            this.organizationDao.saveOrganization(organization);
-        }
+        superOperator = this.operatorDao.findOperatorByCode(SuperUserCode);
 
+        //初始化创建角色
         Role superRole = this.roleService.createSuperRole();
         OperatorAndRole operatorAndRole = this.operatorAndRoleDao.findOperatorAndRoleByOperatorAndRole(SuperUserCode, RoleService.SuperCode);
         if (operatorAndRole == null) {
             operatorAndRole = new OperatorAndRole();
             operatorAndRole.setOperatorId(superOperator.getEId());
             operatorAndRole.setRoleId(superRole.getEId());
-            operatorAndRole.setOrganizationId(id);
+            operatorAndRole.setOrganizationId(organization.getEId());
+            operatorAndRole.setCreateDatetime(new Date());
+            operatorAndRole.setUpdateDatetime(new Date());
+            operatorAndRole.setCreateId(superOperator.getEId());
+            operatorAndRole.setUpdateId(superOperator.getEId());
             this.operatorAndRoleDao.saveOperatorAndRole(operatorAndRole);
         }
 
@@ -423,6 +429,61 @@ public class OperatorServiceBean extends BaseService implements OperatorService 
     @Override
     public List<String> findAllModuleCodesByOperatorId(Long operatorId) {
         return operatorDao.findAllModuleCodesByOperatorId(operatorId);
+    }
+
+    /**
+     * 管理员修改密码
+     *
+     * @param passwordDto
+     * @return
+     */
+    @Override
+    public boolean changePassword(PasswordDto passwordDto) {
+        String pass = passwordDto.getPass();
+        //密码加密保存
+        String password = DigestUtils.md5DigestAsHex(pass.getBytes());
+        passwordDto.setPass(password);
+        passwordDto.setCheckPass(password);
+        passwordDto.setUpdateDatetime(new Date());
+        passwordDto.setUpdateId(this.getCurrentLoginOperator().getEId());
+        int result = operatorDao.changePassword(passwordDto);
+        if (result != 1) {
+            throw new DDDException("密码修改失败");
+        }
+        return result > 0;
+    }
+
+    /**
+     * 自己修改密码
+     *
+     * @param passwordDto
+     * @return
+     */
+    @Override
+    public boolean changeMyPassword(PasswordDto passwordDto) {
+        Long opertorId = this.getCurrentLoginOperator().getEId();
+        Operator operator = operatorDao.findOperatorWithPassword(opertorId);
+        String oldPwd = passwordDto.getOldPwd();
+        String oldPass = DigestUtils.md5DigestAsHex(oldPwd.getBytes());
+
+        //判断原密码是否正确
+        if (!operator.getPassWord().equals(oldPass)) {
+            throw new DDDException("原密码错误");
+        }
+
+        //设置新密码，加密保存
+        String pass = passwordDto.getPass();
+        String password = DigestUtils.md5DigestAsHex(pass.getBytes());
+        passwordDto.setPass(password);
+        passwordDto.setCheckPass(password);
+        passwordDto.setUpdateDatetime(new Date());
+        passwordDto.setUpdateId(opertorId);
+        passwordDto.setOperatorId(opertorId);
+        int result = operatorDao.changeMyPassword(passwordDto);
+        if (result != 1) {
+            throw new DDDException("密码修改失败");
+        }
+        return result > 0;
     }
 
     /**

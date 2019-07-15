@@ -2,6 +2,7 @@ package com.cisdi.info.simple.dao.permission;
 
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
+import com.cisdi.info.simple.dto.operator.PasswordDto;
 import com.cisdi.info.simple.entity.permission.Operator;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -20,9 +21,20 @@ public interface OperatorDao {
 
     public Long findOperatorTotalCount(PageDTO pageDTO);
 
+    /**
+     * 根据id查询操作员，不包含密码
+     * @param operatorId
+     * @return
+     */
     public Operator findOperator(Long operatorId);
 
-    //所有外键的Name都以加载
+    /**
+     * 根据id查询操作员，包含密码
+     * @param operatorId
+     * @return
+     */
+    public Operator findOperatorWithPassword(Long operatorId);
+
     public Operator findOperatorWithForeignName(Long operatorId);
 
     public Long saveOperator(Operator operator);
@@ -46,9 +58,24 @@ public interface OperatorDao {
     public Operator findOperatorByCode(String code);
 
     public List<String> findPermissions(Long operatorId);
+
     public List<String> findPermissionsByIdAndType(PageDTO pageDTO);
 
     public Operator findOperatorByEmailAndPassWord(LoginDTO loginDTO);
 
     public List<String> findAllModuleCodesByOperatorId(Long operatorId);
+
+    /**
+     * 管理员修改密码
+     * @param passwordDto
+     * @return
+     */
+    public int changePassword(PasswordDto passwordDto);
+
+    /**
+     * 自己修改密码
+     * @param passwordDto
+     * @return
+     */
+    public int changeMyPassword(PasswordDto passwordDto);
 }

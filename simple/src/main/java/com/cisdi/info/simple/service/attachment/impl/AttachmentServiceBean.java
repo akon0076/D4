@@ -1,6 +1,7 @@
 package com.cisdi.info.simple.service.attachment.impl;
 
 import com.cisdi.info.simple.DDDException;
+import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.dao.attachment.AttachmentDao;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
@@ -8,7 +9,6 @@ import com.cisdi.info.simple.entity.attachment.Attachment;
 import com.cisdi.info.simple.entity.base.BaseEntity;
 import com.cisdi.info.simple.service.attachment.AttachmentService;
 import com.cisdi.info.simple.service.base.BaseService;
-import com.cisdi.info.simple.config.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -157,7 +154,7 @@ public class AttachmentServiceBean extends BaseService implements AttachmentServ
         }
 
         String[] fileInfo = getFileInfo(file);
-        String toPrefix = fileInfo[0] + generateSuffix();
+        String toPrefix = fileInfo[0] + uniqueIdentifier();
         String toSuffix = fileInfo[1];
         String logicalFileName = toPrefix + toSuffix;
         if (!attachment.getAssociateFormName().equals("simple_organizationRegit")) {
@@ -442,7 +439,12 @@ public class AttachmentServiceBean extends BaseService implements AttachmentServ
 		}
 
 	}
-
+    //生成唯一编码
+    public String uniqueIdentifier(){
+        String id= UUID.randomUUID().toString();
+        id=id.replace("-", "");
+        return id;
+    }
     @Override
     public List<Attachment> findAllUploadedFilesByIdAndName(String  id, String name){
 		Attachment attachment = new Attachment();

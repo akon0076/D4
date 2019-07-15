@@ -10,6 +10,6 @@
         insert into simple_validate_logon(ip_address,operator_id,count)  values (#{ipAddress},#{operatorId},#{count})
     </insert>
     <update id="updateCountsByIp" parameterType="java.util.HashMap">
-        update simple_validate_logon t0 set t0.operator_id=#{operatorId},t0.count=#{count}
+           update simple_validate_logon t0 set t0.operator_id=#{operatorId},t0.count=#{count} where t0.ip_address=#{ipAddress}
     </update>
 </mapper>

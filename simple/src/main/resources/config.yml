@@ -5,12 +5,12 @@ simple:
   codeTablesFile: ${serverPath}\\src\\main\\resources\\codetables.json
   moduleFile: ${serverPath}\\src\\main\\resources\\modules.json
   velocityTemplate: ${workspapce}\\D4\\generator\\src\\main\\resources
-  exceptionLogPath: D:\\D4\\DDDException
-  uploadFileAddress: D:\\D4\\spring_files
-  staticFilePath: D:\\D4\\DDDFile\\
-  logPath: D:\\D4\\DDDException\\
+  exceptionLogPath: D:\\D4frame\\DDDException
+  uploadFileAddress: D:\\D4frame\\spring_files
+  staticFilePath: D:\\D4frame\\DDDFile\\
+  logPath: D:\\D4frame\\DDDException\\
 
-  applicationName: 框架
+  applicationName: d4Frame
   applicationCode: DDD4
   shortCode: DD
   basePackage: com.cisdi.info
@@ -20,4 +20,5 @@ simple:
   dataBase: mysql
   serverId: app1
   isDeveloping: true
-  whiteURLs: /Captcha/hasVertify,/Login/logout,/Login/getOrganizations,/Login/sendEmailCode,/Login/saveAttachment,/Login/findOrganizationsWithIdNameByName,/Login/saveEmployeRegist,/Login/saveOrganizationRegist,/Login/qingtuiInit,/Login/bindingQingtui,/Login/constructNewTree,/Login/loginSubmit,/Login/wisdomCateringLoginSubmit,/Login/wisdomCateringConstructNewTree,/Login/wisdomCateringLogout,/generator/generateModel,/generator/createSuperOperator,/generator/generateMethod,/generator/generateBaseCode,/error,/generator/testException,/Login/phoneLoginSubmit,/Login/test,/simple/fileUpload/addFile,/simple/excel/excelExport,/simple/excel/excelExportAll,/simple/word/wordExport,/simple/excel/excelImport,/simple/word/wordTemplate,/Captcha/getCaptcha,/Captcha/hasVertify,/simple/attachment/Attachment/download
+  whiteURLs: /Captcha/hasVertify,/Login/logout,/Login/getOrganizations,/Login/sendEmailCode,/Login/saveAttachment,/Login/findOrganizationsWithIdNameByName,/Login/saveEmployeRegist,/Login/saveOrganizationRegist,/Login/qingtuiInit,/Login/bindingQingtui,/Login/constructNewTree,/Login/loginSubmit,/Login/wisdomCateringLoginSubmit,/Login/wisdomCateringConstructNewTree,/Login/wisdomCateringLogout,/generator/generateModel,/generator/createSuperOperator,/generator/generateMethod,/generator/generateBaseCode,/error,/generator/testException,/Login/phoneLoginSubmit,/Login/test,/simple/fileUpload/addFile,/simple/excel/excelExport,/simple/excel/excelExportAll,/simple/word/wordExport,/simple/excel/excelImport,/simple/word/wordTemplate,/Captcha/getCaptcha,/Captcha/hasVertify,/simple/attachment/Attachment/download,simple/password
+

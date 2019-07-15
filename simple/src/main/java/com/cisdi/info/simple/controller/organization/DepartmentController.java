@@ -2,19 +2,18 @@
 
 package com.cisdi.info.simple.controller.organization;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.util.List;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
-import com.cisdi.info.simple.service.system.CodeTableService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.cisdi.info.simple.dto.organization.DepartmentEditDto;
 import com.cisdi.info.simple.entity.organization.Department;
 import com.cisdi.info.simple.service.organization.DepartmentService;
 import com.cisdi.info.simple.service.organization.OrganizationService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 
@@ -97,6 +96,11 @@ public class DepartmentController {
 	@PostMapping("/findDepartments")
 	public PageResultDTO findDepartments(@RequestBody PageDTO pageDTO){
 		return this.departmentService.findDepartments(pageDTO);
+	}
+
+	@GetMapping("/findAllDepartmentsByOrgId")
+	public List<Department> findDepartments(@RequestParam Long orgId){
+		return this.departmentService.findAllDepartmentsByOrgId(orgId);
 	}
 
 	@GetMapping("/findDepartment")

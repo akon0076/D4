@@ -3,6 +3,7 @@ package com.cisdi.info.simple.service.permission;
 import com.cisdi.info.simple.dto.base.PageDTO;
 import com.cisdi.info.simple.dto.base.PageResultDTO;
 import com.cisdi.info.simple.dto.operator.LoginDTO;
+import com.cisdi.info.simple.dto.operator.PasswordDto;
 import com.cisdi.info.simple.entity.permission.Operator;
 
 import java.util.List;
@@ -44,5 +45,9 @@ public interface OperatorService {
     public void createSuperUser();
 
     public List<String> findAllModuleCodesByOperatorId(Long operatorId);
+
+    public boolean changePassword(PasswordDto passwordDto);
+
+    public boolean changeMyPassword(PasswordDto passwordDto);
 
 }

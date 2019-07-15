@@ -12,6 +12,8 @@ public interface DepartmentService {
 
     public List<Department> findAllDepartments();
 
+    public List<Department> findAllDepartmentsByOrgId(Long orgId);
+
     public List<Department> findDepartmentsWithIdNameByName(String departmentName);
 
     public List<Department> findAllDepartmentsWithIdName();

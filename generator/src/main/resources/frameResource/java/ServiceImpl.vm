@@ -30,7 +30,7 @@ import com.cisdi.info.simple.DDDException;
 @Transactional
 public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityNameUp}Service {
 
-	private static Logger logger = LogManager.getLogger();
+	private static Logger logger = LoggerFactory.getLogger(${EntityNameUp}ServiceBean.class);
 
 	@Autowired
 	private ${EntityNameUp}Dao ${EntityNameLow}Dao;
@@ -40,6 +40,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 *
 	 * @param pageDTO 分页条件
 	 */
+	@Override
 	public PageResultDTO find${EntityNameUp}s(PageDTO pageDTO){
         pageDTO.setStartIndex((pageDTO.getCurrentPage()-1)*pageDTO.getPageSize());
 		List<${EntityNameUp}> ${EntityNameLow}DTOS = this.${EntityNameLow}Dao.find${EntityNameUp}s(pageDTO);
@@ -56,6 +57,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 * 查询全部${entityClass.label}集合
 	 *
 	 */
+	@Override
 	public List<${EntityNameUp}> findAll${EntityNameUp}s(){
 		return this.${EntityNameLow}Dao.findAll${EntityNameUp}s();
 	}
@@ -64,6 +66,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 * 查询所有${entityClass.label}集合(只提取ID 和 Name)
 	 *
 	 */
+	@Override
 	public List<${EntityNameUp}> findAll${EntityNameUp}sWithIdName(){
 		return this.${EntityNameLow}Dao.findAll${EntityNameUp}sWithIdName();
 	}
@@ -73,6 +76,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 *
 	 * @param ${EntityNameLow}Name 名称
 	 */
+	@Override
 	public List<${EntityNameUp}> find${EntityNameUp}sWithIdNameByName(String ${EntityNameLow}Name){
 		return this.${EntityNameLow}Dao.find${EntityNameUp}sWithIdNameByName(${EntityNameLow}Name);
 	}
@@ -82,6 +86,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 *
 	 * @param ${EntityNameLow}Id Id
 	 */
+	@Override
 	public ${EntityNameUp} find${EntityNameUp}sWithIdNameById(Long ${EntityNameLow}Id){
 		return this.${EntityNameLow}Dao.find${EntityNameUp}sWithIdNameById(${EntityNameLow}Id);
 	}
@@ -91,6 +96,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 *
 	 * @param ${EntityNameLow}Id Id
 	 */
+	@Override
 	public ${EntityNameUp} find${EntityNameUp}(Long ${EntityNameLow}Id){
 		return this.${EntityNameLow}Dao.find${EntityNameUp}(${EntityNameLow}Id);
 	}
@@ -100,6 +106,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 *
 	 * @param ${EntityNameLow}Id Id
 	 */
+	@Override
 	public ${EntityNameUp} find${EntityNameUp}WithForeignName(Long ${EntityNameLow}Id){
 		return this.${EntityNameLow}Dao.find${EntityNameUp}WithForeignName(${EntityNameLow}Id);
 	}
@@ -109,6 +116,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 *
 	 * @param ${EntityNameLow} 实体对象
 	 */
+	@Override
 	public ${EntityNameUp} save${EntityNameUp}(${EntityNameUp} ${EntityNameLow}){
 		//TODO:请在此校验参数的合法性
 		this.setSavePulicColumns(${EntityNameLow});
@@ -126,6 +134,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 *
 	 * @param ${EntityNameLow} 实体对象
 	 */
+	@Override
 	public ${EntityNameUp} update${EntityNameUp}(${EntityNameUp} ${EntityNameLow}){
 		//TODO:请在此校验参数的合法性
 		this.setUpdatePulicColumns(${EntityNameLow});
@@ -143,6 +152,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 	 *
 	 * @param ${EntityNameLow}Id ID
 	 */
+	@Override
 	public void delete${EntityNameUp}(Long ${EntityNameLow}Id){
 		Map<Class<? extends BaseEntity>,EntityUsage> entityUsageMap = this.checkForeignEntity(${EntityNameUp}.class, ${EntityNameLow}Id);
 		if(entityUsageMap != null && entityUsageMap.size() >0){
@@ -160,7 +170,7 @@ public class ${EntityNameUp}ServiceBean extends BaseService implements ${EntityN
 
 		Integer rows = this.${EntityNameLow}Dao.delete${EntityNameUp}(${EntityNameLow}Id);
 		if(rows != 1){
-			String error = "删除${entityClass.label}出错，数据库应该返回1,但返回了 "+rows+",数据可能已经被删除";
+			String error = "删除${entityClass.label}出错，数据可能已经被删除";
 			throw new DDDException(error);
 		}
 	}

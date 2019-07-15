@@ -9,9 +9,23 @@ import java.util.List;
 
 public interface ModuleService {
 
-    public PageResultDTO findModules(PageDTO pageDTO);
-
+    /**
+     * 获取全部模块
+     * @return
+     */
     public List<Module> findAllModules();
+
+    /**
+     * 找到全部叶节点模块
+     * @return
+     */
+    public List<Module> findAllLeafModules();
+
+    /**
+     * 找到全部非叶节点
+     * @return
+     */
+    public List<Module> findAllParentModules();
 
     public ModuleTreeNode findAllTreeNode(String modelType);
 
@@ -26,26 +40,23 @@ public interface ModuleService {
 
     public Module updateModule(Module module);
 
-    public void deleteModule(String moduleCode);
+    public boolean deleteModule(String moduleCode);
 
     public ModuleTreeNode constructNewTree(Long operatorId, String modelType);
 
-    /**
-     * 初始化模块进入数据库
-     *
-     * @param modules
-     */
-    void saveModelsToDataBase(List<Module> modules);
+    public Module findModuleForDisplay(String moduleCode);
 
     /**
-     * 更新模块
-     *
-     * @param modules
+     * 根据serviceName加载扩展模块
+     * @param serviceName
+     * @return
      */
-    void changeModelsToDataBase(List<Module> modules);
+    public List<Module> loadExtendMoule(String serviceName);
 
-    Integer moduleAccount();
-
-    public ModuleTreeNode wisdomCateringConstructNewTree(Long operatorId, String modelType);
-    public Module  findModuleForDisplay(String moduleCode);
+    /**
+     * 获取全部模块树
+     * @param pageDTO
+     * @return
+     */
+    public PageResultDTO findModuleTree(PageDTO pageDTO);
 }

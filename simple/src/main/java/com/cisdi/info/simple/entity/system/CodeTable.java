@@ -1,191 +1,165 @@
 package com.cisdi.info.simple.entity.system;
 
-import com.cisdi.info.simple.entity.base.BaseEntity;
-import javax.persistence.*;
-import javax.persistence.Entity;
-import java.io.Serializable;
-import com.cisdi.info.simple.annotation.DColumn;
-import com.cisdi.info.simple.annotation.DEntity;
-
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.StringUtils;
 
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-@DEntity(label="码表",comment="",moduleLabel="系统管理")
-public class CodeTable extends BaseEntity implements Serializable,Comparable{
+/**
+ * @author: chengbg
+ * @date: 2019/5/27
+ **/
+public class CodeTable implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Expose
-	@SerializedName("name1")
-	@DColumn(index=3,label="名称",comment="名称")
-	@Column(name="name",length=200,nullable=true,unique=false)
+	private String uuid;
+
+	@Expose
+	private String codeTypeId;
+
+	@Expose
+	private String code;
+
+	@Expose
 	private String name;
 
 	@Expose
-	@DColumn(index=4,label="码表全名",comment="为码表类型名称加所有父级名称,加本级名称")
-	@Column(name="fullname",length=200,nullable=false,unique=false)
-	private String fullname;
-
-	@Expose
-	@DColumn(index=5,label="码表类型",comment="码表种类")
-	@Column(name="code_type",length=100,nullable=false,unique=false)
+	@NotBlank
 	private String codeType;
 
 	@Expose
-	@DColumn(index=6,label="父级",comment="父级")
-	@Column(name="parent_fullname",length=100,nullable=true,unique=false)
-	private String parentFullname;
+	private String parentUUID;
 
 	@Expose
-	@DColumn(index=7,label="父级",foreignEntity="CodeTable",comment="父级")
-	@Column(name="parent_id",length=250,nullable=true,unique=false)
-	private Long parentId;
-
-	@Transient
-	private CodeTable parent;
+	private int displayIndex = 1;
 
 	@Expose
-	@Transient
-	@DColumn(index=7,label="父级",foreignEntity="CodeTable",comment="父级")
-	private String parentName;
+	private Long orgId;
 
 	@Expose
-	@DColumn(index=8,label="显示顺序",comment="显示顺序")
-	@Column(name="display_order",length=250,nullable=true,unique=false)
-	private Integer displayOrder;
+	private String orgName;
 
 	@Expose
-	@Transient
-	private List<CodeTable> children;
+	private String label;
 
 	@Expose
-	@DColumn(index=10,label="有子码表",comment="是否有孩子节点")
-	@Column(name="has_children",length=250,nullable=true,unique=false)
-	private Boolean hasChildren;
+	private String value;
 
-    public CodeTable() {
-    }
+	@Expose
+	private boolean isPublic = true;
 
-    public CodeTable(String codeType, String name) {
-        this.name = name;
-        this.fullname= StringUtils.join(new String[]{codeType,name},".");
-        this.codeType = codeType;
-        this.displayOrder = 0;
-    }
-    public CodeTable( String name,CodeTable parent) {
-        this.name = name;
-        this.codeType = parent.codeType;
-        this.fullname= StringUtils.join(new String[]{parent.getFullname(),name},".");
-        this.displayOrder = 0;
-        this.parent = parent;
-        parent.children.add(this);
-    }
+	@Expose
+	private List<CodeTable> children = new ArrayList<>();
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getFullname() {
-		return this.fullname;
+	public int getDisplayIndex() {
+		return displayIndex;
 	}
 
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
+	public void setDisplayIndex(int displayIndex) {
+		this.displayIndex = displayIndex;
+	}
+
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
 	}
 
 	public String getCodeType() {
-		return this.codeType;
+		return codeType;
 	}
 
 	public void setCodeType(String codeType) {
 		this.codeType = codeType;
 	}
 
-	public String getParentFullname() {
-		return this.parentFullname;
+	public String getValue() {
+		return value;
 	}
 
-	public void setParentFullname(String parentFullname) {
-		this.parentFullname = parentFullname;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public Long getParentId() {
-		return this.parentId;
+	public boolean isPublic() {
+		return isPublic;
 	}
 
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
+	public void setPublic(boolean aPublic) {
+		isPublic = aPublic;
 	}
 
-	public Integer getDisplayOrder() {
-    	if(this.displayOrder==null||this.displayOrder==0)
-    		this.displayOrder=999;
-		return this.displayOrder;
+	public String getOrgName() {
+		return orgName;
 	}
 
-	public void setDisplayOrder(Integer displayOrder) {
-		this.displayOrder = displayOrder;
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
 	}
 
 	public List<CodeTable> getChildren() {
-		return this.children;
+		return children;
+	}
+
+
+	public boolean addChildren(CodeTable codeTable) {
+		return this.children.add(codeTable);
 	}
 
 	public void setChildren(List<CodeTable> children) {
 		this.children = children;
 	}
 
-	public Boolean getHasChildren() {
-		return this.hasChildren;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setHasChildren(Boolean hasChildren) {
-		this.hasChildren = hasChildren;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
-	public CodeTable getParent() {
-		return this.parent;
+	public String getParentUUID() {
+		return parentUUID;
 	}
 
-	public void setParent(CodeTable parent) {
-		this.parent = parent;
+	public void setParentUUID(String parentUUID) {
+		this.parentUUID = parentUUID;
 	}
 
-	public String getParentName() {
-		return this.parentName;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		CodeTable codeTable = (CodeTable) o;
-		return Objects.equals(fullname, codeTable.fullname);
+	public String getCodeTypeId() {
+		return codeTypeId;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(fullname);
-	}
-
-	@Override
-	public int compareTo(Object o) {
-		CodeTable other = (CodeTable)o;
-		if(this.getDisplayOrder()>other.getDisplayOrder())
-			return   1;
-		else if (this.getDisplayOrder() < other.getDisplayOrder())
-			return -1;
-		else
-			return 0;
+	public void setCodeTypeId(String codeTypeId) {
+		this.codeTypeId = codeTypeId;
 	}
 }

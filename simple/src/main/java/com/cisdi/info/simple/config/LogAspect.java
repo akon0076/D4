@@ -1,14 +1,9 @@
 package com.cisdi.info.simple.config;
 
 import com.alibaba.fastjson.JSON;
-import com.cisdi.info.simple.entity.log.Log;
 import com.cisdi.info.simple.entity.permission.LoginUser;
-import com.cisdi.info.simple.entity.permission.Module;
-import com.cisdi.info.simple.entity.permission.Operator;
-import com.cisdi.info.simple.entity.permission.Permission;
 import com.cisdi.info.simple.service.log.LogService;
 import com.cisdi.info.simple.util.DateUtil;
-import com.cisdi.info.simple.util.ModuleManager;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -21,13 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,47 +64,10 @@ public class LogAspect {
         Object[] args = joinPoint.getArgs();
         //序列化时过滤掉request,response,MultipartFile
         List<Object> logArgs = Arrays.stream(args)
-                .filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse) && !(arg instanceof MultipartFile)))
+                .filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse) && !(arg instanceof LinkedList)))
                 .collect(Collectors.toList());
         String content = JSON.toJSON(logArgs).toString();
-        content = content.length() > 9999 ? content.substring(0, 9999) : content;
-        if (loginUser != null && !Config.whiteURLs.contains(url)) {
-            String userName = loginUser.getUserName();
-            Operator operator = loginUser.getLoginOperator();
-            String moduleCode = url.substring(1, url.lastIndexOf("/"));
-            Module module = ModuleManager.findModuleByCode(moduleCode);
-            if (module != null) {
-                String moduleName = module.getName();
-                String entity = moduleCode.substring(moduleCode.lastIndexOf("/") + 1);
-                List<Permission> permissions = module.getPermissions();
-                for (Permission permission : permissions) {
-                    List<String> urls = permission.getUrls();
-                    String operationContent = permission.getName();
-                    for (String s : urls) {
-                        if (s.equals(url)) {
-                            String fullName = permission.getFullName();
-                            int index = fullName.lastIndexOf(".");
-                            String operationType = fullName.substring(index + 1);
-                            //记录除查询以外的操作
-                            if (!"查看".equals(operationType)) {
-                                Log log = new Log();
-                                log.setIpAddress(ip);
-                                log.setUrl(url);
-                                log.setLogDate(new Date());
-                                log.setOperator(operator);
-                                log.setOperationType(operationType);
-                                log.setModule(moduleName);
-                                log.setEntity(entity);
-                                log.setOperationContent(userName + operationContent + "，内容：" + content);
-                                log.setOperatorId(operator.getEId());
-                                log.setLogType("用户日志");
-                                logService.saveLog(log);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+
         //打印日志
         logger.debug("-----------------------------------------------------------------------------------------------------");
         logger.debug("时间 = {}", nowDateTime);
@@ -121,6 +78,45 @@ public class LogAspect {
         logger.debug("调用方法 = {}", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         logger.debug("请求参数 = {}", JSON.toJSON(logArgs));
         logger.debug("-----------------------------------------------------------------------------------------------------");
+
+        //content = content.length() > 9999 ? content.substring(0, 9998) : content;
+        //if (loginUser != null && !Config.whiteURLs.contains(url)) {
+        //    String userName = loginUser.getUserName();
+        //    Operator operator = loginUser.getLoginOperator();
+        //    String moduleCode = url.substring(1, url.lastIndexOf("/"));
+        //    Module module = ModuleManager.findModuleByCode(moduleCode);
+        //    if (module != null) {
+        //        String moduleName = module.getName();
+        //        String entity = moduleCode.substring(moduleCode.lastIndexOf("/") + 1);
+        //        List<Permission> permissions = module.getPermissions();
+        //        for (Permission permission : permissions) {
+        //            List<String> urls = permission.getUrls();
+        //            String operationContent = permission.getName();
+        //            for (String s : urls) {
+        //                if (s.equals(url)) {
+        //                    String fullName = permission.getFullName();
+        //                    int index = fullName.lastIndexOf(".");
+        //                    String operationType = fullName.substring(index + 1);
+        //                    //记录除查询以外的操作
+        //                    if (!"查看".equals(operationType)) {
+        //                        Log log = new Log();
+        //                        log.setIpAddress(ip);
+        //                        log.setUrl(url);
+        //                        log.setLogDate(new Date());
+        //                        log.setOperator(operator);
+        //                        log.setOperationType(operationType);
+        //                        log.setModule(moduleName);
+        //                        log.setEntity(entity);
+        //                        log.setOperationContent(userName + operationContent + "，内容：" + content);
+        //                        log.setOperatorId(operator.getEId());
+        //                        log.setLogType("用户日志");
+        //                        logService.saveLog(log);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     @Around(value = "controllerLog()")

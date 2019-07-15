@@ -1,5 +1,6 @@
 package com.cisdi.info.simple.util;
 
+import com.cisdi.info.simple.DDDException;
 import com.cisdi.info.simple.config.Config;
 import com.cisdi.info.simple.entity.system.CodeTable;
 import com.google.gson.Gson;
@@ -10,130 +11,171 @@ import java.io.File;
 import java.util.*;
 
 public class CodeTableManager {
-    private static Map<String,List<CodeTable>> codeTables;
+    private static Map<String, CodeTable> codeTables;
+    private static final String CODE_TYPE = "码表类型";
+    private static final String ORG_TYPE = "组织单位";
+    private static final String CODE_OPTION = "码表选项";
 
-    public static List<CodeTable> findAllCodeTables(){
-        List returnedList = new ArrayList();
-        Collection<List<CodeTable>> list=codeTables.values();
-        Iterator iterator=list.iterator();
-        while (iterator.hasNext()) {
-            List eachList = (List) iterator.next();
-            for(int i=0;i<eachList.size();i++) {
-                returnedList.add(eachList.get(i));
+    /**
+     * 获取全部码表
+     *
+     * @return
+     */
+    public static List<CodeTable> findAllCodeTables() {
+        loadCodeTables();
+        List<CodeTable> list = new ArrayList();
+        Collection<CodeTable> tables = codeTables.values();
+        if (tables != null && tables.size() != 0) {
+            list.addAll(tables);
+        }
+        return list;
+    }
+
+    /**
+     * 根据code找到码表
+     *
+     * @param code
+     * @return
+     */
+    public static CodeTable findCodeTablesByCode(String code) {
+        List<CodeTable> codeTables = findAllCodeTables();
+        for (CodeTable codeTable : codeTables) {
+            if (CODE_TYPE.equals(codeTable.getCodeType()) && code.equals(codeTable.getCode())) {
+                return codeTable;
             }
         }
-        return returnedList;
+        return null;
     }
-    public static  List<CodeTable> findCodeTablesByType(String type)
-    {
+
+    /**
+     * 根据唯一标识找到码表
+     *
+     * @param uuid
+     * @return
+     */
+    public static CodeTable findCodeTablesByUUID(String uuid) {
         loadCodeTables();
-        return codeTables.get(type);
+        return codeTables.get(uuid);
     }
-    public static void loadCodeTables()
-    {
+
+    /**
+     * 从文件中加载码表
+     */
+    public static void loadCodeTables() {
         loadCodeTables(Config.codeTablesFile);
     }
 
-    public static void loadCodeTables(String file)
-    {
-        if(codeTables != null) return ;
+    public static void loadCodeTables(String file) {
         Gson gson = new Gson();
-        String json = null;
-        json = FileLockUtils.readFileToString(new File(file), "UTF-8");
-        codeTables = gson.fromJson(json, new TypeToken<Map<String,List<CodeTable>>>() {}.getType());
+        String json = FileLockUtils.readFileToString(new File(file), "UTF-8");
+        codeTables = gson.fromJson(json, new TypeToken<Map<String, CodeTable>>() {
+        }.getType());
     }
-    public static Map<String,List<CodeTable>> getCodeTables()
-    {
-        loadCodeTables();
+
+    public static void refresh() {
+        Gson gson = new Gson();
+        String json = FileLockUtils.readFileToString(new File(Config.codeTablesFile), "UTF-8");
+        codeTables = gson.fromJson(json, new TypeToken<Map<String, CodeTable>>() {
+        }.getType());
+    }
+
+    public static Map<String, CodeTable> getCodeTables() {
+        if (codeTables == null) {
+            loadCodeTables();
+        }
         return codeTables;
     }
-   public static void updateCodeTable(CodeTable newCodeTables){
-       loadCodeTables();
-       String type = newCodeTables.getCodeType();
-       if(getCodeTables().containsKey(type))
-       {
-           List<CodeTable> list = findCodeTablesByType(type);
-           for(int i=0;i<list.size();i++) {
-               if (newCodeTables.getFullname().equals(list.get(i).getFullname())) {
-                   list.remove(i);
-                   break;
-               }
-           }
-           newCodeTables.setFullname(newCodeTables.getCodeType()+"."+newCodeTables.getName());
-           list.add(newCodeTables);
-       }
-       else
-       {
-           List<CodeTable> list = new ArrayList<>();
-           list.add(newCodeTables);
-           newCodeTables.setFullname(newCodeTables.getCodeType()+"."+newCodeTables.getName());
-           getCodeTables().put(type, list);
-       }
-       saveCodeTables(Config.codeTablesFile);
 
-   }
-    public static  void addCodeTables(String type, List<CodeTable> newCodeTables)
-    {
+    /**
+     * 删除码表
+     *
+     * @param uuid
+     */
+    public static void removeCodeTables(String uuid) {
         loadCodeTables();
-
-        if(getCodeTables().containsKey(type))
-        {
-            Set<CodeTable> oldCodeTables = new HashSet<CodeTable>();
-            oldCodeTables.addAll(getCodeTables().get(type));
-            oldCodeTables.addAll(newCodeTables);
-            List<CodeTable>  mergesCodeTables = new ArrayList<CodeTable>();
-            mergesCodeTables.addAll(oldCodeTables);
-            getCodeTables().put(type, mergesCodeTables);
+        Map<String, CodeTable> codeTables = CodeTableManager.getCodeTables();
+        if (codeTables.remove(uuid) == null) {
+            throw new DDDException("该码表不存在，可能已经被删除或更改");
         }
-        else
-        {
-            getCodeTables().put(type, newCodeTables);
-        }
-        saveCodeTables(Config.codeTablesFile);
+        //删除子码表
+        deleteChildrenCodeTable(codeTables, uuid);
+        saveCodeTables();
     }
-    public static  void removeCodeTables(String type,String codeTableId)
-    {
 
-        if(getCodeTables().containsKey(type))
-        {
-          List<CodeTable> list=  getCodeTables().get(type);
-            for (int i=0;i<list.size();i++) {
-                if (codeTableId.equals(list.get(i).getFullname())){
-                    list.remove(i);
-                    break;
-                }
-
+    /**
+     * 删除子码表
+     *
+     * @param codeTables
+     * @param uuid
+     */
+    private static void deleteChildrenCodeTable(Map<String, CodeTable> codeTables, String uuid) {
+        Iterator<CodeTable> iterator = codeTables.values().iterator();
+        List<CodeTable> list = new ArrayList<>();
+        while (iterator.hasNext()) {
+            CodeTable codeTable = iterator.next();
+            if (uuid.equals(codeTable.getParentUUID())) {
+                //删除子码表
+                iterator.remove();
+                list.add(codeTable);
             }
         }
-        saveCodeTables(Config.codeTablesFile);
+        //继续处理子码表
+        for (CodeTable codeTable : list) {
+            deleteChildrenCodeTable(codeTables, codeTable.getUuid());
+        }
     }
-    public static  void removeCodeTables(String type)
-    {
-        getCodeTables().remove(type);
 
-        saveCodeTables(Config.codeTablesFile);
-    }
-    public static void saveCodeTables(String file)
-    {
-       Gson gson = createGson();
+    public static void saveCodeTables(String file) {
+        Gson gson = createGson();
         String json = gson.toJson(getCodeTables());
         FileLockUtils.writeStringToFile(new File(file), json, "UTF-8");
 
     }
-    private static Gson createGson()
-    {
+
+    /**
+     * 新增码表
+     *
+     * @param codeTable
+     */
+    public static void addCodeTable(CodeTable codeTable) {
+        refresh();
+        getCodeTables().put(codeTable.getUuid(), codeTable);
+        saveCodeTables();
+    }
+
+    /**
+     * 修改码表
+     *
+     * @param codeTable
+     */
+    public static void updateCodeTable(CodeTable codeTable) {
+        refresh();
+        getCodeTables().put(codeTable.getUuid(), codeTable);
+        saveCodeTables();
+    }
+
+    /**
+     * 保存码表到文件
+     */
+    public static void saveCodeTables() {
+        Gson gson = createGson();
+        String json = gson.toJson(CodeTableManager.codeTables);
+        FileLockUtils.writeStringToFile(new File(Config.codeTablesFile), json, "UTF-8");
+    }
+
+    private static Gson createGson() {
         return new GsonBuilder()
-            .excludeFieldsWithoutExposeAnnotation()
-            .enableComplexMapKeySerialization() //当Map的key为复杂对象时,需要开启该方法
-            .serializeNulls() //当字段值为空或null时，依然对该字段进行转换
-            .setDateFormat("yyyy-MM-dd HH:mm:ss:SSS") //时间转化为特定格式
-            .setPrettyPrinting() //对结果进行格式化，增加换行
-            .disableHtmlEscaping().create(); //防止特殊字符出现乱码
+                .excludeFieldsWithoutExposeAnnotation()
+                .enableComplexMapKeySerialization() //当Map的key为复杂对象时,需要开启该方法
+                .serializeNulls() //当字段值为空或null时，依然对该字段进行转换
+                .setDateFormat("yyyy-MM-dd HH:mm:ss:SSS") //时间转化为特定格式
+                .setPrettyPrinting() //对结果进行格式化，增加换行
+                .disableHtmlEscaping().create(); //防止特殊字符出现乱码
     }
 
     public static void main(String[] args) {
         loadCodeTables("E:\\SpringBoot\\workplace\\D4\\simple\\src\\main\\resources\\codetables.json");
-        List list = new ArrayList(  findAllCodeTables() );
+        List list = new ArrayList(findAllCodeTables());
 
     }
 }

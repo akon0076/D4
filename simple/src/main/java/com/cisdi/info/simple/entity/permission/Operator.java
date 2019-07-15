@@ -2,18 +2,13 @@ package com.cisdi.info.simple.entity.permission;
 
 
 
-import java.io.Serializable;
 import com.cisdi.info.simple.annotation.DColumn;
 import com.cisdi.info.simple.annotation.DEntity;
-
-import java.util.Date;
-import java.util.List;
-
 import com.cisdi.info.simple.entity.base.BaseEntity;
-import com.cisdi.info.simple.entity.organization.Organization;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.io.Serializable;
 
 
 @DEntity(label="操作员",comment="",moduleLabel="授权")
@@ -30,15 +25,15 @@ public class Operator extends BaseEntity implements Serializable{
 	private String passWord;
 
 	@DColumn(index=5,label="状态",codeTable="OperatorStatus",comment="状态")
-	@Column(name="status",length=250,nullable=true,unique=false)
+	@Column(name="status",length=250,nullable=false,unique=false)
 	private String status;
 
-	@DColumn(index=6,label="类型",codeTable="OperatorType",comment="与此操作员相应人员类型")
-	@Column(name="type",length=250,nullable=true,unique=false)
+	@DColumn(index=6,label="类型",codeTable="OperatorType",comment="操作员对应的类型")
+	@Column(name="type",length=250,nullable=false,unique=false)
 	private String type;
 
-	@DColumn(index=7,label="人员ID",comment="与操作员相应的人员ID，此字段和type直接相关")
-	@Column(name="person_id",length=250,nullable=true,unique=false)
+	@DColumn(index=7,label="职员",comment="与操作员相应的职员")
+	@Column(name="person_id",length=250,nullable=false,unique=false)
 	private Long personId;
 
 	@DColumn(index=9,label="邮箱",comment="邮箱")
