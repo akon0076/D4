@@ -40,19 +40,19 @@
                 <!--数据表格-->
                 <el-col>
                     <!--新增任务按钮-->
-                    <down-search :selectValues="selectValues" @returnedValue="searchByCondition"></down-search>
+                    <down-search :table="$refs.table" @returnedValue="searchByCondition"></down-search>
                     <div style="float: right; margin-bottom: 15px">
 
                         <el-button  type="primary" @click="add${EntityNameUp}()"  v-permission:${permission}_Add >新增${entityClass.label}</el-button>
                     </div>
                     <div class="table-control">
-                        <el-table v-loading="tableLoading" size="small" class="table-style" :data="${EntityNameLow}s" border highlight-current-row @current-change="handleCurrentChange">
+                        <el-table ref="table" v-loading="tableLoading" size="small" class="table-style" :data="${EntityNameLow}s" border highlight-current-row @current-change="handleCurrentChange">
 
                             <el-table-column show-overflow-tooltip align="left" prop="name" label="${entityClass.label}名称" min-width="100" fixed="left"  resizable show-overflow-tooltip>
                                 <template slot-scope="scope">
-                                        <p v-on:click="display${EntityNameUp}(scope.row.eid)"
+                                        <p v-on:click="display${EntityNameUp}(${EntityNameLow}s[scope.$index].eid)"
                                            style="text-decoration: underline">
-                                            {{ scope.row.name }}
+                                            {{ ${EntityNameLow}s[scope.$index].name }}
                                         </p>
                                 </template>
                             </el-table-column>
@@ -65,10 +65,10 @@
                             <el-table-column label="操作" min-width="120" resizable>
                                 <template slot-scope="scope">
                                     <template>
-                                        <el-button @click="editOrganation(scope.row.eid)" type="text" size="small" v-permission:${permission}_Edit >编辑</el-button>
+                                        <el-button @click="editOrganation(${EntityNameLow}s[scope.$index].eid)" type="text" size="small" v-permission:${permission}_Edit >编辑</el-button>
                                     </template>
                                     <template>
-                                        <el-button @click="delete${EntityNameUp}(scope.row.eid)" type="text" size="small" v-permission:${permission}_Delete ><p
+                                        <el-button @click="delete${EntityNameUp}(${EntityNameLow}s[scope.$index].eid)" type="text" size="small" v-permission:${permission}_Delete ><p
                                                 style="color: red !important;">删除</p></el-button>
                                     </template>
                                 </template>
